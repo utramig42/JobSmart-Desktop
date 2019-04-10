@@ -177,7 +177,7 @@ public class TelaVendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCompraActionPerformed
-        // TODO add your handling code here:
+ new TelaPagamento().setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 
     private void campoCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoActionPerformed
