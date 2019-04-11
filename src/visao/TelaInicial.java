@@ -151,7 +151,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAbrirCadastroEstoqueActionPerformed
 
     private void btnAbrirConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirConsultaActionPerformed
-        // TODO add your handling code here:
+        new TelaDetalheProduto().setVisible(true);
     }//GEN-LAST:event_btnAbrirConsultaActionPerformed
 
     /**
