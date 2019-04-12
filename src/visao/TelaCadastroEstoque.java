@@ -47,7 +47,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(1024, 768));
 
@@ -216,7 +216,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoCodigoProdutoActionPerformed
 
     private void btnCadastrarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarEstoqueActionPerformed
-        System.out.println("SUPERA");
+        
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
 
     private void campoValorLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoValorLoteActionPerformed
