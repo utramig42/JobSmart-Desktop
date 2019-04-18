@@ -31,6 +31,8 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         campoCodigoProduto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -40,6 +42,15 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         valorTotal = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -54,6 +65,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
 
         jLabel2.setText("Código");
 
+        campoCodigoProduto1.setEnabled(false);
         campoCodigoProduto1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoCodigoProduto1ActionPerformed(evt);
@@ -62,6 +74,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
 
         jLabel3.setText("Nome");
 
+        campoCodigoProduto2.setEnabled(false);
         campoCodigoProduto2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoCodigoProduto2ActionPerformed(evt);
@@ -86,6 +99,20 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         valorTotal.setMaximumSize(new java.awt.Dimension(130, 50));
         valorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
         valorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
+
+        jMenu4.setText("jMenu4");
+        jMenuBar1.add(jMenu4);
+
+        jMenu1.setText("Vendas");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Cadastro");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Consulta");
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +157,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(campoCodigoProduto2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 302, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,6 +228,13 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JLabel valorTotal;
     // End of variables declaration//GEN-END:variables
 }

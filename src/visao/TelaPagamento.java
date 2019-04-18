@@ -71,6 +71,8 @@ public class TelaPagamento extends javax.swing.JFrame {
         valorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
         valorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
 
+        jButton1.setBackground(new java.awt.Color(0, 204, 0));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Finalizar Compra");
         jButton1.setMaximumSize(new java.awt.Dimension(255, 30));
         jButton1.setMinimumSize(new java.awt.Dimension(255, 30));
@@ -81,6 +83,8 @@ public class TelaPagamento extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancelar");
         jButton2.setPreferredSize(new java.awt.Dimension(255, 30));
 
@@ -114,8 +118,8 @@ public class TelaPagamento extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(155, 155, 155)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(330, 330, 330)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(valorTroco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
