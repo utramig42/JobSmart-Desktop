@@ -43,10 +43,12 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         valorTotal = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        menuLogo = new javax.swing.JMenu();
+        menuVendas = new javax.swing.JMenu();
+        menuCadastro = new javax.swing.JMenu();
+        menuCadastroProdutos = new javax.swing.JMenuItem();
+        menuCadastroEstoque = new javax.swing.JMenuItem();
+        menuConsulta = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -100,17 +102,25 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         valorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
         valorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
 
-        jMenu4.setText("jMenu4");
-        jMenuBar1.add(jMenu4);
+        menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
+        menuLogo.setText("Home");
+        jMenuBar1.add(menuLogo);
 
-        jMenu1.setText("Vendas");
-        jMenuBar1.add(jMenu1);
+        menuVendas.setText("Vendas");
+        jMenuBar1.add(menuVendas);
 
-        jMenu2.setText("Cadastro");
-        jMenuBar1.add(jMenu2);
+        menuCadastro.setText("Cadastro");
 
-        jMenu3.setText("Consulta");
-        jMenuBar1.add(jMenu3);
+        menuCadastroProdutos.setText("Produtos");
+        menuCadastro.add(menuCadastroProdutos);
+
+        menuCadastroEstoque.setText("Estoque");
+        menuCadastro.add(menuCadastroEstoque);
+
+        jMenuBar1.add(menuCadastro);
+
+        menuConsulta.setText("Consulta");
+        jMenuBar1.add(menuConsulta);
 
         setJMenuBar(jMenuBar1);
 
@@ -157,7 +167,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(campoCodigoProduto2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 302, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,13 +238,15 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenu menuCadastro;
+    private javax.swing.JMenuItem menuCadastroEstoque;
+    private javax.swing.JMenuItem menuCadastroProdutos;
+    private javax.swing.JMenu menuConsulta;
+    private javax.swing.JMenu menuLogo;
+    private javax.swing.JMenu menuVendas;
     private javax.swing.JLabel valorTotal;
     // End of variables declaration//GEN-END:variables
 }

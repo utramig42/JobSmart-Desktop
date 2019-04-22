@@ -47,8 +47,12 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jSpinner2 = new javax.swing.JSpinner();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        menuLogo = new javax.swing.JMenu();
+        menuVendas = new javax.swing.JMenu();
+        menuCadastro = new javax.swing.JMenu();
+        menuCadastroProdutos = new javax.swing.JMenuItem();
+        menuCadastroEstoque = new javax.swing.JMenuItem();
+        menuConsulta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -87,11 +91,25 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Webp.net-resizeimage.png"))); // NOI18N
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
+        menuLogo.setText("Home");
+        jMenuBar1.add(menuLogo);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        menuVendas.setText("Vendas");
+        jMenuBar1.add(menuVendas);
+
+        menuCadastro.setText("Cadastro");
+
+        menuCadastroProdutos.setText("Produtos");
+        menuCadastro.add(menuCadastroProdutos);
+
+        menuCadastroEstoque.setText("Estoque");
+        menuCadastro.add(menuCadastroEstoque);
+
+        jMenuBar1.add(menuCadastro);
+
+        menuConsulta.setText("Consulta");
+        jMenuBar1.add(menuConsulta);
 
         setJMenuBar(jMenuBar1);
 
@@ -185,7 +203,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jCheckBox1))
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addContainerGap(249, Short.MAX_VALUE))
         );
 
         pack();
@@ -252,13 +270,17 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JMenu menuCadastro;
+    private javax.swing.JMenuItem menuCadastroEstoque;
+    private javax.swing.JMenuItem menuCadastroProdutos;
+    private javax.swing.JMenu menuConsulta;
+    private javax.swing.JMenu menuLogo;
+    private javax.swing.JMenu menuVendas;
     // End of variables declaration//GEN-END:variables
 }
