@@ -38,13 +38,6 @@ public class TelaPagamento extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         campoFormaPagamento = new javax.swing.JComboBox<>();
         valorTroco = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        menuLogo = new javax.swing.JMenu();
-        menuVendas = new javax.swing.JMenu();
-        menuCadastro = new javax.swing.JMenu();
-        menuCadastroProdutos = new javax.swing.JMenuItem();
-        menuCadastroEstoque = new javax.swing.JMenuItem();
-        menuConsulta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -110,28 +103,6 @@ public class TelaPagamento extends javax.swing.JFrame {
         valorTroco.setMaximumSize(new java.awt.Dimension(130, 50));
         valorTroco.setMinimumSize(new java.awt.Dimension(130, 50));
         valorTroco.setPreferredSize(new java.awt.Dimension(130, 50));
-
-        menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
-        menuLogo.setText("Home");
-        jMenuBar1.add(menuLogo);
-
-        menuVendas.setText("Vendas");
-        jMenuBar1.add(menuVendas);
-
-        menuCadastro.setText("Cadastro");
-
-        menuCadastroProdutos.setText("Produtos");
-        menuCadastro.add(menuCadastroProdutos);
-
-        menuCadastroEstoque.setText("Estoque");
-        menuCadastro.add(menuCadastroEstoque);
-
-        jMenuBar1.add(menuCadastro);
-
-        menuConsulta.setText("Consulta");
-        jMenuBar1.add(menuConsulta);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -255,14 +226,7 @@ public class TelaPagamento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JMenuBar jMenuBar1;
     private java.awt.Label label1;
-    private javax.swing.JMenu menuCadastro;
-    private javax.swing.JMenuItem menuCadastroEstoque;
-    private javax.swing.JMenuItem menuCadastroProdutos;
-    private javax.swing.JMenu menuConsulta;
-    private javax.swing.JMenu menuLogo;
-    private javax.swing.JMenu menuVendas;
     private javax.swing.JLabel valorTotal;
     private javax.swing.JLabel valorTroco;
     // End of variables declaration//GEN-END:variables

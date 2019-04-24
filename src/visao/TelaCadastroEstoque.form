@@ -11,11 +11,17 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Home"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="menuLogoMenuSelected"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuVendas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Vendas"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="menuVendasMenuSelected"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuCadastro">
           <Properties>
@@ -26,6 +32,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Produtos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCadastroProdutosActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuCadastroEstoque">
               <Properties>
@@ -38,6 +47,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Consulta"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="menuConsultaMenuSelected"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>
