@@ -53,6 +53,9 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         menuConsulta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1024, 768));
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

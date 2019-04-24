@@ -5,6 +5,9 @@
  */
 package visao;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  *
  * @author 277093
@@ -17,7 +20,11 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
     }
+    
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    Dimension d = tk.getScreenSize();
 
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,8 +45,10 @@ public class TelaInicial extends javax.swing.JFrame {
         iconConsulta = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
+        setPreferredSize(new java.awt.Dimension(1024, 768));
         setResizable(false);
-        setSize(new java.awt.Dimension(1024, 768));
+        setSize((int)d.getWidth(),(int) d.getHeight());
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART™.png"))); // NOI18N
 
