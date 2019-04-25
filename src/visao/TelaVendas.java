@@ -5,6 +5,8 @@
  */
 package visao;
 
+import util.Util;
+
 /**
  *
  * @author 275322
@@ -125,22 +127,60 @@ public class TelaVendas extends javax.swing.JFrame {
 
         menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
         menuLogo.setText("Home");
+        menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuLogoMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuLogo);
 
         menuVendas.setText("Vendas");
         jMenuBar1.add(menuVendas);
 
         menuCadastro.setText("Cadastro");
+        menuCadastro.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuCadastroMenuSelected(evt);
+            }
+        });
 
         menuCadastroProdutos.setText("Produtos");
+        menuCadastroProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroProdutosActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadastroProdutos);
 
         menuCadastroEstoque.setText("Estoque");
+        menuCadastroEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroEstoqueActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadastroEstoque);
 
         jMenuBar1.add(menuCadastro);
 
         menuConsulta.setText("Consulta");
+        menuConsulta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        menuConsulta.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuConsultaMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuConsulta);
 
         setJMenuBar(jMenuBar1);
@@ -246,6 +286,26 @@ public class TelaVendas extends javax.swing.JFrame {
     private void campoNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeProdutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeProdutoActionPerformed
+
+    private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
+        this.dispose();
+    }//GEN-LAST:event_menuLogoMenuSelected
+
+    private void menuCadastroMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuCadastroMenuSelected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCadastroMenuSelected
+
+    private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
+      Util.instanciaCadastroProduto(this);
+    }//GEN-LAST:event_menuCadastroProdutosActionPerformed
+
+    private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
+      Util.instanciaCadastroEstoque(this);
+    }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
+
+    private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
+      Util.instanciaConsultaProduto(this);
+    }//GEN-LAST:event_menuConsultaMenuSelected
 
     /**
      * @param args the command line arguments

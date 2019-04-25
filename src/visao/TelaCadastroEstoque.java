@@ -5,6 +5,8 @@
  */
 package visao;
 
+import util.Util;
+
 /**
  *
  * @author 277065
@@ -95,14 +97,37 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
         menuLogo.setText("Home");
+        menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuLogoMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuLogo);
 
         menuVendas.setText("Vendas");
+        menuVendas.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuVendasMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuVendas);
 
         menuCadastro.setText("Cadastro");
 
         menuCadastroProdutos.setText("Produtos");
+        menuCadastroProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroProdutosActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadastroProdutos);
 
         menuCadastroEstoque.setText("Estoque");
@@ -111,6 +136,15 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         jMenuBar1.add(menuCadastro);
 
         menuConsulta.setText("Consulta");
+        menuConsulta.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuConsultaMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuConsulta);
 
         setJMenuBar(jMenuBar1);
@@ -221,6 +255,22 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
+      this.dispose();
+    }//GEN-LAST:event_menuLogoMenuSelected
+
+    private void menuVendasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuVendasMenuSelected
+       Util.instanciaVenda(this);
+    }//GEN-LAST:event_menuVendasMenuSelected
+
+    private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
+       Util.instanciaCadastroProduto(this);
+    }//GEN-LAST:event_menuCadastroProdutosActionPerformed
+
+    private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
+       Util.instanciaConsultaProduto(this);
+    }//GEN-LAST:event_menuConsultaMenuSelected
+
     /**
      * @param args the command line arguments
      */
@@ -248,7 +298,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
+        //</editofold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

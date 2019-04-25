@@ -5,6 +5,8 @@
  */
 package visao;
 
+import util.Util;
+
 /**
  *
  * @author 277065
@@ -53,7 +55,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         menuConsulta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 768));
         setResizable(false);
         setSize(new java.awt.Dimension(1024, 768));
 
@@ -94,22 +95,59 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
         menuLogo.setText("Home");
+        menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuLogoMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuLogo);
 
         menuVendas.setText("Vendas");
+        menuVendas.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuVendasMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuVendas);
 
         menuCadastro.setText("Cadastro");
 
         menuCadastroProdutos.setText("Produtos");
+        menuCadastroProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroProdutosActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadastroProdutos);
 
         menuCadastroEstoque.setText("Estoque");
+        menuCadastroEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroEstoqueActionPerformed(evt);
+            }
+        });
         menuCadastro.add(menuCadastroEstoque);
 
         jMenuBar1.add(menuCadastro);
 
         menuConsulta.setText("Consulta");
+        menuConsulta.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                menuConsultaMenuSelected(evt);
+            }
+        });
         jMenuBar1.add(menuConsulta);
 
         setJMenuBar(jMenuBar1);
@@ -216,6 +254,26 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
+     this.dispose();
+    }//GEN-LAST:event_menuLogoMenuSelected
+
+    private void menuVendasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuVendasMenuSelected
+      Util.instanciaVenda(this);
+    }//GEN-LAST:event_menuVendasMenuSelected
+
+    private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
+      
+    }//GEN-LAST:event_menuCadastroProdutosActionPerformed
+
+    private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
+      Util.instanciaCadastroEstoque(this);
+    }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
+
+    private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
+       Util.instanciaConsultaProduto(this);
+    }//GEN-LAST:event_menuConsultaMenuSelected
 
     /**
      * @param args the command line arguments
