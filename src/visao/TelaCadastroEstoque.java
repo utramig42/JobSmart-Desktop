@@ -95,7 +95,6 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel3.setText("Lote");
 
-        menuLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_MINI™.png"))); // NOI18N
         menuLogo.setText("Home");
         menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
