@@ -5,6 +5,10 @@
  */
 package visao;
 
+import dominio.Produto;
+import dominio.dados.ProdutoJpaController;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import util.Util;
 
 /**
@@ -216,7 +220,12 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_campoCodigoProduto2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    this.dispose();
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+        ProdutoJpaController pjc = new ProdutoJpaController(emf);
+        Produto teste = pjc.findProduto(1);
+        System.out.println(teste.getNmProd());
+        this.dispose();
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
@@ -268,6 +277,8 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                 new TelaDetalheProduto().setVisible(true);
             }
         });
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
