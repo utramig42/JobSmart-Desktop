@@ -38,9 +38,9 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         campoCodigoProduto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        campoCodigoProduto1 = new javax.swing.JTextField();
+        campoNomeProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        campoCodigoProduto2 = new javax.swing.JTextField();
+        campoCategoriaProduto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         valorTotal = new javax.swing.JLabel();
@@ -71,19 +71,19 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
 
         jLabel2.setText("Código");
 
-        campoCodigoProduto1.setEnabled(false);
-        campoCodigoProduto1.addActionListener(new java.awt.event.ActionListener() {
+        campoNomeProduto.setEnabled(false);
+        campoNomeProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCodigoProduto1ActionPerformed(evt);
+                campoNomeProdutoActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Nome");
 
-        campoCodigoProduto2.setEnabled(false);
-        campoCodigoProduto2.addActionListener(new java.awt.event.ActionListener() {
+        campoCategoriaProduto.setEnabled(false);
+        campoCategoriaProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCodigoProduto2ActionPerformed(evt);
+                campoCategoriaProdutoActionPerformed(evt);
             }
         });
 
@@ -167,8 +167,8 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(campoCodigoProduto2)
-                    .addComponent(campoCodigoProduto1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoCategoriaProduto)
+                    .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -191,11 +191,11 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoCodigoProduto1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoCodigoProduto2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoCategoriaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,20 +211,21 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoCodigoProdutoActionPerformed
 
-    private void campoCodigoProduto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoProduto1ActionPerformed
+    private void campoNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoCodigoProduto1ActionPerformed
+    }//GEN-LAST:event_campoNomeProdutoActionPerformed
 
-    private void campoCodigoProduto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoProduto2ActionPerformed
+    private void campoCategoriaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCategoriaProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoCodigoProduto2ActionPerformed
+    }//GEN-LAST:event_campoCategoriaProdutoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-        Produto teste = pjc.findProduto(1);
-        System.out.println(teste.getNmProd());
-        this.dispose();
+        Produto teste = pjc.findProduto(Integer.parseInt(campoCodigoProduto.getText()));
+        campoNomeProduto.setText(teste.getNmProd());
+        campoCategoriaProduto.setText(teste.getIdCat().getNmCat());
+        
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -282,9 +283,9 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField campoCategoriaProduto;
     private javax.swing.JTextField campoCodigoProduto;
-    private javax.swing.JTextField campoCodigoProduto1;
-    private javax.swing.JTextField campoCodigoProduto2;
+    private javax.swing.JTextField campoNomeProduto;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
