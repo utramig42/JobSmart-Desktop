@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="JobSmart-DesktopPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>dominio.ItensVenda</class>
+    <class>dominio.Cargo</class>
+    <class>dominio.Marca</class>
+    <class>dominio.Categoria</class>
+    <class>dominio.Pagamento</class>
+    <class>dominio.FormaPagamento</class>
+    <class>dominio.Venda</class>
+    <class>dominio.Fornecedor</class>
+    <class>dominio.Produto</class>
+    <class>dominio.Estoque</class>
+    <class>dominio.Funcionario</class>
+    <class>dominio.Perfil</class>
+    <class>dominio.Acesso</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/v1?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+    </properties>
+  </persistence-unit>
+</persistence>
