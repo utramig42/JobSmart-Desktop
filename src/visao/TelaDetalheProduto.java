@@ -71,6 +71,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_SMALL.png"))); // NOI18N
         jLabel1.setToolTipText("");
 
+        campoCodigoProduto.setEnabled(false);
         campoCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoCodigoProdutoActionPerformed(evt);
@@ -207,7 +208,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                                     .addComponent(campoMarcaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(campoNomeProduto)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 404, Short.MAX_VALUE)
+                        .addGap(0, 413, Short.MAX_VALUE)
                         .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
