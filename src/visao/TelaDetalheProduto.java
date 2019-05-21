@@ -5,8 +5,12 @@
  */
 package visao;
 
+import dominio.Estoque;
+import dominio.EstoquePK;
 import dominio.Produto;
+import dominio.dados.EstoqueJpaController;
 import dominio.dados.ProdutoJpaController;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import util.Util;
@@ -38,12 +42,16 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         campoCodigoProduto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        campoCodigoProduto1 = new javax.swing.JTextField();
+        campoNomeProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        campoCodigoProduto2 = new javax.swing.JTextField();
+        campoMarcaProduto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         valorTotal = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        campoCategoriaProduto = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        campoQuantidadeProduto = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogo = new javax.swing.JMenu();
         menuVendas = new javax.swing.JMenu();
@@ -71,23 +79,23 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
 
         jLabel2.setText("Código");
 
-        campoCodigoProduto1.setEnabled(false);
-        campoCodigoProduto1.addActionListener(new java.awt.event.ActionListener() {
+        campoNomeProduto.setEnabled(false);
+        campoNomeProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCodigoProduto1ActionPerformed(evt);
+                campoNomeProdutoActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Nome");
 
-        campoCodigoProduto2.setEnabled(false);
-        campoCodigoProduto2.addActionListener(new java.awt.event.ActionListener() {
+        campoMarcaProduto.setEnabled(false);
+        campoMarcaProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCodigoProduto2ActionPerformed(evt);
+                campoMarcaProdutoActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Categoria");
+        jLabel4.setText("Marca");
 
         jButton1.setBackground(new java.awt.Color(60, 216, 0));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -105,6 +113,24 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         valorTotal.setMaximumSize(new java.awt.Dimension(130, 50));
         valorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
         valorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
+
+        jLabel5.setText("Categoria");
+
+        campoCategoriaProduto.setEnabled(false);
+        campoCategoriaProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCategoriaProdutoActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Quantidade");
+
+        campoQuantidadeProduto.setEnabled(false);
+        campoQuantidadeProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoQuantidadeProdutoActionPerformed(evt);
+            }
+        });
 
         menuLogo.setText("Home");
         menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
@@ -159,43 +185,61 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(campoCodigoProduto2)
-                    .addComponent(campoCodigoProduto1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(414, Short.MAX_VALUE)
-                .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(131, 131, 131))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(414, Short.MAX_VALUE)
+                        .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(campoMarcaProduto)
+                            .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel5)
+                        .addComponent(campoQuantidadeProduto)
+                        .addComponent(campoCategoriaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoCodigoProduto1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoCodigoProduto2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoMarcaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoCategoriaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoQuantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,20 +255,31 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoCodigoProdutoActionPerformed
 
-    private void campoCodigoProduto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoProduto1ActionPerformed
+    private void campoNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoCodigoProduto1ActionPerformed
+    }//GEN-LAST:event_campoNomeProdutoActionPerformed
 
-    private void campoCodigoProduto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoProduto2ActionPerformed
+    private void campoMarcaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoMarcaProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoCodigoProduto2ActionPerformed
+    }//GEN-LAST:event_campoMarcaProdutoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+        EstoqueJpaController ejc = new EstoqueJpaController(emf);
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-        Produto teste = pjc.findProduto(1);
-        System.out.println(teste.getNmProd());
-        this.dispose();
+        Produto prod = pjc.findProduto(1);
+        Estoque teste = new Estoque();
+        int codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
+       
+        List<Estoque> estoques =  prod.getEstoqueList();
+        
+        EstoquePK pk = teste.converteIdEstoque(estoques, codigoEstoque);
+        teste = ejc.findEstoque(pk);
+        campoNomeProduto.setText(teste.getProduto().getNmProd());
+        campoCategoriaProduto.setText(teste.getProduto().getIdCat().getNmCat());
+        campoMarcaProduto.setText(teste.getProduto().getIdMarca().getNmMarca());
+        campoQuantidadeProduto.setText(Integer.toString(teste.getQtdProdEst()));
+        valorTotal.setText(Double.toString(teste.getVlrVendaEst()));
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -243,6 +298,14 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
       Util.instanciaCadastroEstoque(this);
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
+
+    private void campoCategoriaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCategoriaProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCategoriaProdutoActionPerformed
+
+    private void campoQuantidadeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoQuantidadeProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoQuantidadeProdutoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,14 +345,18 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField campoCategoriaProduto;
     private javax.swing.JTextField campoCodigoProduto;
-    private javax.swing.JTextField campoCodigoProduto1;
-    private javax.swing.JTextField campoCodigoProduto2;
+    private javax.swing.JTextField campoMarcaProduto;
+    private javax.swing.JTextField campoNomeProduto;
+    private javax.swing.JTextField campoQuantidadeProduto;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

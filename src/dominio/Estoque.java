@@ -109,6 +109,16 @@ public class Estoque implements Serializable {
     public Estoque(int idEst, int idFor, int idProd) {
         this.estoquePK = new EstoquePK(idEst, idFor, idProd);
     }
+    
+    public EstoquePK converteIdEstoque(List<Estoque> estoques, int codigoEstoque){
+        for(Estoque etoc : estoques){
+            if(etoc.getEstoquePK().getIdEst() == codigoEstoque ){
+                return etoc.getEstoquePK();
+
+            }
+        }
+        return null;
+    }
 
     public EstoquePK getEstoquePK() {
         return estoquePK;
