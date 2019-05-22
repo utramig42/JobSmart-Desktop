@@ -5,6 +5,19 @@
  */
 package visao;
 
+import dominio.Estoque;
+import dominio.EstoquePK;
+import dominio.Fornecedor;
+import dominio.dados.EstoqueJpaController;
+import dominio.dados.FornecedorJpaController;
+import dominio.dados.ProdutoJpaController;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.DefaultComboBoxModel;
 import util.Util;
 
 /**
@@ -15,9 +28,15 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
     /**
      * Creates new form Tela
+     * 
      */
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     public TelaCadastroEstoque() {
         initComponents();
+        FornecedorJpaController fjc = new FornecedorJpaController(emf);
+        List<Fornecedor> fornecedores = fjc.findFornecedorEntities();
+        DefaultComboBoxModel modelFornecedor = new DefaultComboBoxModel(fornecedores.toArray());
+        comboFornecedor.setModel(modelFornecedor);
     }
 
     /**
@@ -48,7 +67,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         campoDataVal = new com.toedter.calendar.JDateChooser();
-        campoFornecedor = new javax.swing.JComboBox<>();
+        comboFornecedor = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         campoLote = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -80,6 +99,11 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         btnCadastrarEstoque.setBackground(new java.awt.Color(153, 255, 102));
         btnCadastrarEstoque.setText("Cadastrar");
+        btnCadastrarEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarEstoqueActionPerformed(evt);
+            }
+        });
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icons8-contatos-50 (1).png"))); // NOI18N
 
@@ -91,7 +115,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel12.setText("Data de Validade");
 
-        campoFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setText("Lote");
 
@@ -176,7 +200,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                                     .addComponent(campoDataFab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(campoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                                     .addComponent(jLabel11)
-                                    .addComponent(campoFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(comboFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(167, 167, 167)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -237,7 +261,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(campoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -270,6 +294,30 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
        Util.instanciaConsultaProduto(this);
     }//GEN-LAST:event_menuConsultaMenuSelected
 
+    private void btnCadastrarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarEstoqueActionPerformed
+        EstoqueJpaController ejc = new EstoqueJpaController(emf);
+        Estoque estoque = new Estoque();
+        ProdutoJpaController pjc = new ProdutoJpaController(emf);
+        //EstoquePK pk = new EstoquePK(); Pendente
+        try {
+            //estoque.setEstoquePK(pk); Pendente definir qual será a EstoquePK de um novo registro de Estoque
+            
+            //Instanciando e setando dados de estoque
+            estoque.setProduto(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
+            estoque.setQtdProdEst((int) campoQuantidade.getValue());
+            estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+            estoque.setLoteEst(campoLote.getText());
+            estoque.setObsEst(campoObservacao.getText());
+            estoque.setDtFabEst(campoDataFab.getDate());
+            estoque.setDtValEst(campoDataVal.getDate());
+            estoque.setDtCadEst(new Date());
+            //Inserindo no banco
+            ejc.create(estoque);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,37 +344,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaCadastroEstoque.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editofold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -341,11 +359,11 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private javax.swing.JTextField campoCodigo;
     private com.toedter.calendar.JDateChooser campoDataFab;
     private com.toedter.calendar.JDateChooser campoDataVal;
-    private javax.swing.JComboBox<String> campoFornecedor;
     private javax.swing.JTextField campoLote;
     private javax.swing.JTextArea campoObservacao;
     private javax.swing.JSpinner campoQuantidade;
     private javax.swing.JTextField campoValor;
+    private javax.swing.JComboBox<String> comboFornecedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
