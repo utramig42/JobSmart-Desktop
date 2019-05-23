@@ -272,4 +272,18 @@ public class EstoqueJpaController implements Serializable {
         }
     }
     
+    
+   public int getLastIdEstoque(){ //Método para retornar o último Id de Estoque - 
+       //PENDENTE
+         EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Estoque> rt = cq.from(Estoque.class); //Estudar para possível implementação
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createNamedQuery("Estoque.findLastId");
+            return ((Long) q.setMaxResults(1).getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+   }
 }

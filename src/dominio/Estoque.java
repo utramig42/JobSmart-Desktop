@@ -44,7 +44,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estoque.findByDtFabEst", query = "SELECT e FROM Estoque e WHERE e.dtFabEst = :dtFabEst"),
     @NamedQuery(name = "Estoque.findByDtValEst", query = "SELECT e FROM Estoque e WHERE e.dtValEst = :dtValEst"),
     @NamedQuery(name = "Estoque.findByAtivoEst", query = "SELECT e FROM Estoque e WHERE e.ativoEst = :ativoEst"),
-    @NamedQuery(name = "Estoque.findByDtCadEst", query = "SELECT e FROM Estoque e WHERE e.dtCadEst = :dtCadEst")})
+    @NamedQuery(name = "Estoque.findByDtCadEst", query = "SELECT e FROM Estoque e WHERE e.dtCadEst = :dtCadEst"),
+    
+    //PENDENTE
+    @NamedQuery(name = "Estoque.findLastId", query = "SELECT e FROM Estoque e WHERE e.dtCadEst <= current_date() ORDER BY e.dtCadEst DESC")
+        //ORDER BY dt_cad_est Desc limit 1
+        //QUERY ORIGINAL: SELECT e.id_est FROM estoque e WHERE e.dt_cad_est <= now() ORDER BY dt_cad_est Desc limit 1;
+    })
+    
 public class Estoque implements Serializable {
 
     private static final long serialVersionUID = 1L;
