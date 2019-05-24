@@ -298,11 +298,12 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         Estoque estoque = new Estoque();
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-        System.out.println(ejc.getLastIdEstoque()); //PENDENTE
-        /*
-        estoque = new Estoque(ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
+        int i = (int) ejc.getLastIdEstoque();
+        System.out.println(i); //PENDENTE
+        
+        //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
         try {
-            //estoque.setEstoquePK(pk); Pendente definir qual será a EstoquePK de um novo registro de Estoque
+            //estoque.setEstoquePK(pk); //Pendente definir qual será a EstoquePK de um novo registro de Estoque
             
             //Instanciando e setando dados de estoque
             estoque.setFornecedor( (Fornecedor) comboFornecedor.getSelectedItem());
@@ -318,7 +319,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
             ejc.create(estoque);
         } catch (Exception ex) {
             Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
 
     /**

@@ -280,7 +280,8 @@ public class EstoqueJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Estoque> rt = cq.from(Estoque.class); //Estudar para possível implementação
             cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createNamedQuery("Estoque.findLastId");
+            Query q = em.createQuery(cq);
+            //Query q = em.createNamedQuery("Estoque.findLastId");
             return ((Long) q.setMaxResults(1).getSingleResult()).intValue();
         } finally {
             em.close();

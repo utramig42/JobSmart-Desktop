@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estoque.findByDtCadEst", query = "SELECT e FROM Estoque e WHERE e.dtCadEst = :dtCadEst"),
     
     //PENDENTE
-    @NamedQuery(name = "Estoque.findLastId", query = "SELECT e FROM Estoque e WHERE e.dtCadEst <= current_date() ORDER BY e.dtCadEst DESC")
+    @NamedQuery(name = "Estoque.findLastId", query = "SELECT e FROM Estoque e ORDER BY e.dtCadEst DESC")
         //ORDER BY dt_cad_est Desc limit 1
         //QUERY ORIGINAL: SELECT e.id_est FROM estoque e WHERE e.dt_cad_est <= now() ORDER BY dt_cad_est Desc limit 1;
     })
