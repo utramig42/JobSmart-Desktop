@@ -267,11 +267,12 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-        Produto prod = pjc.findProduto(1);
+        //Produto prod = ejc.findEstoqueEntities();
+        
         Estoque teste = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
        
-        List<Estoque> estoques =  prod.getEstoqueList();
+        List<Estoque> estoques =  ejc.findEstoqueEntities();
         
         EstoquePK pk = teste.converteIdEstoque(estoques, codigoEstoque);
         teste = ejc.findEstoque(pk);

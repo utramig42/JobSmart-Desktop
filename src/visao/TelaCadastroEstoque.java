@@ -70,6 +70,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         comboFornecedor = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         campoLote = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogo = new javax.swing.JMenu();
         menuVendas = new javax.swing.JMenu();
@@ -118,6 +119,13 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         comboFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setText("Lote");
+
+        jButton1.setText("Atualizar Cadastro exitente");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         menuLogo.setText("Home");
         menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
@@ -189,9 +197,6 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -210,11 +215,16 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(campoDataVal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                                         .addComponent(campoQuantidade, javax.swing.GroupLayout.Alignment.LEADING))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(380, 380, 380)
-                                .addComponent(btnCadastrarEstoque))
                             .addComponent(jLabel3)
-                            .addComponent(campoLote, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoLote, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addGap(272, 272, 272)
+                                        .addComponent(btnCadastrarEstoque))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jLabel8)
                 .addContainerGap())
@@ -271,7 +281,9 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCadastrarEstoque)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrarEstoque)
+                    .addComponent(jButton1))
                 .addContainerGap(174, Short.MAX_VALUE))
         );
 
@@ -322,6 +334,10 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     Util.instanciaAtualizaEstoque(this);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -368,6 +384,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private javax.swing.JSpinner campoQuantidade;
     private javax.swing.JTextField campoValor;
     private javax.swing.JComboBox<String> comboFornecedor;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -6,6 +6,7 @@
 package util;
 
 import javax.swing.JFrame;
+import visao.Atualizacaodeestoque;
 import visao.TelaCadastroEstoque;
 import visao.TelaCadastroProduto;
 import visao.TelaDetalheProduto;
@@ -37,5 +38,8 @@ public class Util {
         obj.dispose();
     }
     
-    
+        public static void instanciaAtualizaEstoque( JFrame obj){
+        new Atualizacaodeestoque().setVisible(true);
+        obj.dispose();
+    }
 }
