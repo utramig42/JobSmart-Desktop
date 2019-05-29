@@ -5,6 +5,8 @@
  */
 package visao;
 
+import dominio.Venda;
+
 /**
  *
  * @author 275043
@@ -14,8 +16,16 @@ public class TelaPagamento extends javax.swing.JFrame {
     /**
      * Creates new form TelaPagamento
      */
+    
+    Venda venda;
     public TelaPagamento() {
         initComponents();
+    }
+    
+   public TelaPagamento(Venda venda) {
+        initComponents();
+        this.venda = venda;
+        valorTotal.setText(Double.toString(venda.getVlrVenda()));
     }
 
     /**

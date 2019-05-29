@@ -102,11 +102,11 @@ public class Estoque implements Serializable {
         this.estoquePK = estoquePK;
     }
 
-    public Estoque(EstoquePK estoquePK, String loteEst, double vlrCustoEst, double vlrVendaEst, int qtdProdEst, Date dtFabEst, Date dtValEst, Date dtCadEst) {
+    public Estoque(EstoquePK estoquePK, String loteEst, double vlrCustoEst, int qtdProdEst, Date dtFabEst, Date dtValEst, Date dtCadEst) {
         this.estoquePK = estoquePK;
         this.loteEst = loteEst;
         this.vlrCustoEst = vlrCustoEst;
-        this.vlrVendaEst = vlrVendaEst;
+        this.vlrVendaEst = this.vlrCustoEst * 1.5;
         this.qtdProdEst = qtdProdEst;
         this.dtFabEst = dtFabEst;
         this.dtValEst = dtValEst;

@@ -94,12 +94,22 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
     @ManyToOne(optional = false)
     private Cargo idCargo;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mat_fun")
+    private List<Venda> vendas;
+    
     public Funcionario() {
     }
 
     public Funcionario(Integer matFun) {
         this.matFun = matFun;
+    }
+
+    public List<Venda> getVendas() {
+        return vendas;
+    }
+
+    public void setVendas(List<Venda> vendas) {
+        this.vendas = vendas;
     }
 
     public Funcionario(Integer matFun, String nmFun, String endFun, String ufFun, String cidFun, double salFun, String cpfFun, String telFun, Date dtNascFun, Date dtAdmin) {

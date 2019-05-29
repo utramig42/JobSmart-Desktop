@@ -16,27 +16,27 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class ItensVendaPK implements Serializable {
-
+    //Foi alterado o tipo das classes para INTEGER
     @Basic(optional = false)
     @Column(name = "Id_itens_venda")
-    private int iditensvenda;
+    private Integer iditensvenda;
     @Basic(optional = false)
     @Column(name = "id_est")
-    private int idEst;
+    private Integer idEst;
     @Basic(optional = false)
     @Column(name = "id_venda")
-    private int idVenda;
+    private Integer idVenda;
     @Basic(optional = false)
     @Column(name = "id_prod")
-    private int idProd;
+    private Integer idProd;
     @Basic(optional = false)
     @Column(name = "id_for")
-    private int idFor;
+    private Integer idFor;
 
     public ItensVendaPK() {
     }
 
-    public ItensVendaPK(int iditensvenda, int idEst, int idVenda, int idProd, int idFor) {
+    public ItensVendaPK(Integer iditensvenda, Integer idEst, Integer idVenda, Integer idProd, Integer idFor) {
         this.iditensvenda = iditensvenda;
         this.idEst = idEst;
         this.idVenda = idVenda;

@@ -6,6 +6,8 @@
 package dominio;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -35,6 +37,17 @@ public class ItensVenda implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ItensVendaPK itensVendaPK;
+    @Basic(optional = false)
+    @Column(name = "quant_itens_venda")
+    private int quant_itens_venda;
+
+    public int getQuant_itens_venda() {
+        return quant_itens_venda;
+    }
+
+    public void setQuant_itens_venda(int quant_itens_venda) {
+        this.quant_itens_venda = quant_itens_venda;
+    }
     @JoinColumn(name = "id_venda", referencedColumnName = "id_venda", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Venda venda;
@@ -52,7 +65,7 @@ public class ItensVenda implements Serializable {
         this.itensVendaPK = itensVendaPK;
     }
 
-    public ItensVenda(int iditensvenda, int idEst, int idVenda, int idProd, int idFor) {
+    public ItensVenda(Integer iditensvenda, Integer idEst, Integer idVenda, Integer idProd, Integer idFor) {
         this.itensVendaPK = new ItensVendaPK(iditensvenda, idEst, idVenda, idProd, idFor);
     }
 

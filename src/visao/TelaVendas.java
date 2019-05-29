@@ -5,6 +5,19 @@
  */
 package visao;
 
+import dominio.Estoque;
+import dominio.EstoquePK;
+import dominio.ItensVenda;
+import dominio.ItensVendaPK;
+import dominio.Venda;
+import dominio.dados.EstoqueJpaController;
+import dominio.dados.VendaJpaController;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.table.DefaultTableModel;
 import util.Util;
 
 /**
@@ -12,11 +25,18 @@ import util.Util;
  * @author 275322
  */
 public class TelaVendas extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form TelaVendas
      */
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+    Venda venda = new Venda(null, new Date(), 5); //último valor referente à matrícula de Funcionário
+                                                  //PENDENTE para quando login for implementado
+    VendaJpaController vjc = new VendaJpaController(emf);
+    List<ItensVenda> itensVenda = new ArrayList<>();
+    
     public TelaVendas() {
+        
         initComponents();
     }
 
@@ -43,7 +63,7 @@ public class TelaVendas extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        adicionarProduto = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogo = new javax.swing.JMenu();
@@ -97,14 +117,14 @@ public class TelaVendas extends javax.swing.JFrame {
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "X", "Código", "Quant.", "Nome", "Preço"
+                "Código", "Quant.", "Nome", "Preço"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -119,8 +139,13 @@ public class TelaVendas extends javax.swing.JFrame {
             tabela.getColumnModel().getColumn(3).setMinWidth(200);
         }
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
-        jButton1.setText("Adicionar Produto");
+        adicionarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
+        adicionarProduto.setText("Adicionar Produto");
+        adicionarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adicionarProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/JOBSMART_SMALL.png"))); // NOI18N
         jLabel1.setToolTipText("");
@@ -216,7 +241,7 @@ public class TelaVendas extends javax.swing.JFrame {
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(campoQuantidade))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
+                                .addComponent(adicionarProduto))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,7 +265,7 @@ public class TelaVendas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(campoCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(campoQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(adicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -269,7 +294,9 @@ public class TelaVendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCompraActionPerformed
- new TelaPagamento().setVisible(true);        // TODO add your handling code here:
+    venda.setItensVendaList(itensVenda);
+    venda.setVlrVenda(valorVenda(itensVenda));
+    new TelaPagamento(venda).setVisible(true);        
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 
     private void campoCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoActionPerformed
@@ -300,6 +327,55 @@ public class TelaVendas extends javax.swing.JFrame {
       Util.instanciaConsultaProduto(this);
     }//GEN-LAST:event_menuConsultaMenuSelected
 
+    private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
+    
+        EstoqueJpaController ejc = new EstoqueJpaController(emf);
+        Estoque est = new Estoque();
+        List<Estoque> estoques =  ejc.findEstoqueEntities();
+        int codigoEstoque = Integer.parseInt(campoCodigo.getText());
+        EstoquePK pk = est.converteIdEstoque(estoques, codigoEstoque);
+        est = ejc.findEstoque(pk);
+        campoNomeProduto.setText(est.getProduto().getNmProd());
+        campoCategoria.setText( est.getProduto().getIdCat().getNmCat());
+       
+        
+        ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
+                venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());
+        ItensVenda item = new ItensVenda(ipk);
+        //////////////////////////////////////////////////////////////
+        item.setQuant_itens_venda((Integer)campoQuantidade.getValue());
+        itensVenda.add(item);
+        
+        Object[] obj = {est.getEstoquePK().getIdEst(), item.getQuant_itens_venda(),
+            est.getProduto().getNmProd(), est.getVlrVendaEst()};
+        //PENDENTE
+        System.out.println("Sysout abaixo");
+        System.out.println(item.getItensVendaPK().getIdEst());
+
+        DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
+        ModelCadastro.addRow(obj);
+        //////////////////////////////////////////////////////////////////
+        //Pendente finalização e adaptação.
+        campoUltimoProduto.setText(Double.toString((Double) ModelCadastro.getValueAt
+        (ModelCadastro.getRowCount()-1, ModelCadastro.getColumnCount()-1)));
+        /////////////////////////////////////////////////////////////////////////////
+        
+        
+        
+    }//GEN-LAST:event_adicionarProdutoActionPerformed
+    
+    public double valorVenda(List<ItensVenda> itensVenda){//PENDENTE
+        
+        double valorTotal = 0;
+        System.out.println("Valor iniciado");
+        for(ItensVenda item : itensVenda ){
+            System.out.println("Valor passou");
+            valorTotal += (item.getQuant_itens_venda() );
+            //item.getEstoque().getVlrVendaEst()
+        }
+        return valorTotal;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -336,13 +412,13 @@ public class TelaVendas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton adicionarProduto;
     private javax.swing.JButton btnFinalizarCompra;
     private javax.swing.JTextField campoCategoria;
     private javax.swing.JTextField campoCodigo;
     private javax.swing.JTextField campoNomeProduto;
     private javax.swing.JSpinner campoQuantidade;
     private javax.swing.JTextPane campoUltimoProduto;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
