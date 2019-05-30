@@ -78,6 +78,12 @@ public class ItensVendaJpaController implements Serializable {
             }
         }
     }
+    
+    public void createWithList(List<ItensVenda> lista) throws Exception{ //Implementado manualmente
+        for(ItensVenda item : lista){
+            create(item);
+        }
+    }
 
     public void edit(ItensVenda itensVenda) throws NonexistentEntityException, Exception {
         itensVenda.getItensVendaPK().setIdFor(itensVenda.getEstoque().getEstoquePK().getIdFor());

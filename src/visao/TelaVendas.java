@@ -342,6 +342,7 @@ public class TelaVendas extends javax.swing.JFrame {
         ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
                 venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());
         ItensVenda item = new ItensVenda(ipk);
+        item.setEstoque(est);
         //////////////////////////////////////////////////////////////
         item.setQuant_itens_venda((Integer)campoQuantidade.getValue());
         itensVenda.add(item);
@@ -350,7 +351,8 @@ public class TelaVendas extends javax.swing.JFrame {
             est.getProduto().getNmProd(), est.getVlrVendaEst()};
         //PENDENTE
         System.out.println("Sysout abaixo");
-        System.out.println(item.getItensVendaPK().getIdEst());
+        System.out.println(item.getEstoque().getVlrCustoEst());
+        System.out.println(item.getEstoque().getVlrVendaEst());
 
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
         ModelCadastro.addRow(obj);
@@ -370,7 +372,7 @@ public class TelaVendas extends javax.swing.JFrame {
         System.out.println("Valor iniciado");
         for(ItensVenda item : itensVenda ){
             System.out.println("Valor passou");
-            valorTotal += (item.getQuant_itens_venda() );
+            valorTotal += (item.getQuant_itens_venda() * item.getEstoque().getVlrVendaEst() );
             //item.getEstoque().getVlrVendaEst()
         }
         return valorTotal;
