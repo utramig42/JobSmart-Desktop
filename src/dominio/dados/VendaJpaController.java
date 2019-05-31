@@ -47,7 +47,7 @@ public class VendaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             List<ItensVenda> attachedItensVendaList = new ArrayList<ItensVenda>();
-            for (ItensVenda itensVendaListItensVendaToAttach : venda.getItensVendaList()) {
+            for (ItensVenda itensVendaListItensVendaToAttach : venda.getItensVendaList()) { //O ERRO ESTÁ AQUI
                 itensVendaListItensVendaToAttach = em.getReference(itensVendaListItensVendaToAttach.getClass(), itensVendaListItensVendaToAttach.getItensVendaPK());
                 attachedItensVendaList.add(itensVendaListItensVendaToAttach);
             }

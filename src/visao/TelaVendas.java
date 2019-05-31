@@ -30,7 +30,7 @@ public class TelaVendas extends javax.swing.JFrame {
      * Creates new form TelaVendas
      */
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
-    Venda venda = new Venda(null, new Date(), 5); //último valor referente à matrícula de Funcionário
+    Venda venda = new Venda(5, new Date(), 1); //último valor referente à matrícula de Funcionário
                                                   //PENDENTE para quando login for implementado
     VendaJpaController vjc = new VendaJpaController(emf);
     List<ItensVenda> itensVenda = new ArrayList<>();
@@ -294,6 +294,7 @@ public class TelaVendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCompraActionPerformed
+    
     venda.setItensVendaList(itensVenda);
     venda.setVlrVenda(valorVenda(itensVenda));
     new TelaPagamento(venda).setVisible(true);        
@@ -343,16 +344,14 @@ public class TelaVendas extends javax.swing.JFrame {
                 venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());
         ItensVenda item = new ItensVenda(ipk);
         item.setEstoque(est);
+        item.setProduto(item.getEstoque().getProduto());
         //////////////////////////////////////////////////////////////
         item.setQuant_itens_venda((Integer)campoQuantidade.getValue());
         itensVenda.add(item);
         
         Object[] obj = {est.getEstoquePK().getIdEst(), item.getQuant_itens_venda(),
             est.getProduto().getNmProd(), est.getVlrVendaEst()};
-        //PENDENTE
-        System.out.println("Sysout abaixo");
-        System.out.println(item.getEstoque().getVlrCustoEst());
-        System.out.println(item.getEstoque().getVlrVendaEst());
+       
 
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
         ModelCadastro.addRow(obj);
@@ -369,14 +368,14 @@ public class TelaVendas extends javax.swing.JFrame {
     public double valorVenda(List<ItensVenda> itensVenda){//PENDENTE
         
         double valorTotal = 0;
-        System.out.println("Valor iniciado");
+        
         for(ItensVenda item : itensVenda ){
-            System.out.println("Valor passou");
             valorTotal += (item.getQuant_itens_venda() * item.getEstoque().getVlrVendaEst() );
-            //item.getEstoque().getVlrVendaEst()
         }
         return valorTotal;
     }
+    
+    
     
     /**
      * @param args the command line arguments

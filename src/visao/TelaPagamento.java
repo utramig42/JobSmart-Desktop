@@ -11,7 +11,11 @@ import dominio.Pagamento;
 import dominio.Venda;
 import dominio.dados.FormaPagamentoJpaController;
 import dominio.dados.ItensVendaJpaController;
+import dominio.dados.VendaJpaController;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
@@ -23,8 +27,9 @@ import javax.swing.DefaultComboBoxModel;
 public class TelaPagamento extends javax.swing.JFrame {
     
     Venda venda;
+    Pagamento pagamento;
     double valorPendente;
-    List<ItensVenda> itens;
+    List<ItensVenda> itens = new ArrayList<>();
     
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
@@ -50,8 +55,13 @@ public class TelaPagamento extends javax.swing.JFrame {
         initComponents();
         this.venda = venda;
         valorPendente = venda.getVlrVenda();
+        
         campoValorTotal.setText(Double.toString(valorPendente));
         itens = venda.getItensVendaList();
+        instanciaItens();
+        for(ItensVenda item : itens){
+                    System.out.println(item);
+                }
     }
 
     /**
@@ -219,33 +229,58 @@ public class TelaPagamento extends javax.swing.JFrame {
         
         ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
         
-        Pagamento pagamento = new Pagamento(null);
+        pagamento = new Pagamento(null);
         pagamento.setIdVenda(venda);
         pagamento.setIdForma((FormaPagamento) campoFormaPagamento.getSelectedItem());
         pagamento.setVlrPag(Double.parseDouble(campoValorRecebido.getText()));
-        
-        
+        pagamento.setVlrTrocoPag(0);
+        double valorAPagar = valorPendente;
         valorPendente -= Double.parseDouble(campoValorRecebido.getText());
-        campoValorTotal.setText(Double.toString(valorPendente));
-        pagamento.setVlrTrocoPag( Double.parseDouble(campoValorRecebido.getText() )- valorPendente);
-        valorTroco.setText(Double.toString(pagamento.getVlrTrocoPag()));
-        validaPagamento();
+     
+        if(validaPagamento(valorAPagar)){
+            try {
+                System.out.println(pagamento);
+                VendaJpaController vjc = new VendaJpaController(emf);
+                vjc.create(venda);
+//                ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
+                
+//                venda.setPagamentoList(pagamento);
+                
+                
+            } catch (Exception ex) {
+                Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         
-        
-//        venda.setPagamentoList(pagamento);
-        
-        
+
     }//GEN-LAST:event_finalizarCompraActionPerformed
     
-    public boolean validaPagamento(){
-        if(valorPendente == 0){
+    public boolean validaPagamento(double valorAPagar){
+        if(valorPendente <= 0){
             System.out.println("Valor pago");
+            campoValorTotal.setText("R$ 0");
+            valorPendente =0;
+            defineTroco(Double.parseDouble(campoValorRecebido.getText()), valorAPagar);
             return true;
         }
-        System.out.println("Ainda faltam "+valorTroco.getText());
+        campoValorTotal.setText(Double.toString(valorPendente));
         
         return false;
+    }
+    
+    public double defineTroco(double valorPago, double valorAPagar){
+
+           double troco = valorPago - valorAPagar;
+           valorTroco.setText(Double.toString(troco));
+           pagamento.setVlrTrocoPag(troco);
+           return troco;
+    }
+    
+    public void instanciaItens(){
+        for(ItensVenda item : itens){
+            item.setVenda(venda);
+        }
     }
     
     /**

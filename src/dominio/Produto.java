@@ -75,6 +75,11 @@ public class Produto implements Serializable {
     @JoinColumn(name = "id_marca", referencedColumnName = "id_marca")
     @ManyToOne(optional = false)
     private Marca idMarca;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    private List<ItensVenda> itensVendaList;
+
+    
 
     public Produto() {
     }
@@ -169,6 +174,13 @@ public class Produto implements Serializable {
 
     public void setIdMarca(Marca idMarca) {
         this.idMarca = idMarca;
+    }
+    public List<ItensVenda> getItensVendaList() {
+        return itensVendaList;
+    }
+
+    public void setItensVendaList(List<ItensVenda> itensVendaList) {
+        this.itensVendaList = itensVendaList;
     }
 
     @Override

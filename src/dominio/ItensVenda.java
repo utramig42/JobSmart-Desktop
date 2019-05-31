@@ -54,10 +54,17 @@ public class ItensVenda implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "id_est", referencedColumnName = "id_est", insertable = false, updatable = false),
         @JoinColumn(name = "id_for", referencedColumnName = "id_for", insertable = false, updatable = false),
-        @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)})
+        @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)
+        })
     @ManyToOne(optional = false)
     private Estoque estoque;
+    
+    @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Produto produto;
 
+    
+//
     public ItensVenda() {
     }
 
@@ -91,6 +98,14 @@ public class ItensVenda implements Serializable {
 
     public void setEstoque(Estoque estoque) {
         this.estoque = estoque;
+    }
+    
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     @Override

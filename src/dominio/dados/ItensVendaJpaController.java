@@ -68,9 +68,9 @@ public class ItensVendaJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findItensVenda(itensVenda.getItensVendaPK()) != null) {
-                throw new PreexistingEntityException("ItensVenda " + itensVenda + " already exists.", ex);
-            }
+            //if (findItensVenda(itensVenda.getItensVendaPK()) != null) {
+              //  throw new PreexistingEntityException("ItensVenda " + itensVenda + " already exists.", ex);
+            //}
             throw ex;
         } finally {
             if (em != null) {
