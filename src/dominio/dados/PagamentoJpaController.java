@@ -64,6 +64,12 @@ public class PagamentoJpaController implements Serializable {
             }
         }
     }
+    
+    public void createWithList(List<Pagamento> pagamentos){
+        for(Pagamento pagamento : pagamentos){
+            create(pagamento);
+        }
+    }
 
     public void edit(Pagamento pagamento) throws NonexistentEntityException, Exception {
         EntityManager em = null;

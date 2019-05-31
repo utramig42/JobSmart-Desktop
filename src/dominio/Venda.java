@@ -129,6 +129,10 @@ public class Venda implements Serializable {
     public void setPagamentoList(List<Pagamento> pagamentoList) {
         this.pagamentoList = pagamentoList;
     }
+    
+    public void setPagamentoList(Pagamento pagamento){
+        this.pagamentoList.add(pagamento);
+    }
 
     @Override
     public int hashCode() {

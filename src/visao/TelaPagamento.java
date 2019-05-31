@@ -11,6 +11,7 @@ import dominio.Pagamento;
 import dominio.Venda;
 import dominio.dados.FormaPagamentoJpaController;
 import dominio.dados.ItensVendaJpaController;
+import dominio.dados.PagamentoJpaController;
 import dominio.dados.VendaJpaController;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,10 @@ public class TelaPagamento extends javax.swing.JFrame {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
     ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
+    PagamentoJpaController pjc = new PagamentoJpaController(emf);
     
     List<FormaPagamento> formas = fpc.findFormaPagamentoEntities();
+    List<Pagamento> pagamentos = new ArrayList<>();
     DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());
     
     /**
@@ -60,9 +63,7 @@ public class TelaPagamento extends javax.swing.JFrame {
         campoValorTotal.setText(Double.toString(valorPendente));
         itens = venda.getItensVendaList();
         instanciaItens();
-        for(ItensVenda item : itens){
-                    System.out.println(item);
-                }
+        
     }
 
     /**
@@ -230,23 +231,27 @@ public class TelaPagamento extends javax.swing.JFrame {
         
         
         
-        pagamento = new Pagamento(null);
+        pagamento = new Pagamento(pjc.getPagamentoCount() +1);
         pagamento.setIdVenda(venda);
         pagamento.setIdForma((FormaPagamento) campoFormaPagamento.getSelectedItem());
         pagamento.setVlrPag(Double.parseDouble(campoValorRecebido.getText()));
         pagamento.setVlrTrocoPag(0);
         double valorAPagar = valorPendente;
         valorPendente -= Double.parseDouble(campoValorRecebido.getText());
-     
+        pagamentos.add(pagamento);
+        
         if(validaPagamento(valorAPagar)){
             try {
-                System.out.println(pagamento);
                 VendaJpaController vjc = new VendaJpaController(emf);
-                vjc.create(venda);               
+                vjc.create(venda); 
+                pjc.createWithList(pagamentos);
+                venda.setPagamentoList(pagamentos);
+                
+                              
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
                 
                 
-//                venda.setPagamentoList(pagamento);
+                
                 
                 
             } catch (Exception ex) {
