@@ -73,6 +73,12 @@ public class Venda implements Serializable {
         this.dtVenda = dtVenda;
         this.vlrVenda = vlrVenda;
     }
+    
+    public Venda(Integer idVenda, Date dtVenda, Funcionario matFun){
+        this.idVenda = idVenda;
+        this.dtVenda = dtVenda;
+        this.matFun = matFun;
+    }
 
     public Integer getIdVenda() {
         return idVenda;

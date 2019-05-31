@@ -9,6 +9,7 @@ import dominio.Estoque;
 import dominio.ItensVenda;
 import dominio.Venda;
 import dominio.dados.EstoqueJpaController;
+import dominio.dados.FuncionarioJpaController;
 import dominio.dados.VendaJpaController;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,8 @@ public class TelaVendas extends javax.swing.JFrame {
      */
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     VendaJpaController vjc = new VendaJpaController(emf);
-    Venda venda = new Venda((vjc.getVendaCount()), new Date(), 1); //último valor referente à matrícula de Funcionário
+    FuncionarioJpaController fjc = new FuncionarioJpaController(emf);
+    Venda venda = new Venda((vjc.getVendaCount() + 1), new Date(), fjc.findFuncionario(1)); //último valor referente à matrícula de Funcionário
                                                   //PENDENTE para quando login for implementado
     
     List<ItensVenda> itensVenda = new ArrayList<>();
@@ -296,6 +298,7 @@ public class TelaVendas extends javax.swing.JFrame {
     
     venda.setItensVendaList(itensVenda);
     venda.setVlrVenda(valorVenda(itensVenda));
+    
     new TelaPagamento(venda).setVisible(true);        
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 

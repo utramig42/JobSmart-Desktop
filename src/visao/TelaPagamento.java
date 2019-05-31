@@ -33,6 +33,7 @@ public class TelaPagamento extends javax.swing.JFrame {
     
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
+    ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
     
     List<FormaPagamento> formas = fpc.findFormaPagamentoEntities();
     DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());
@@ -227,7 +228,7 @@ public class TelaPagamento extends javax.swing.JFrame {
         
         
         
-        ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
+        
         
         pagamento = new Pagamento(null);
         pagamento.setIdVenda(venda);
@@ -241,10 +242,9 @@ public class TelaPagamento extends javax.swing.JFrame {
             try {
                 System.out.println(pagamento);
                 VendaJpaController vjc = new VendaJpaController(emf);
-                
+                vjc.create(venda);               
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
-                vjc.create(venda);
-               
+                
                 
 //                venda.setPagamentoList(pagamento);
                 
@@ -281,7 +281,9 @@ public class TelaPagamento extends javax.swing.JFrame {
     
     public void instanciaItens(){
         for(ItensVenda item : itens){
+            item.setIditensvenda(ivc.getItensVendaCount());
             item.setIdVenda(venda);
+                    
         }
     }
     
