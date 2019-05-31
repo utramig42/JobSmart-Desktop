@@ -6,7 +6,6 @@
 package visao;
 
 import dominio.Estoque;
-import dominio.EstoquePK;
 import dominio.Fornecedor;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.FornecedorJpaController;
@@ -310,16 +309,16 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         Estoque estoque = new Estoque();
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-        int i = (int) ejc.getLastIdEstoque();
-        System.out.println(i); //PENDENTE
+       /* int i = (int) ejc.getLastIdEstoque();
+        System.out.println(i); //PENDENTE*/
         
         //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
         try {
             //estoque.setEstoquePK(pk); //Pendente definir qual será a EstoquePK de um novo registro de Estoque
             
             //Instanciando e setando dados de estoque
-            estoque.setFornecedor( (Fornecedor) comboFornecedor.getSelectedItem());
-            estoque.setProduto(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
+            estoque.setIdFor((Fornecedor) comboFornecedor.getSelectedItem());
+            estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
             estoque.setQtdProdEst((int) campoQuantidade.getValue());
             estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
             estoque.setLoteEst(campoLote.getText());

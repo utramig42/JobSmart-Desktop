@@ -6,9 +6,7 @@
 package visao;
 
 import dominio.Estoque;
-import dominio.EstoquePK;
 import dominio.ItensVenda;
-import dominio.ItensVendaPK;
 import dominio.Venda;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.VendaJpaController;
@@ -30,9 +28,10 @@ public class TelaVendas extends javax.swing.JFrame {
      * Creates new form TelaVendas
      */
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
-    Venda venda = new Venda(5, new Date(), 1); //último valor referente à matrícula de Funcionário
-                                                  //PENDENTE para quando login for implementado
     VendaJpaController vjc = new VendaJpaController(emf);
+    Venda venda = new Venda((vjc.getVendaCount()), new Date(), 1); //último valor referente à matrícula de Funcionário
+                                                  //PENDENTE para quando login for implementado
+    
     List<ItensVenda> itensVenda = new ArrayList<>();
     
     public TelaVendas() {
@@ -332,25 +331,25 @@ public class TelaVendas extends javax.swing.JFrame {
     
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         Estoque est = new Estoque();
-        List<Estoque> estoques =  ejc.findEstoqueEntities();
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
-        EstoquePK pk = est.converteIdEstoque(estoques, codigoEstoque);
-        est = ejc.findEstoque(pk);
-        campoNomeProduto.setText(est.getProduto().getNmProd());
-        campoCategoria.setText( est.getProduto().getIdCat().getNmCat());
+        /*List<Estoque> estoques =  ejc.findEstoqueEntities();       
+        //EstoquePK pk = est.converteIdEstoque(estoques, codigoEstoque);*/
+        est = ejc.findEstoque(codigoEstoque);
+        campoNomeProduto.setText(est.getIdProd().getNmProd());
+        campoCategoria.setText( est.getIdProd().getIdCat().getNmCat());
        
         
-        ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
-                venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());
-        ItensVenda item = new ItensVenda(ipk);
-        item.setEstoque(est);
-        item.setProduto(item.getEstoque().getProduto());
+        /*ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
+                venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());*/
+        ItensVenda item = new ItensVenda();
+        item.setIdEst(est);
+        //item.set(item.getIdEst().getIdProd());
         //////////////////////////////////////////////////////////////
-        item.setQuant_itens_venda((Integer)campoQuantidade.getValue());
+        item.setQuantItensVenda((Integer)campoQuantidade.getValue());
         itensVenda.add(item);
         
-        Object[] obj = {est.getEstoquePK().getIdEst(), item.getQuant_itens_venda(),
-            est.getProduto().getNmProd(), est.getVlrVendaEst()};
+        Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
+            est.getIdProd().getNmProd(), est.getVlrVendaEst()};
        
 
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
@@ -370,7 +369,7 @@ public class TelaVendas extends javax.swing.JFrame {
         double valorTotal = 0;
         
         for(ItensVenda item : itensVenda ){
-            valorTotal += (item.getQuant_itens_venda() * item.getEstoque().getVlrVendaEst() );
+            valorTotal += (item.getQuantItensVenda()* item.getIdEst().getVlrVendaEst() );
         }
         return valorTotal;
     }

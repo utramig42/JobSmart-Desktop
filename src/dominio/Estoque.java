@@ -11,8 +11,10 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -34,9 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Estoque.findAll", query = "SELECT e FROM Estoque e"),
-    @NamedQuery(name = "Estoque.findByIdEst", query = "SELECT e FROM Estoque e WHERE e.estoquePK.idEst = :idEst"),
-    @NamedQuery(name = "Estoque.findByIdFor", query = "SELECT e FROM Estoque e WHERE e.estoquePK.idFor = :idFor"),
-    @NamedQuery(name = "Estoque.findByIdProd", query = "SELECT e FROM Estoque e WHERE e.estoquePK.idProd = :idProd"),
+    @NamedQuery(name = "Estoque.findByIdEst", query = "SELECT e FROM Estoque e WHERE e.idEst = :idEst"),
     @NamedQuery(name = "Estoque.findByLoteEst", query = "SELECT e FROM Estoque e WHERE e.loteEst = :loteEst"),
     @NamedQuery(name = "Estoque.findByVlrCustoEst", query = "SELECT e FROM Estoque e WHERE e.vlrCustoEst = :vlrCustoEst"),
     @NamedQuery(name = "Estoque.findByVlrVendaEst", query = "SELECT e FROM Estoque e WHERE e.vlrVendaEst = :vlrVendaEst"),
@@ -44,28 +44,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estoque.findByDtFabEst", query = "SELECT e FROM Estoque e WHERE e.dtFabEst = :dtFabEst"),
     @NamedQuery(name = "Estoque.findByDtValEst", query = "SELECT e FROM Estoque e WHERE e.dtValEst = :dtValEst"),
     @NamedQuery(name = "Estoque.findByAtivoEst", query = "SELECT e FROM Estoque e WHERE e.ativoEst = :ativoEst"),
-    @NamedQuery(name = "Estoque.findByDtCadEst", query = "SELECT e FROM Estoque e WHERE e.dtCadEst = :dtCadEst"),
-    
-    //PENDENTE
-    @NamedQuery(name = "Estoque.findLastId", query = "SELECT e FROM Estoque e ORDER BY e.dtCadEst DESC")
-        //ORDER BY dt_cad_est Desc limit 1
-        //QUERY ORIGINAL: SELECT e.id_est FROM estoque e WHERE e.dt_cad_est <= now() ORDER BY dt_cad_est Desc limit 1;
-    })
-    
+    @NamedQuery(name = "Estoque.findByDtCadEst", query = "SELECT e FROM Estoque e WHERE e.dtCadEst = :dtCadEst")})
 public class Estoque implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected EstoquePK estoquePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "id_est")
+    private Integer idEst;
     @Column(name = "lote_est")
     private String loteEst;
     @Basic(optional = false)
     @Column(name = "vlr_custo_est")
     private double vlrCustoEst;
-    @Basic(optional = false)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "vlr_venda_est")
-    private double vlrVendaEst;
+    private Double vlrVendaEst;
     @Basic(optional = false)
     @Column(name = "qtd_prod_est")
     private int qtdProdEst;
@@ -86,53 +81,37 @@ public class Estoque implements Serializable {
     @Column(name = "dt_cad_est")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtCadEst;
-    @JoinColumn(name = "id_for", referencedColumnName = "id_for", insertable = false, updatable = false)
+    @JoinColumn(name = "id_for", referencedColumnName = "id_for")
     @ManyToOne(optional = false)
-    private Fornecedor fornecedor;
-    @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)
+    private Fornecedor idFor;
+    @JoinColumn(name = "id_prod", referencedColumnName = "id_prod")
     @ManyToOne(optional = false)
-    private Produto produto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estoque")
+    private Produto idProd;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEst")
     private List<ItensVenda> itensVendaList;
 
     public Estoque() {
     }
 
-    public Estoque(EstoquePK estoquePK) {
-        this.estoquePK = estoquePK;
+    public Estoque(Integer idEst) {
+        this.idEst = idEst;
     }
 
-    public Estoque(EstoquePK estoquePK, String loteEst, double vlrCustoEst, int qtdProdEst, Date dtFabEst, Date dtValEst, Date dtCadEst) {
-        this.estoquePK = estoquePK;
-        this.loteEst = loteEst;
+    public Estoque(Integer idEst, double vlrCustoEst, int qtdProdEst, Date dtFabEst, Date dtValEst, Date dtCadEst) {
+        this.idEst = idEst;
         this.vlrCustoEst = vlrCustoEst;
-        this.vlrVendaEst = this.vlrCustoEst * 1.5;
         this.qtdProdEst = qtdProdEst;
         this.dtFabEst = dtFabEst;
         this.dtValEst = dtValEst;
         this.dtCadEst = dtCadEst;
     }
 
-    public Estoque(int idEst, int idFor, int idProd) {
-        this.estoquePK = new EstoquePK(idEst, idFor, idProd);
-    }
-    
-    public EstoquePK converteIdEstoque(List<Estoque> estoques, int codigoEstoque){
-        for(Estoque etoc : estoques){
-            if(etoc.getEstoquePK().getIdEst() == codigoEstoque ){
-                return etoc.getEstoquePK();
-
-            }
-        }
-        return null;
+    public Integer getIdEst() {
+        return idEst;
     }
 
-    public EstoquePK getEstoquePK() {
-        return estoquePK;
-    }
-
-    public void setEstoquePK(EstoquePK estoquePK) {
-        this.estoquePK = estoquePK;
+    public void setIdEst(Integer idEst) {
+        this.idEst = idEst;
     }
 
     public String getLoteEst() {
@@ -151,11 +130,11 @@ public class Estoque implements Serializable {
         this.vlrCustoEst = vlrCustoEst;
     }
 
-    public double getVlrVendaEst() {
+    public Double getVlrVendaEst() {
         return vlrVendaEst;
     }
 
-    public void setVlrVendaEst(double vlrVendaEst) {
+    public void setVlrVendaEst(Double vlrVendaEst) {
         this.vlrVendaEst = vlrVendaEst;
     }
 
@@ -207,20 +186,20 @@ public class Estoque implements Serializable {
         this.dtCadEst = dtCadEst;
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
+    public Fornecedor getIdFor() {
+        return idFor;
     }
 
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
+    public void setIdFor(Fornecedor idFor) {
+        this.idFor = idFor;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Produto getIdProd() {
+        return idProd;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setIdProd(Produto idProd) {
+        this.idProd = idProd;
     }
 
     @XmlTransient
@@ -235,7 +214,7 @@ public class Estoque implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (estoquePK != null ? estoquePK.hashCode() : 0);
+        hash += (idEst != null ? idEst.hashCode() : 0);
         return hash;
     }
 
@@ -246,7 +225,7 @@ public class Estoque implements Serializable {
             return false;
         }
         Estoque other = (Estoque) object;
-        if ((this.estoquePK == null && other.estoquePK != null) || (this.estoquePK != null && !this.estoquePK.equals(other.estoquePK))) {
+        if ((this.idEst == null && other.idEst != null) || (this.idEst != null && !this.idEst.equals(other.idEst))) {
             return false;
         }
         return true;
@@ -254,7 +233,7 @@ public class Estoque implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Estoque[ estoquePK=" + estoquePK + " ]";
+        return "dominio.Estoque[ idEst=" + idEst + " ]";
     }
     
 }

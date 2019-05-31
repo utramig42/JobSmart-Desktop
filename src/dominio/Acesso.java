@@ -42,6 +42,7 @@ public class Acesso implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_acesso")
     private Integer idAcesso;
+    @Basic(optional = false)
     @Column(name = "senha_acesso")
     private String senhaAcesso;
     @Column(name = "dt_ult_acesso")
@@ -56,6 +57,11 @@ public class Acesso implements Serializable {
 
     public Acesso(Integer idAcesso) {
         this.idAcesso = idAcesso;
+    }
+
+    public Acesso(Integer idAcesso, String senhaAcesso) {
+        this.idAcesso = idAcesso;
+        this.senhaAcesso = senhaAcesso;
     }
 
     public Integer getIdAcesso() {

@@ -56,7 +56,7 @@ public class ProdutoJpaController implements Serializable {
             }
             List<Estoque> attachedEstoqueList = new ArrayList<Estoque>();
             for (Estoque estoqueListEstoqueToAttach : produto.getEstoqueList()) {
-                estoqueListEstoqueToAttach = em.getReference(estoqueListEstoqueToAttach.getClass(), estoqueListEstoqueToAttach.getEstoquePK());
+                estoqueListEstoqueToAttach = em.getReference(estoqueListEstoqueToAttach.getClass(), estoqueListEstoqueToAttach.getIdEst());
                 attachedEstoqueList.add(estoqueListEstoqueToAttach);
             }
             produto.setEstoqueList(attachedEstoqueList);
@@ -70,12 +70,12 @@ public class ProdutoJpaController implements Serializable {
                 idMarca = em.merge(idMarca);
             }
             for (Estoque estoqueListEstoque : produto.getEstoqueList()) {
-                Produto oldProdutoOfEstoqueListEstoque = estoqueListEstoque.getProduto();
-                estoqueListEstoque.setProduto(produto);
+                Produto oldIdProdOfEstoqueListEstoque = estoqueListEstoque.getIdProd();
+                estoqueListEstoque.setIdProd(produto);
                 estoqueListEstoque = em.merge(estoqueListEstoque);
-                if (oldProdutoOfEstoqueListEstoque != null) {
-                    oldProdutoOfEstoqueListEstoque.getEstoqueList().remove(estoqueListEstoque);
-                    oldProdutoOfEstoqueListEstoque = em.merge(oldProdutoOfEstoqueListEstoque);
+                if (oldIdProdOfEstoqueListEstoque != null) {
+                    oldIdProdOfEstoqueListEstoque.getEstoqueList().remove(estoqueListEstoque);
+                    oldIdProdOfEstoqueListEstoque = em.merge(oldIdProdOfEstoqueListEstoque);
                 }
             }
             em.getTransaction().commit();
@@ -104,7 +104,7 @@ public class ProdutoJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Estoque " + estoqueListOldEstoque + " since its produto field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Estoque " + estoqueListOldEstoque + " since its idProd field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -120,7 +120,7 @@ public class ProdutoJpaController implements Serializable {
             }
             List<Estoque> attachedEstoqueListNew = new ArrayList<Estoque>();
             for (Estoque estoqueListNewEstoqueToAttach : estoqueListNew) {
-                estoqueListNewEstoqueToAttach = em.getReference(estoqueListNewEstoqueToAttach.getClass(), estoqueListNewEstoqueToAttach.getEstoquePK());
+                estoqueListNewEstoqueToAttach = em.getReference(estoqueListNewEstoqueToAttach.getClass(), estoqueListNewEstoqueToAttach.getIdEst());
                 attachedEstoqueListNew.add(estoqueListNewEstoqueToAttach);
             }
             estoqueListNew = attachedEstoqueListNew;
@@ -144,12 +144,12 @@ public class ProdutoJpaController implements Serializable {
             }
             for (Estoque estoqueListNewEstoque : estoqueListNew) {
                 if (!estoqueListOld.contains(estoqueListNewEstoque)) {
-                    Produto oldProdutoOfEstoqueListNewEstoque = estoqueListNewEstoque.getProduto();
-                    estoqueListNewEstoque.setProduto(produto);
+                    Produto oldIdProdOfEstoqueListNewEstoque = estoqueListNewEstoque.getIdProd();
+                    estoqueListNewEstoque.setIdProd(produto);
                     estoqueListNewEstoque = em.merge(estoqueListNewEstoque);
-                    if (oldProdutoOfEstoqueListNewEstoque != null && !oldProdutoOfEstoqueListNewEstoque.equals(produto)) {
-                        oldProdutoOfEstoqueListNewEstoque.getEstoqueList().remove(estoqueListNewEstoque);
-                        oldProdutoOfEstoqueListNewEstoque = em.merge(oldProdutoOfEstoqueListNewEstoque);
+                    if (oldIdProdOfEstoqueListNewEstoque != null && !oldIdProdOfEstoqueListNewEstoque.equals(produto)) {
+                        oldIdProdOfEstoqueListNewEstoque.getEstoqueList().remove(estoqueListNewEstoque);
+                        oldIdProdOfEstoqueListNewEstoque = em.merge(oldIdProdOfEstoqueListNewEstoque);
                     }
                 }
             }
@@ -188,7 +188,7 @@ public class ProdutoJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Produto (" + produto + ") cannot be destroyed since the Estoque " + estoqueListOrphanCheckEstoque + " in its estoqueList field has a non-nullable produto field.");
+                illegalOrphanMessages.add("This Produto (" + produto + ") cannot be destroyed since the Estoque " + estoqueListOrphanCheckEstoque + " in its estoqueList field has a non-nullable idProd field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

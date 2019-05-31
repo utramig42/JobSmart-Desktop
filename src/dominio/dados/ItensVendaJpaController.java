@@ -13,9 +13,7 @@ import javax.persistence.criteria.Root;
 import dominio.Venda;
 import dominio.Estoque;
 import dominio.ItensVenda;
-import dominio.ItensVendaPK;
 import dominio.dados.exceptions.NonexistentEntityException;
-import dominio.dados.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,43 +33,31 @@ public class ItensVendaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ItensVenda itensVenda) throws PreexistingEntityException, Exception {
-        if (itensVenda.getItensVendaPK() == null) {
-            itensVenda.setItensVendaPK(new ItensVendaPK());
-        }
-        itensVenda.getItensVendaPK().setIdFor(itensVenda.getEstoque().getEstoquePK().getIdFor());
-        itensVenda.getItensVendaPK().setIdEst(itensVenda.getEstoque().getEstoquePK().getIdEst());
-        itensVenda.getItensVendaPK().setIdProd(itensVenda.getEstoque().getEstoquePK().getIdProd());
-        itensVenda.getItensVendaPK().setIdVenda(itensVenda.getVenda().getIdVenda());
+    public void create(ItensVenda itensVenda) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Venda venda = itensVenda.getVenda();
-            if (venda != null) {
-                venda = em.getReference(venda.getClass(), venda.getIdVenda());
-                itensVenda.setVenda(venda);
+            Venda idVenda = itensVenda.getIdVenda();
+            if (idVenda != null) {
+                idVenda = em.getReference(idVenda.getClass(), idVenda.getIdVenda());
+                itensVenda.setIdVenda(idVenda);
             }
-            Estoque estoque = itensVenda.getEstoque();
-            if (estoque != null) {
-                estoque = em.getReference(estoque.getClass(), estoque.getEstoquePK());
-                itensVenda.setEstoque(estoque);
+            Estoque idEst = itensVenda.getIdEst();
+            if (idEst != null) {
+                idEst = em.getReference(idEst.getClass(), idEst.getIdEst());
+                itensVenda.setIdEst(idEst);
             }
             em.persist(itensVenda);
-            if (venda != null) {
-                venda.getItensVendaList().add(itensVenda);
-                venda = em.merge(venda);
+            if (idVenda != null) {
+                idVenda.getItensVendaList().add(itensVenda);
+                idVenda = em.merge(idVenda);
             }
-            if (estoque != null) {
-                estoque.getItensVendaList().add(itensVenda);
-                estoque = em.merge(estoque);
+            if (idEst != null) {
+                idEst.getItensVendaList().add(itensVenda);
+                idEst = em.merge(idEst);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            //if (findItensVenda(itensVenda.getItensVendaPK()) != null) {
-              //  throw new PreexistingEntityException("ItensVenda " + itensVenda + " already exists.", ex);
-            //}
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -79,56 +65,52 @@ public class ItensVendaJpaController implements Serializable {
         }
     }
     
-    public void createWithList(List<ItensVenda> lista) throws Exception{ //Implementado manualmente
-        for(ItensVenda item : lista){
+    public void createWithList(List<ItensVenda> itens){
+        for(ItensVenda item : itens){
             create(item);
         }
     }
 
     public void edit(ItensVenda itensVenda) throws NonexistentEntityException, Exception {
-        itensVenda.getItensVendaPK().setIdFor(itensVenda.getEstoque().getEstoquePK().getIdFor());
-        itensVenda.getItensVendaPK().setIdEst(itensVenda.getEstoque().getEstoquePK().getIdEst());
-        itensVenda.getItensVendaPK().setIdProd(itensVenda.getEstoque().getEstoquePK().getIdProd());
-        itensVenda.getItensVendaPK().setIdVenda(itensVenda.getVenda().getIdVenda());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ItensVenda persistentItensVenda = em.find(ItensVenda.class, itensVenda.getItensVendaPK());
-            Venda vendaOld = persistentItensVenda.getVenda();
-            Venda vendaNew = itensVenda.getVenda();
-            Estoque estoqueOld = persistentItensVenda.getEstoque();
-            Estoque estoqueNew = itensVenda.getEstoque();
-            if (vendaNew != null) {
-                vendaNew = em.getReference(vendaNew.getClass(), vendaNew.getIdVenda());
-                itensVenda.setVenda(vendaNew);
+            ItensVenda persistentItensVenda = em.find(ItensVenda.class, itensVenda.getIditensvenda());
+            Venda idVendaOld = persistentItensVenda.getIdVenda();
+            Venda idVendaNew = itensVenda.getIdVenda();
+            Estoque idEstOld = persistentItensVenda.getIdEst();
+            Estoque idEstNew = itensVenda.getIdEst();
+            if (idVendaNew != null) {
+                idVendaNew = em.getReference(idVendaNew.getClass(), idVendaNew.getIdVenda());
+                itensVenda.setIdVenda(idVendaNew);
             }
-            if (estoqueNew != null) {
-                estoqueNew = em.getReference(estoqueNew.getClass(), estoqueNew.getEstoquePK());
-                itensVenda.setEstoque(estoqueNew);
+            if (idEstNew != null) {
+                idEstNew = em.getReference(idEstNew.getClass(), idEstNew.getIdEst());
+                itensVenda.setIdEst(idEstNew);
             }
             itensVenda = em.merge(itensVenda);
-            if (vendaOld != null && !vendaOld.equals(vendaNew)) {
-                vendaOld.getItensVendaList().remove(itensVenda);
-                vendaOld = em.merge(vendaOld);
+            if (idVendaOld != null && !idVendaOld.equals(idVendaNew)) {
+                idVendaOld.getItensVendaList().remove(itensVenda);
+                idVendaOld = em.merge(idVendaOld);
             }
-            if (vendaNew != null && !vendaNew.equals(vendaOld)) {
-                vendaNew.getItensVendaList().add(itensVenda);
-                vendaNew = em.merge(vendaNew);
+            if (idVendaNew != null && !idVendaNew.equals(idVendaOld)) {
+                idVendaNew.getItensVendaList().add(itensVenda);
+                idVendaNew = em.merge(idVendaNew);
             }
-            if (estoqueOld != null && !estoqueOld.equals(estoqueNew)) {
-                estoqueOld.getItensVendaList().remove(itensVenda);
-                estoqueOld = em.merge(estoqueOld);
+            if (idEstOld != null && !idEstOld.equals(idEstNew)) {
+                idEstOld.getItensVendaList().remove(itensVenda);
+                idEstOld = em.merge(idEstOld);
             }
-            if (estoqueNew != null && !estoqueNew.equals(estoqueOld)) {
-                estoqueNew.getItensVendaList().add(itensVenda);
-                estoqueNew = em.merge(estoqueNew);
+            if (idEstNew != null && !idEstNew.equals(idEstOld)) {
+                idEstNew.getItensVendaList().add(itensVenda);
+                idEstNew = em.merge(idEstNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                ItensVendaPK id = itensVenda.getItensVendaPK();
+                Integer id = itensVenda.getIditensvenda();
                 if (findItensVenda(id) == null) {
                     throw new NonexistentEntityException("The itensVenda with id " + id + " no longer exists.");
                 }
@@ -141,7 +123,7 @@ public class ItensVendaJpaController implements Serializable {
         }
     }
 
-    public void destroy(ItensVendaPK id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -149,19 +131,19 @@ public class ItensVendaJpaController implements Serializable {
             ItensVenda itensVenda;
             try {
                 itensVenda = em.getReference(ItensVenda.class, id);
-                itensVenda.getItensVendaPK();
+                itensVenda.getIditensvenda();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The itensVenda with id " + id + " no longer exists.", enfe);
             }
-            Venda venda = itensVenda.getVenda();
-            if (venda != null) {
-                venda.getItensVendaList().remove(itensVenda);
-                venda = em.merge(venda);
+            Venda idVenda = itensVenda.getIdVenda();
+            if (idVenda != null) {
+                idVenda.getItensVendaList().remove(itensVenda);
+                idVenda = em.merge(idVenda);
             }
-            Estoque estoque = itensVenda.getEstoque();
-            if (estoque != null) {
-                estoque.getItensVendaList().remove(itensVenda);
-                estoque = em.merge(estoque);
+            Estoque idEst = itensVenda.getIdEst();
+            if (idEst != null) {
+                idEst.getItensVendaList().remove(itensVenda);
+                idEst = em.merge(idEst);
             }
             em.remove(itensVenda);
             em.getTransaction().commit();
@@ -196,7 +178,7 @@ public class ItensVendaJpaController implements Serializable {
         }
     }
 
-    public ItensVenda findItensVenda(ItensVendaPK id) {
+    public ItensVenda findItensVenda(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(ItensVenda.class, id);

@@ -6,11 +6,8 @@
 package visao;
 
 import dominio.Estoque;
-import dominio.EstoquePK;
-import dominio.Produto;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.ProdutoJpaController;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import util.Util;
@@ -272,13 +269,13 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         Estoque teste = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
        
-        List<Estoque> estoques =  ejc.findEstoqueEntities();
+        /*List<Estoque> estoques =  ejc.findEstoqueEntities();
         
-        EstoquePK pk = teste.converteIdEstoque(estoques, codigoEstoque);
-        teste = ejc.findEstoque(pk);
-        campoNomeProduto.setText(teste.getProduto().getNmProd());
-        campoCategoriaProduto.setText(teste.getProduto().getIdCat().getNmCat());
-        campoMarcaProduto.setText(teste.getProduto().getIdMarca().getNmMarca());
+        //EstoquePK pk = teste.converteIdEstoque(estoques, codigoEstoque);*/
+        teste = ejc.findEstoque(codigoEstoque);
+        campoNomeProduto.setText(teste.getIdProd().getNmProd());
+        campoCategoriaProduto.setText(teste.getIdProd().getIdCat().getNmCat());
+        campoMarcaProduto.setText(teste.getIdProd().getIdMarca().getNmMarca());
         campoQuantidadeProduto.setText(Integer.toString(teste.getQtdProdEst()));
         valorTotal.setText(Double.toString(teste.getVlrVendaEst()));
     

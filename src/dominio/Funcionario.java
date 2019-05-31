@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcionario.findByCpfFun", query = "SELECT f FROM Funcionario f WHERE f.cpfFun = :cpfFun"),
     @NamedQuery(name = "Funcionario.findByTelFun", query = "SELECT f FROM Funcionario f WHERE f.telFun = :telFun"),
     @NamedQuery(name = "Funcionario.findByDtNascFun", query = "SELECT f FROM Funcionario f WHERE f.dtNascFun = :dtNascFun"),
-    @NamedQuery(name = "Funcionario.findByDtResFun", query = "SELECT f FROM Funcionario f WHERE f.dtResFun = :dtResFun"),
+    @NamedQuery(name = "Funcionario.findByDtRecFun", query = "SELECT f FROM Funcionario f WHERE f.dtRecFun = :dtRecFun"),
     @NamedQuery(name = "Funcionario.findByTempAtivoFun", query = "SELECT f FROM Funcionario f WHERE f.tempAtivoFun = :tempAtivoFun"),
     @NamedQuery(name = "Funcionario.findByDtAdmin", query = "SELECT f FROM Funcionario f WHERE f.dtAdmin = :dtAdmin")})
 public class Funcionario implements Serializable {
@@ -58,13 +58,10 @@ public class Funcionario implements Serializable {
     @Basic(optional = false)
     @Column(name = "nm_fun")
     private String nmFun;
-    @Basic(optional = false)
     @Column(name = "end_fun")
     private String endFun;
-    @Basic(optional = false)
     @Column(name = "uf_fun")
     private String ufFun;
-    @Basic(optional = false)
     @Column(name = "cid_fun")
     private String cidFun;
     @Basic(optional = false)
@@ -80,9 +77,9 @@ public class Funcionario implements Serializable {
     @Column(name = "dt_nasc_fun")
     @Temporal(TemporalType.DATE)
     private Date dtNascFun;
-    @Column(name = "dt_res_fun")
+    @Column(name = "dt_rec_fun")
     @Temporal(TemporalType.DATE)
-    private Date dtResFun;
+    private Date dtRecFun;
     @Column(name = "temp_ativo_fun")
     private Boolean tempAtivoFun;
     @Basic(optional = false)
@@ -91,12 +88,12 @@ public class Funcionario implements Serializable {
     private Date dtAdmin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "matFun")
     private List<Acesso> acessoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matFun")
+    private List<Venda> vendaList;
     @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
     @ManyToOne(optional = false)
     private Cargo idCargo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mat_fun")
-    private List<Venda> vendas;
-    
+
     public Funcionario() {
     }
 
@@ -104,20 +101,9 @@ public class Funcionario implements Serializable {
         this.matFun = matFun;
     }
 
-    public List<Venda> getVendas() {
-        return vendas;
-    }
-
-    public void setVendas(List<Venda> vendas) {
-        this.vendas = vendas;
-    }
-
-    public Funcionario(Integer matFun, String nmFun, String endFun, String ufFun, String cidFun, double salFun, String cpfFun, String telFun, Date dtNascFun, Date dtAdmin) {
+    public Funcionario(Integer matFun, String nmFun, double salFun, String cpfFun, String telFun, Date dtNascFun, Date dtAdmin) {
         this.matFun = matFun;
         this.nmFun = nmFun;
-        this.endFun = endFun;
-        this.ufFun = ufFun;
-        this.cidFun = cidFun;
         this.salFun = salFun;
         this.cpfFun = cpfFun;
         this.telFun = telFun;
@@ -197,12 +183,12 @@ public class Funcionario implements Serializable {
         this.dtNascFun = dtNascFun;
     }
 
-    public Date getDtResFun() {
-        return dtResFun;
+    public Date getDtRecFun() {
+        return dtRecFun;
     }
 
-    public void setDtResFun(Date dtResFun) {
-        this.dtResFun = dtResFun;
+    public void setDtRecFun(Date dtRecFun) {
+        this.dtRecFun = dtRecFun;
     }
 
     public Boolean getTempAtivoFun() {
@@ -228,6 +214,15 @@ public class Funcionario implements Serializable {
 
     public void setAcessoList(List<Acesso> acessoList) {
         this.acessoList = acessoList;
+    }
+
+    @XmlTransient
+    public List<Venda> getVendaList() {
+        return vendaList;
+    }
+
+    public void setVendaList(List<Venda> vendaList) {
+        this.vendaList = vendaList;
     }
 
     public Cargo getIdCargo() {

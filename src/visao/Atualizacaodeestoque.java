@@ -6,10 +6,8 @@
 package visao;
 
 import dominio.Estoque;
-import dominio.EstoquePK;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -282,10 +280,10 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     Estoque estoque = new Estoque();
     int codigoEstoque = Integer.parseInt(campoCodigo.getText());
        
-    List<Estoque> estoques =  ejc.findEstoqueEntities();
+    /*List<Estoque> estoques =  ejc.findEstoqueEntities();
         
-    EstoquePK pk = estoque.converteIdEstoque(estoques, codigoEstoque);
-    estoque = ejc.findEstoque(pk);
+    //EstoquePK pk = estoque.converteIdEstoque(estoques, codigoEstoque);*/
+    estoque = ejc.findEstoque(codigoEstoque);
     
     estoque.setQtdProdEst(Integer.parseInt(campoQuantidade.getText()));
     estoque.setLoteEst(campoLote.getText());

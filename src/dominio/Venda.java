@@ -53,14 +53,11 @@ public class Venda implements Serializable {
     @Basic(optional = false)
     @Column(name = "vlr_venda")
     private double vlrVenda;
-    @JoinColumn(name = "mat_fun", referencedColumnName = "mat_fun", insertable = true, updatable = true)
-    @ManyToOne(optional = false)
-    private Funcionario mat_fun;
-
-    
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVenda")
     private List<ItensVenda> itensVendaList;
+    @JoinColumn(name = "mat_fun", referencedColumnName = "mat_fun")
+    @ManyToOne(optional = false)
+    private Funcionario matFun;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVenda")
     private List<Pagamento> pagamentoList;
 
@@ -76,13 +73,6 @@ public class Venda implements Serializable {
         this.dtVenda = dtVenda;
         this.vlrVenda = vlrVenda;
     }
-    
-    public Venda(Integer idVenda, Date dtVenda, Funcionario mat_fun) {
-        this.idVenda = idVenda;
-        this.dtVenda = dtVenda;
-        this.mat_fun = mat_fun;
-    }
-    
 
     public Integer getIdVenda() {
         return idVenda;
@@ -108,8 +98,6 @@ public class Venda implements Serializable {
         this.vlrVenda = vlrVenda;
     }
 
-    
-
     @XmlTransient
     public List<ItensVenda> getItensVendaList() {
         return itensVendaList;
@@ -118,28 +106,22 @@ public class Venda implements Serializable {
     public void setItensVendaList(List<ItensVenda> itensVendaList) {
         this.itensVendaList = itensVendaList;
     }
-    
-  
+
+    public Funcionario getMatFun() {
+        return matFun;
+    }
+
+    public void setMatFun(Funcionario matFun) {
+        this.matFun = matFun;
+    }
+
     @XmlTransient
     public List<Pagamento> getPagamentoList() {
         return pagamentoList;
     }
-    
-    
-    public Funcionario getMat_fun() {
-        return mat_fun;
-    }
 
-    public void setMat_fun(Funcionario mat_fun) {
-        this.mat_fun = mat_fun;
-    }
-    
     public void setPagamentoList(List<Pagamento> pagamentoList) {
         this.pagamentoList = pagamentoList;
-    }
-    
-    public void setPagamentoList(Pagamento pagamento) {
-        this.pagamentoList.add(pagamento);
     }
 
     @Override

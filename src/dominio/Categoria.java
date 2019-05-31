@@ -40,6 +40,7 @@ public class Categoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_cat")
     private Integer idCat;
+    @Basic(optional = false)
     @Column(name = "nm_cat")
     private String nmCat;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCat")
@@ -50,6 +51,11 @@ public class Categoria implements Serializable {
 
     public Categoria(Integer idCat) {
         this.idCat = idCat;
+    }
+
+    public Categoria(Integer idCat, String nmCat) {
+        this.idCat = idCat;
+        this.nmCat = nmCat;
     }
 
     public Integer getIdCat() {

@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import dominio.Funcionario;
 import dominio.ItensVenda;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,14 @@ public class VendaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Funcionario matFun = venda.getMatFun();
+            if (matFun != null) {
+                matFun = em.getReference(matFun.getClass(), matFun.getMatFun());
+                venda.setMatFun(matFun);
+            }
             List<ItensVenda> attachedItensVendaList = new ArrayList<ItensVenda>();
-            for (ItensVenda itensVendaListItensVendaToAttach : venda.getItensVendaList()) { //O ERRO ESTÁ AQUI
-                itensVendaListItensVendaToAttach = em.getReference(itensVendaListItensVendaToAttach.getClass(), itensVendaListItensVendaToAttach.getItensVendaPK());
+            for (ItensVenda itensVendaListItensVendaToAttach : venda.getItensVendaList()) {
+                itensVendaListItensVendaToAttach = em.getReference(itensVendaListItensVendaToAttach.getClass(), itensVendaListItensVendaToAttach.getIditensvenda());
                 attachedItensVendaList.add(itensVendaListItensVendaToAttach);
             }
             venda.setItensVendaList(attachedItensVendaList);
@@ -59,13 +65,17 @@ public class VendaJpaController implements Serializable {
             }
             venda.setPagamentoList(attachedPagamentoList);
             em.persist(venda);
+            if (matFun != null) {
+                matFun.getVendaList().add(venda);
+                matFun = em.merge(matFun);
+            }
             for (ItensVenda itensVendaListItensVenda : venda.getItensVendaList()) {
-                Venda oldVendaOfItensVendaListItensVenda = itensVendaListItensVenda.getVenda();
-                itensVendaListItensVenda.setVenda(venda);
+                Venda oldIdVendaOfItensVendaListItensVenda = itensVendaListItensVenda.getIdVenda();
+                itensVendaListItensVenda.setIdVenda(venda);
                 itensVendaListItensVenda = em.merge(itensVendaListItensVenda);
-                if (oldVendaOfItensVendaListItensVenda != null) {
-                    oldVendaOfItensVendaListItensVenda.getItensVendaList().remove(itensVendaListItensVenda);
-                    oldVendaOfItensVendaListItensVenda = em.merge(oldVendaOfItensVendaListItensVenda);
+                if (oldIdVendaOfItensVendaListItensVenda != null) {
+                    oldIdVendaOfItensVendaListItensVenda.getItensVendaList().remove(itensVendaListItensVenda);
+                    oldIdVendaOfItensVendaListItensVenda = em.merge(oldIdVendaOfItensVendaListItensVenda);
                 }
             }
             for (Pagamento pagamentoListPagamento : venda.getPagamentoList()) {
@@ -91,6 +101,8 @@ public class VendaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Venda persistentVenda = em.find(Venda.class, venda.getIdVenda());
+            Funcionario matFunOld = persistentVenda.getMatFun();
+            Funcionario matFunNew = venda.getMatFun();
             List<ItensVenda> itensVendaListOld = persistentVenda.getItensVendaList();
             List<ItensVenda> itensVendaListNew = venda.getItensVendaList();
             List<Pagamento> pagamentoListOld = persistentVenda.getPagamentoList();
@@ -101,7 +113,7 @@ public class VendaJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain ItensVenda " + itensVendaListOldItensVenda + " since its venda field is not nullable.");
+                    illegalOrphanMessages.add("You must retain ItensVenda " + itensVendaListOldItensVenda + " since its idVenda field is not nullable.");
                 }
             }
             for (Pagamento pagamentoListOldPagamento : pagamentoListOld) {
@@ -115,9 +127,13 @@ public class VendaJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (matFunNew != null) {
+                matFunNew = em.getReference(matFunNew.getClass(), matFunNew.getMatFun());
+                venda.setMatFun(matFunNew);
+            }
             List<ItensVenda> attachedItensVendaListNew = new ArrayList<ItensVenda>();
             for (ItensVenda itensVendaListNewItensVendaToAttach : itensVendaListNew) {
-                itensVendaListNewItensVendaToAttach = em.getReference(itensVendaListNewItensVendaToAttach.getClass(), itensVendaListNewItensVendaToAttach.getItensVendaPK());
+                itensVendaListNewItensVendaToAttach = em.getReference(itensVendaListNewItensVendaToAttach.getClass(), itensVendaListNewItensVendaToAttach.getIditensvenda());
                 attachedItensVendaListNew.add(itensVendaListNewItensVendaToAttach);
             }
             itensVendaListNew = attachedItensVendaListNew;
@@ -130,14 +146,22 @@ public class VendaJpaController implements Serializable {
             pagamentoListNew = attachedPagamentoListNew;
             venda.setPagamentoList(pagamentoListNew);
             venda = em.merge(venda);
+            if (matFunOld != null && !matFunOld.equals(matFunNew)) {
+                matFunOld.getVendaList().remove(venda);
+                matFunOld = em.merge(matFunOld);
+            }
+            if (matFunNew != null && !matFunNew.equals(matFunOld)) {
+                matFunNew.getVendaList().add(venda);
+                matFunNew = em.merge(matFunNew);
+            }
             for (ItensVenda itensVendaListNewItensVenda : itensVendaListNew) {
                 if (!itensVendaListOld.contains(itensVendaListNewItensVenda)) {
-                    Venda oldVendaOfItensVendaListNewItensVenda = itensVendaListNewItensVenda.getVenda();
-                    itensVendaListNewItensVenda.setVenda(venda);
+                    Venda oldIdVendaOfItensVendaListNewItensVenda = itensVendaListNewItensVenda.getIdVenda();
+                    itensVendaListNewItensVenda.setIdVenda(venda);
                     itensVendaListNewItensVenda = em.merge(itensVendaListNewItensVenda);
-                    if (oldVendaOfItensVendaListNewItensVenda != null && !oldVendaOfItensVendaListNewItensVenda.equals(venda)) {
-                        oldVendaOfItensVendaListNewItensVenda.getItensVendaList().remove(itensVendaListNewItensVenda);
-                        oldVendaOfItensVendaListNewItensVenda = em.merge(oldVendaOfItensVendaListNewItensVenda);
+                    if (oldIdVendaOfItensVendaListNewItensVenda != null && !oldIdVendaOfItensVendaListNewItensVenda.equals(venda)) {
+                        oldIdVendaOfItensVendaListNewItensVenda.getItensVendaList().remove(itensVendaListNewItensVenda);
+                        oldIdVendaOfItensVendaListNewItensVenda = em.merge(oldIdVendaOfItensVendaListNewItensVenda);
                     }
                 }
             }
@@ -187,7 +211,7 @@ public class VendaJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Venda (" + venda + ") cannot be destroyed since the ItensVenda " + itensVendaListOrphanCheckItensVenda + " in its itensVendaList field has a non-nullable venda field.");
+                illegalOrphanMessages.add("This Venda (" + venda + ") cannot be destroyed since the ItensVenda " + itensVendaListOrphanCheckItensVenda + " in its itensVendaList field has a non-nullable idVenda field.");
             }
             List<Pagamento> pagamentoListOrphanCheck = venda.getPagamentoList();
             for (Pagamento pagamentoListOrphanCheckPagamento : pagamentoListOrphanCheck) {
@@ -198,6 +222,11 @@ public class VendaJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Funcionario matFun = venda.getMatFun();
+            if (matFun != null) {
+                matFun.getVendaList().remove(venda);
+                matFun = em.merge(matFun);
             }
             em.remove(venda);
             em.getTransaction().commit();

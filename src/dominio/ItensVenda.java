@@ -8,10 +8,11 @@ package dominio;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,91 +28,74 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ItensVenda.findAll", query = "SELECT i FROM ItensVenda i"),
-    @NamedQuery(name = "ItensVenda.findByIditensvenda", query = "SELECT i FROM ItensVenda i WHERE i.itensVendaPK.iditensvenda = :iditensvenda"),
-    @NamedQuery(name = "ItensVenda.findByIdEst", query = "SELECT i FROM ItensVenda i WHERE i.itensVendaPK.idEst = :idEst"),
-    @NamedQuery(name = "ItensVenda.findByIdVenda", query = "SELECT i FROM ItensVenda i WHERE i.itensVendaPK.idVenda = :idVenda"),
-    @NamedQuery(name = "ItensVenda.findByIdProd", query = "SELECT i FROM ItensVenda i WHERE i.itensVendaPK.idProd = :idProd"),
-    @NamedQuery(name = "ItensVenda.findByIdFor", query = "SELECT i FROM ItensVenda i WHERE i.itensVendaPK.idFor = :idFor")})
+    @NamedQuery(name = "ItensVenda.findByIditensvenda", query = "SELECT i FROM ItensVenda i WHERE i.iditensvenda = :iditensvenda"),
+    @NamedQuery(name = "ItensVenda.findByQuantItensVenda", query = "SELECT i FROM ItensVenda i WHERE i.quantItensVenda = :quantItensVenda")})
 public class ItensVenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ItensVendaPK itensVendaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "Id_itens_venda")
+    private Integer iditensvenda;
     @Basic(optional = false)
     @Column(name = "quant_itens_venda")
-    private int quant_itens_venda;
-
-    public int getQuant_itens_venda() {
-        return quant_itens_venda;
-    }
-
-    public void setQuant_itens_venda(int quant_itens_venda) {
-        this.quant_itens_venda = quant_itens_venda;
-    }
-    @JoinColumn(name = "id_venda", referencedColumnName = "id_venda", insertable = false, updatable = false)
+    private int quantItensVenda;
+    @JoinColumn(name = "id_venda", referencedColumnName = "id_venda")
     @ManyToOne(optional = false)
-    private Venda venda;
-    @JoinColumns({
-        @JoinColumn(name = "id_est", referencedColumnName = "id_est", insertable = false, updatable = false),
-        @JoinColumn(name = "id_for", referencedColumnName = "id_for", insertable = false, updatable = false),
-        @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)
-        })
+    private Venda idVenda;
+    @JoinColumn(name = "id_est", referencedColumnName = "id_est")
     @ManyToOne(optional = false)
-    private Estoque estoque;
-    
-    @JoinColumn(name = "id_prod", referencedColumnName = "id_prod", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Produto produto;
+    private Estoque idEst;
 
-    
-//
     public ItensVenda() {
     }
 
-    public ItensVenda(ItensVendaPK itensVendaPK) {
-        this.itensVendaPK = itensVendaPK;
+    public ItensVenda(Integer iditensvenda) {
+        this.iditensvenda = iditensvenda;
     }
 
-    public ItensVenda(Integer iditensvenda, Integer idEst, Integer idVenda, Integer idProd, Integer idFor) {
-        this.itensVendaPK = new ItensVendaPK(iditensvenda, idEst, idVenda, idProd, idFor);
+    public ItensVenda(Integer iditensvenda, int quantItensVenda) {
+        this.iditensvenda = iditensvenda;
+        this.quantItensVenda = quantItensVenda;
     }
 
-    public ItensVendaPK getItensVendaPK() {
-        return itensVendaPK;
+    public Integer getIditensvenda() {
+        return iditensvenda;
     }
 
-    public void setItensVendaPK(ItensVendaPK itensVendaPK) {
-        this.itensVendaPK = itensVendaPK;
+    public void setIditensvenda(Integer iditensvenda) {
+        this.iditensvenda = iditensvenda;
     }
 
-    public Venda getVenda() {
-        return venda;
+    public int getQuantItensVenda() {
+        return quantItensVenda;
     }
 
-    public void setVenda(Venda venda) {
-        this.venda = venda;
+    public void setQuantItensVenda(int quantItensVenda) {
+        this.quantItensVenda = quantItensVenda;
     }
 
-    public Estoque getEstoque() {
-        return estoque;
+    public Venda getIdVenda() {
+        return idVenda;
     }
 
-    public void setEstoque(Estoque estoque) {
-        this.estoque = estoque;
-    }
-    
-    public Produto getProduto() {
-        return produto;
+    public void setIdVenda(Venda idVenda) {
+        this.idVenda = idVenda;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public Estoque getIdEst() {
+        return idEst;
+    }
+
+    public void setIdEst(Estoque idEst) {
+        this.idEst = idEst;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (itensVendaPK != null ? itensVendaPK.hashCode() : 0);
+        hash += (iditensvenda != null ? iditensvenda.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +106,7 @@ public class ItensVenda implements Serializable {
             return false;
         }
         ItensVenda other = (ItensVenda) object;
-        if ((this.itensVendaPK == null && other.itensVendaPK != null) || (this.itensVendaPK != null && !this.itensVendaPK.equals(other.itensVendaPK))) {
+        if ((this.iditensvenda == null && other.iditensvenda != null) || (this.iditensvenda != null && !this.iditensvenda.equals(other.iditensvenda))) {
             return false;
         }
         return true;
@@ -130,7 +114,7 @@ public class ItensVenda implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.ItensVenda[ itensVendaPK=" + itensVendaPK + " ]";
+        return "dominio.ItensVenda[ iditensvenda=" + iditensvenda + " ]";
     }
     
 }

@@ -241,8 +241,10 @@ public class TelaPagamento extends javax.swing.JFrame {
             try {
                 System.out.println(pagamento);
                 VendaJpaController vjc = new VendaJpaController(emf);
+                
+                ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
                 vjc.create(venda);
-//                ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
+               
                 
 //                venda.setPagamentoList(pagamento);
                 
@@ -279,7 +281,7 @@ public class TelaPagamento extends javax.swing.JFrame {
     
     public void instanciaItens(){
         for(ItensVenda item : itens){
-            item.setVenda(venda);
+            item.setIdVenda(venda);
         }
     }
     

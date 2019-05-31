@@ -6,7 +6,6 @@
 package dominio.dados;
 
 import dominio.Estoque;
-import dominio.EstoquePK;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -17,7 +16,6 @@ import dominio.Produto;
 import dominio.ItensVenda;
 import dominio.dados.exceptions.IllegalOrphanException;
 import dominio.dados.exceptions.NonexistentEntityException;
-import dominio.dados.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -38,59 +36,49 @@ public class EstoqueJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Estoque estoque) throws PreexistingEntityException, Exception {
-        if (estoque.getEstoquePK() == null) {
-            estoque.setEstoquePK(new EstoquePK());
-        }
+    public void create(Estoque estoque) {
         if (estoque.getItensVendaList() == null) {
             estoque.setItensVendaList(new ArrayList<ItensVenda>());
         }
-        estoque.getEstoquePK().setIdProd(estoque.getProduto().getIdProd());
-        estoque.getEstoquePK().setIdFor(estoque.getFornecedor().getIdFor());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Fornecedor fornecedor = estoque.getFornecedor();
-            if (fornecedor != null) {
-                fornecedor = em.getReference(fornecedor.getClass(), fornecedor.getIdFor());
-                estoque.setFornecedor(fornecedor);
+            Fornecedor idFor = estoque.getIdFor();
+            if (idFor != null) {
+                idFor = em.getReference(idFor.getClass(), idFor.getIdFor());
+                estoque.setIdFor(idFor);
             }
-            Produto produto = estoque.getProduto();
-            if (produto != null) {
-                produto = em.getReference(produto.getClass(), produto.getIdProd());
-                estoque.setProduto(produto);
+            Produto idProd = estoque.getIdProd();
+            if (idProd != null) {
+                idProd = em.getReference(idProd.getClass(), idProd.getIdProd());
+                estoque.setIdProd(idProd);
             }
             List<ItensVenda> attachedItensVendaList = new ArrayList<ItensVenda>();
             for (ItensVenda itensVendaListItensVendaToAttach : estoque.getItensVendaList()) {
-                itensVendaListItensVendaToAttach = em.getReference(itensVendaListItensVendaToAttach.getClass(), itensVendaListItensVendaToAttach.getItensVendaPK());
+                itensVendaListItensVendaToAttach = em.getReference(itensVendaListItensVendaToAttach.getClass(), itensVendaListItensVendaToAttach.getIditensvenda());
                 attachedItensVendaList.add(itensVendaListItensVendaToAttach);
             }
             estoque.setItensVendaList(attachedItensVendaList);
             em.persist(estoque);
-            if (fornecedor != null) {
-                fornecedor.getEstoqueList().add(estoque);
-                fornecedor = em.merge(fornecedor);
+            if (idFor != null) {
+                idFor.getEstoqueList().add(estoque);
+                idFor = em.merge(idFor);
             }
-            if (produto != null) {
-                produto.getEstoqueList().add(estoque);
-                produto = em.merge(produto);
+            if (idProd != null) {
+                idProd.getEstoqueList().add(estoque);
+                idProd = em.merge(idProd);
             }
             for (ItensVenda itensVendaListItensVenda : estoque.getItensVendaList()) {
-                Estoque oldEstoqueOfItensVendaListItensVenda = itensVendaListItensVenda.getEstoque();
-                itensVendaListItensVenda.setEstoque(estoque);
+                Estoque oldIdEstOfItensVendaListItensVenda = itensVendaListItensVenda.getIdEst();
+                itensVendaListItensVenda.setIdEst(estoque);
                 itensVendaListItensVenda = em.merge(itensVendaListItensVenda);
-                if (oldEstoqueOfItensVendaListItensVenda != null) {
-                    oldEstoqueOfItensVendaListItensVenda.getItensVendaList().remove(itensVendaListItensVenda);
-                    oldEstoqueOfItensVendaListItensVenda = em.merge(oldEstoqueOfItensVendaListItensVenda);
+                if (oldIdEstOfItensVendaListItensVenda != null) {
+                    oldIdEstOfItensVendaListItensVenda.getItensVendaList().remove(itensVendaListItensVenda);
+                    oldIdEstOfItensVendaListItensVenda = em.merge(oldIdEstOfItensVendaListItensVenda);
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findEstoque(estoque.getEstoquePK()) != null) {
-                throw new PreexistingEntityException("Estoque " + estoque + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -99,17 +87,15 @@ public class EstoqueJpaController implements Serializable {
     }
 
     public void edit(Estoque estoque) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        estoque.getEstoquePK().setIdProd(estoque.getProduto().getIdProd());
-        estoque.getEstoquePK().setIdFor(estoque.getFornecedor().getIdFor());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Estoque persistentEstoque = em.find(Estoque.class, estoque.getEstoquePK());
-            Fornecedor fornecedorOld = persistentEstoque.getFornecedor();
-            Fornecedor fornecedorNew = estoque.getFornecedor();
-            Produto produtoOld = persistentEstoque.getProduto();
-            Produto produtoNew = estoque.getProduto();
+            Estoque persistentEstoque = em.find(Estoque.class, estoque.getIdEst());
+            Fornecedor idForOld = persistentEstoque.getIdFor();
+            Fornecedor idForNew = estoque.getIdFor();
+            Produto idProdOld = persistentEstoque.getIdProd();
+            Produto idProdNew = estoque.getIdProd();
             List<ItensVenda> itensVendaListOld = persistentEstoque.getItensVendaList();
             List<ItensVenda> itensVendaListNew = estoque.getItensVendaList();
             List<String> illegalOrphanMessages = null;
@@ -118,52 +104,52 @@ public class EstoqueJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain ItensVenda " + itensVendaListOldItensVenda + " since its estoque field is not nullable.");
+                    illegalOrphanMessages.add("You must retain ItensVenda " + itensVendaListOldItensVenda + " since its idEst field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (fornecedorNew != null) {
-                fornecedorNew = em.getReference(fornecedorNew.getClass(), fornecedorNew.getIdFor());
-                estoque.setFornecedor(fornecedorNew);
+            if (idForNew != null) {
+                idForNew = em.getReference(idForNew.getClass(), idForNew.getIdFor());
+                estoque.setIdFor(idForNew);
             }
-            if (produtoNew != null) {
-                produtoNew = em.getReference(produtoNew.getClass(), produtoNew.getIdProd());
-                estoque.setProduto(produtoNew);
+            if (idProdNew != null) {
+                idProdNew = em.getReference(idProdNew.getClass(), idProdNew.getIdProd());
+                estoque.setIdProd(idProdNew);
             }
             List<ItensVenda> attachedItensVendaListNew = new ArrayList<ItensVenda>();
             for (ItensVenda itensVendaListNewItensVendaToAttach : itensVendaListNew) {
-                itensVendaListNewItensVendaToAttach = em.getReference(itensVendaListNewItensVendaToAttach.getClass(), itensVendaListNewItensVendaToAttach.getItensVendaPK());
+                itensVendaListNewItensVendaToAttach = em.getReference(itensVendaListNewItensVendaToAttach.getClass(), itensVendaListNewItensVendaToAttach.getIditensvenda());
                 attachedItensVendaListNew.add(itensVendaListNewItensVendaToAttach);
             }
             itensVendaListNew = attachedItensVendaListNew;
             estoque.setItensVendaList(itensVendaListNew);
             estoque = em.merge(estoque);
-            if (fornecedorOld != null && !fornecedorOld.equals(fornecedorNew)) {
-                fornecedorOld.getEstoqueList().remove(estoque);
-                fornecedorOld = em.merge(fornecedorOld);
+            if (idForOld != null && !idForOld.equals(idForNew)) {
+                idForOld.getEstoqueList().remove(estoque);
+                idForOld = em.merge(idForOld);
             }
-            if (fornecedorNew != null && !fornecedorNew.equals(fornecedorOld)) {
-                fornecedorNew.getEstoqueList().add(estoque);
-                fornecedorNew = em.merge(fornecedorNew);
+            if (idForNew != null && !idForNew.equals(idForOld)) {
+                idForNew.getEstoqueList().add(estoque);
+                idForNew = em.merge(idForNew);
             }
-            if (produtoOld != null && !produtoOld.equals(produtoNew)) {
-                produtoOld.getEstoqueList().remove(estoque);
-                produtoOld = em.merge(produtoOld);
+            if (idProdOld != null && !idProdOld.equals(idProdNew)) {
+                idProdOld.getEstoqueList().remove(estoque);
+                idProdOld = em.merge(idProdOld);
             }
-            if (produtoNew != null && !produtoNew.equals(produtoOld)) {
-                produtoNew.getEstoqueList().add(estoque);
-                produtoNew = em.merge(produtoNew);
+            if (idProdNew != null && !idProdNew.equals(idProdOld)) {
+                idProdNew.getEstoqueList().add(estoque);
+                idProdNew = em.merge(idProdNew);
             }
             for (ItensVenda itensVendaListNewItensVenda : itensVendaListNew) {
                 if (!itensVendaListOld.contains(itensVendaListNewItensVenda)) {
-                    Estoque oldEstoqueOfItensVendaListNewItensVenda = itensVendaListNewItensVenda.getEstoque();
-                    itensVendaListNewItensVenda.setEstoque(estoque);
+                    Estoque oldIdEstOfItensVendaListNewItensVenda = itensVendaListNewItensVenda.getIdEst();
+                    itensVendaListNewItensVenda.setIdEst(estoque);
                     itensVendaListNewItensVenda = em.merge(itensVendaListNewItensVenda);
-                    if (oldEstoqueOfItensVendaListNewItensVenda != null && !oldEstoqueOfItensVendaListNewItensVenda.equals(estoque)) {
-                        oldEstoqueOfItensVendaListNewItensVenda.getItensVendaList().remove(itensVendaListNewItensVenda);
-                        oldEstoqueOfItensVendaListNewItensVenda = em.merge(oldEstoqueOfItensVendaListNewItensVenda);
+                    if (oldIdEstOfItensVendaListNewItensVenda != null && !oldIdEstOfItensVendaListNewItensVenda.equals(estoque)) {
+                        oldIdEstOfItensVendaListNewItensVenda.getItensVendaList().remove(itensVendaListNewItensVenda);
+                        oldIdEstOfItensVendaListNewItensVenda = em.merge(oldIdEstOfItensVendaListNewItensVenda);
                     }
                 }
             }
@@ -171,7 +157,7 @@ public class EstoqueJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                EstoquePK id = estoque.getEstoquePK();
+                Integer id = estoque.getIdEst();
                 if (findEstoque(id) == null) {
                     throw new NonexistentEntityException("The estoque with id " + id + " no longer exists.");
                 }
@@ -184,7 +170,7 @@ public class EstoqueJpaController implements Serializable {
         }
     }
 
-    public void destroy(EstoquePK id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -192,7 +178,7 @@ public class EstoqueJpaController implements Serializable {
             Estoque estoque;
             try {
                 estoque = em.getReference(Estoque.class, id);
-                estoque.getEstoquePK();
+                estoque.getIdEst();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The estoque with id " + id + " no longer exists.", enfe);
             }
@@ -202,20 +188,20 @@ public class EstoqueJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Estoque (" + estoque + ") cannot be destroyed since the ItensVenda " + itensVendaListOrphanCheckItensVenda + " in its itensVendaList field has a non-nullable estoque field.");
+                illegalOrphanMessages.add("This Estoque (" + estoque + ") cannot be destroyed since the ItensVenda " + itensVendaListOrphanCheckItensVenda + " in its itensVendaList field has a non-nullable idEst field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Fornecedor fornecedor = estoque.getFornecedor();
-            if (fornecedor != null) {
-                fornecedor.getEstoqueList().remove(estoque);
-                fornecedor = em.merge(fornecedor);
+            Fornecedor idFor = estoque.getIdFor();
+            if (idFor != null) {
+                idFor.getEstoqueList().remove(estoque);
+                idFor = em.merge(idFor);
             }
-            Produto produto = estoque.getProduto();
-            if (produto != null) {
-                produto.getEstoqueList().remove(estoque);
-                produto = em.merge(produto);
+            Produto idProd = estoque.getIdProd();
+            if (idProd != null) {
+                idProd.getEstoqueList().remove(estoque);
+                idProd = em.merge(idProd);
             }
             em.remove(estoque);
             em.getTransaction().commit();
@@ -250,7 +236,7 @@ public class EstoqueJpaController implements Serializable {
         }
     }
 
-    public Estoque findEstoque(EstoquePK id) {
+    public Estoque findEstoque(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Estoque.class, id);
@@ -272,19 +258,4 @@ public class EstoqueJpaController implements Serializable {
         }
     }
     
-    
-   public int getLastIdEstoque(){ //Método para retornar o último Id de Estoque - 
-       //PENDENTE
-         EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Estoque> rt = cq.from(Estoque.class); //Estudar para possível implementação
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            //Query q = em.createNamedQuery("Estoque.findLastId");
-            return ((Long) q.setMaxResults(1).getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-   }
 }

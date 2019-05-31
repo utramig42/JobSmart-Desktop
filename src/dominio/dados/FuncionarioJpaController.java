@@ -13,10 +13,11 @@ import javax.persistence.criteria.Root;
 import dominio.Cargo;
 import dominio.Acesso;
 import dominio.Funcionario;
-import dominio.dados.exceptions.IllegalOrphanException;
-import dominio.dados.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
+import dominio.Venda;
+import dominio.dados.exceptions.IllegalOrphanException;
+import dominio.dados.exceptions.NonexistentEntityException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -39,6 +40,9 @@ public class FuncionarioJpaController implements Serializable {
         if (funcionario.getAcessoList() == null) {
             funcionario.setAcessoList(new ArrayList<Acesso>());
         }
+        if (funcionario.getVendaList() == null) {
+            funcionario.setVendaList(new ArrayList<Venda>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -54,6 +58,12 @@ public class FuncionarioJpaController implements Serializable {
                 attachedAcessoList.add(acessoListAcessoToAttach);
             }
             funcionario.setAcessoList(attachedAcessoList);
+            List<Venda> attachedVendaList = new ArrayList<Venda>();
+            for (Venda vendaListVendaToAttach : funcionario.getVendaList()) {
+                vendaListVendaToAttach = em.getReference(vendaListVendaToAttach.getClass(), vendaListVendaToAttach.getIdVenda());
+                attachedVendaList.add(vendaListVendaToAttach);
+            }
+            funcionario.setVendaList(attachedVendaList);
             em.persist(funcionario);
             if (idCargo != null) {
                 idCargo.getFuncionarioList().add(funcionario);
@@ -66,6 +76,15 @@ public class FuncionarioJpaController implements Serializable {
                 if (oldMatFunOfAcessoListAcesso != null) {
                     oldMatFunOfAcessoListAcesso.getAcessoList().remove(acessoListAcesso);
                     oldMatFunOfAcessoListAcesso = em.merge(oldMatFunOfAcessoListAcesso);
+                }
+            }
+            for (Venda vendaListVenda : funcionario.getVendaList()) {
+                Funcionario oldMatFunOfVendaListVenda = vendaListVenda.getMatFun();
+                vendaListVenda.setMatFun(funcionario);
+                vendaListVenda = em.merge(vendaListVenda);
+                if (oldMatFunOfVendaListVenda != null) {
+                    oldMatFunOfVendaListVenda.getVendaList().remove(vendaListVenda);
+                    oldMatFunOfVendaListVenda = em.merge(oldMatFunOfVendaListVenda);
                 }
             }
             em.getTransaction().commit();
@@ -86,6 +105,8 @@ public class FuncionarioJpaController implements Serializable {
             Cargo idCargoNew = funcionario.getIdCargo();
             List<Acesso> acessoListOld = persistentFuncionario.getAcessoList();
             List<Acesso> acessoListNew = funcionario.getAcessoList();
+            List<Venda> vendaListOld = persistentFuncionario.getVendaList();
+            List<Venda> vendaListNew = funcionario.getVendaList();
             List<String> illegalOrphanMessages = null;
             for (Acesso acessoListOldAcesso : acessoListOld) {
                 if (!acessoListNew.contains(acessoListOldAcesso)) {
@@ -93,6 +114,14 @@ public class FuncionarioJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Acesso " + acessoListOldAcesso + " since its matFun field is not nullable.");
+                }
+            }
+            for (Venda vendaListOldVenda : vendaListOld) {
+                if (!vendaListNew.contains(vendaListOldVenda)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Venda " + vendaListOldVenda + " since its matFun field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -109,6 +138,13 @@ public class FuncionarioJpaController implements Serializable {
             }
             acessoListNew = attachedAcessoListNew;
             funcionario.setAcessoList(acessoListNew);
+            List<Venda> attachedVendaListNew = new ArrayList<Venda>();
+            for (Venda vendaListNewVendaToAttach : vendaListNew) {
+                vendaListNewVendaToAttach = em.getReference(vendaListNewVendaToAttach.getClass(), vendaListNewVendaToAttach.getIdVenda());
+                attachedVendaListNew.add(vendaListNewVendaToAttach);
+            }
+            vendaListNew = attachedVendaListNew;
+            funcionario.setVendaList(vendaListNew);
             funcionario = em.merge(funcionario);
             if (idCargoOld != null && !idCargoOld.equals(idCargoNew)) {
                 idCargoOld.getFuncionarioList().remove(funcionario);
@@ -126,6 +162,17 @@ public class FuncionarioJpaController implements Serializable {
                     if (oldMatFunOfAcessoListNewAcesso != null && !oldMatFunOfAcessoListNewAcesso.equals(funcionario)) {
                         oldMatFunOfAcessoListNewAcesso.getAcessoList().remove(acessoListNewAcesso);
                         oldMatFunOfAcessoListNewAcesso = em.merge(oldMatFunOfAcessoListNewAcesso);
+                    }
+                }
+            }
+            for (Venda vendaListNewVenda : vendaListNew) {
+                if (!vendaListOld.contains(vendaListNewVenda)) {
+                    Funcionario oldMatFunOfVendaListNewVenda = vendaListNewVenda.getMatFun();
+                    vendaListNewVenda.setMatFun(funcionario);
+                    vendaListNewVenda = em.merge(vendaListNewVenda);
+                    if (oldMatFunOfVendaListNewVenda != null && !oldMatFunOfVendaListNewVenda.equals(funcionario)) {
+                        oldMatFunOfVendaListNewVenda.getVendaList().remove(vendaListNewVenda);
+                        oldMatFunOfVendaListNewVenda = em.merge(oldMatFunOfVendaListNewVenda);
                     }
                 }
             }
@@ -165,6 +212,13 @@ public class FuncionarioJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Funcionario (" + funcionario + ") cannot be destroyed since the Acesso " + acessoListOrphanCheckAcesso + " in its acessoList field has a non-nullable matFun field.");
+            }
+            List<Venda> vendaListOrphanCheck = funcionario.getVendaList();
+            for (Venda vendaListOrphanCheckVenda : vendaListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Funcionario (" + funcionario + ") cannot be destroyed since the Venda " + vendaListOrphanCheckVenda + " in its vendaList field has a non-nullable matFun field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
