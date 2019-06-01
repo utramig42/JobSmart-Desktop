@@ -5,6 +5,14 @@
  */
 package visao;
 
+import dominio.Acesso;
+import dominio.Funcionario;
+import dominio.dados.AcessoJpaController;
+import dominio.dados.FuncionarioJpaController;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author 277093
@@ -14,6 +22,13 @@ public class TelaLogin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLogin
      */
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+    AcessoJpaController  ajc = new AcessoJpaController(emf);
+    FuncionarioJpaController fjc = new FuncionarioJpaController(emf);
+    Funcionario funcionario;
+    String senha;
+    Acesso acesso;
+    
     public TelaLogin() {
         initComponents();
     }
@@ -31,8 +46,8 @@ public class TelaLogin extends javax.swing.JFrame {
         campoUsuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        campoSenha = new javax.swing.JPasswordField();
         btnEntrar = new javax.swing.JButton();
+        campoSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,6 +58,13 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel3.setText("Senha");
 
         btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
+
+        campoSenha.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,16 +74,16 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addContainerGap(322, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(288, 288, 288))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(campoUsuario)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(campoUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(campoSenha, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnEntrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(390, 390, 390))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(288, 288, 288))))
+                            .addComponent(btnEntrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(campoSenha))
+                        .addGap(336, 336, 336))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,9 +96,9 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addComponent(campoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(campoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(campoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(49, Short.MAX_VALUE))
         );
@@ -84,6 +106,39 @@ public class TelaLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+       
+       
+       funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
+       validaPrimeiroLogin();
+       //validaLogin();
+       
+    }//GEN-LAST:event_btnEntrarActionPerformed
+    
+    public void validaLogin(){
+       if(campoSenha.getPassword().toString().equals(senha)){
+           System.out.println("A senha é igual");
+           new TelaInicial().setVisible(true);
+       }
+    }
+    
+    public void validaPrimeiroLogin(){
+        List<Acesso> acessos = ajc.findAcessoEntities();
+        for(Acesso acesso : acessos){
+            if(funcionario.equals(acesso.getMatFun())){
+                System.out.println("Achei um acesso desse cara");
+                senha = acesso.getSenhaAcesso();
+                this.acesso = acesso;
+                validaLogin();
+                break;
+            }
+        }
+        if((senha == null) || (senha.equals("") )){
+            senha = "1234";
+            acesso = new Acesso();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
