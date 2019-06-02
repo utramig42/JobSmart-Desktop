@@ -9,9 +9,13 @@ import dominio.Acesso;
 import dominio.Funcionario;
 import dominio.dados.AcessoJpaController;
 import dominio.dados.FuncionarioJpaController;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -110,32 +114,45 @@ public class TelaLogin extends javax.swing.JFrame {
        
        
        funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
-       validaPrimeiroLogin();
-       //validaLogin();
+        try {
+            validaPrimeiroLogin();
+        } catch (Exception ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
        
     }//GEN-LAST:event_btnEntrarActionPerformed
     
-    public void validaLogin(){
-       if(campoSenha.getPassword().toString().equals(senha)){
-           System.out.println("A senha é igual");
+    public void validaLogin() throws Exception{
+        
+        String senhaDigitada = String.valueOf(campoSenha.getPassword());
+       if(senhaDigitada.equals(senha)){
+           acesso.setDtUltAcesso(new Date());
+           ajc.edit(acesso);
            new TelaInicial().setVisible(true);
+       }else{
+           JOptionPane.showMessageDialog(this, "Senha incorreta!");
        }
     }
     
-    public void validaPrimeiroLogin(){
+    public void validaPrimeiroLogin() throws Exception{
         List<Acesso> acessos = ajc.findAcessoEntities();
         for(Acesso acesso : acessos){
             if(funcionario.equals(acesso.getMatFun())){
                 System.out.println("Achei um acesso desse cara");
                 senha = acesso.getSenhaAcesso();
                 this.acesso = acesso;
+                
                 validaLogin();
                 break;
             }
         }
         if((senha == null) || (senha.equals("") )){
             senha = "1234";
-            acesso = new Acesso();
+            acesso = new Acesso(null, senha);
+            acesso.setMatFun(funcionario);
+            ajc.create(acesso);
+            validaLogin();
         }
     }
     
