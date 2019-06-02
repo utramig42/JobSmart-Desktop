@@ -33,9 +33,7 @@ public class TelaVendas extends javax.swing.JFrame {
     VendaJpaController vjc = new VendaJpaController(emf);
     FuncionarioJpaController fjc = new FuncionarioJpaController(emf);
     Funcionario funcionario;
-    Venda venda = new Venda((vjc.getVendaCount() + 1), new Date(), fjc.findFuncionario(1)); //último valor referente à matrícula de Funcionário
-                                                  //PENDENTE para quando login for implementado
-    
+    Venda venda;    
     List<ItensVenda> itensVenda = new ArrayList<>();
     
     public TelaVendas() {
@@ -45,7 +43,8 @@ public class TelaVendas extends javax.swing.JFrame {
     
     public TelaVendas(Funcionario funcionario) {
         this.funcionario = funcionario;
-        System.out.println(this.funcionario);
+        venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
+        System.out.println(venda.getMatFun());
         initComponents();
     }
 
