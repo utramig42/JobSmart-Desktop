@@ -53,9 +53,8 @@ public class Produto implements Serializable {
     @Basic(optional = false)
     @Column(name = "nm_prod")
     private String nmProd;
-    @Basic(optional = false)
     @Column(name = "qtd_min_prod")
-    private int qtdMinProd;
+    private Integer qtdMinProd;
     @Basic(optional = false)
     @Column(name = "dt_cad_prod")
     @Temporal(TemporalType.TIMESTAMP)
@@ -67,7 +66,7 @@ public class Produto implements Serializable {
     private Boolean ativoProd;
     @Column(name = "qtd_prod")
     private Integer qtdProd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProd")
     private List<Estoque> estoqueList;
     @JoinColumn(name = "id_cat", referencedColumnName = "id_cat")
     @ManyToOne(optional = false)
@@ -83,10 +82,9 @@ public class Produto implements Serializable {
         this.idProd = idProd;
     }
 
-    public Produto(Integer idProd, String nmProd, int qtdMinProd, Date dtCadProd) {
+    public Produto(Integer idProd, String nmProd, Date dtCadProd) {
         this.idProd = idProd;
         this.nmProd = nmProd;
-        this.qtdMinProd = qtdMinProd;
         this.dtCadProd = dtCadProd;
     }
 
@@ -106,11 +104,11 @@ public class Produto implements Serializable {
         this.nmProd = nmProd;
     }
 
-    public int getQtdMinProd() {
+    public Integer getQtdMinProd() {
         return qtdMinProd;
     }
 
-    public void setQtdMinProd(int qtdMinProd) {
+    public void setQtdMinProd(Integer qtdMinProd) {
         this.qtdMinProd = qtdMinProd;
     }
 

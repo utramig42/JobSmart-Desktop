@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -51,8 +53,11 @@ public class Venda implements Serializable {
     @Basic(optional = false)
     @Column(name = "vlr_venda")
     private double vlrVenda;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVenda")
     private List<ItensVenda> itensVendaList;
+    @JoinColumn(name = "mat_fun", referencedColumnName = "mat_fun")
+    @ManyToOne(optional = false)
+    private Funcionario matFun;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVenda")
     private List<Pagamento> pagamentoList;
 
@@ -67,6 +72,12 @@ public class Venda implements Serializable {
         this.idVenda = idVenda;
         this.dtVenda = dtVenda;
         this.vlrVenda = vlrVenda;
+    }
+    
+    public Venda(Integer idVenda, Date dtVenda, Funcionario matFun){
+        this.idVenda = idVenda;
+        this.dtVenda = dtVenda;
+        this.matFun = matFun;
     }
 
     public Integer getIdVenda() {
@@ -102,6 +113,14 @@ public class Venda implements Serializable {
         this.itensVendaList = itensVendaList;
     }
 
+    public Funcionario getMatFun() {
+        return matFun;
+    }
+
+    public void setMatFun(Funcionario matFun) {
+        this.matFun = matFun;
+    }
+
     @XmlTransient
     public List<Pagamento> getPagamentoList() {
         return pagamentoList;
@@ -109,6 +128,10 @@ public class Venda implements Serializable {
 
     public void setPagamentoList(List<Pagamento> pagamentoList) {
         this.pagamentoList = pagamentoList;
+    }
+    
+    public void setPagamentoList(Pagamento pagamento){
+        this.pagamentoList.add(pagamento);
     }
 
     @Override

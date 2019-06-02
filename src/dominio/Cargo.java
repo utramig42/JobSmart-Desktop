@@ -43,6 +43,7 @@ public class Cargo implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_cargo")
     private Integer idCargo;
+    @Basic(optional = false)
     @Column(name = "nm_cargo")
     private String nmCargo;
     @Column(name = "ativo_cargo")
@@ -58,6 +59,11 @@ public class Cargo implements Serializable {
 
     public Cargo(Integer idCargo) {
         this.idCargo = idCargo;
+    }
+
+    public Cargo(Integer idCargo, String nmCargo) {
+        this.idCargo = idCargo;
+        this.nmCargo = nmCargo;
     }
 
     public Integer getIdCargo() {

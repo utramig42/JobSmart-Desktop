@@ -52,7 +52,6 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_for")
     private Integer idFor;
-    @Basic(optional = false)
     @Column(name = "nm_for")
     private String nmFor;
     @Basic(optional = false)
@@ -72,16 +71,16 @@ public class Fornecedor implements Serializable {
     private String endFor;
     @Column(name = "nm_cont_for")
     private String nmContFor;
-    @Basic(optional = false)
     @Column(name = "tel_fix_for")
     private String telFixFor;
     @Basic(optional = false)
     @Column(name = "dt_cad_for")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtCadFor;
+    @Basic(optional = false)
     @Column(name = "tel_cel_for")
     private String telCelFor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fornecedor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFor")
     private List<Estoque> estoqueList;
 
     public Fornecedor() {
@@ -91,16 +90,15 @@ public class Fornecedor implements Serializable {
         this.idFor = idFor;
     }
 
-    public Fornecedor(Integer idFor, String nmFor, String cnpjFor, String razSocFor, String ufFor, String cidFor, String endFor, String telFixFor, Date dtCadFor) {
+    public Fornecedor(Integer idFor, String cnpjFor, String razSocFor, String ufFor, String cidFor, String endFor, Date dtCadFor, String telCelFor) {
         this.idFor = idFor;
-        this.nmFor = nmFor;
         this.cnpjFor = cnpjFor;
         this.razSocFor = razSocFor;
         this.ufFor = ufFor;
         this.cidFor = cidFor;
         this.endFor = endFor;
-        this.telFixFor = telFixFor;
         this.dtCadFor = dtCadFor;
+        this.telCelFor = telCelFor;
     }
 
     public Integer getIdFor() {

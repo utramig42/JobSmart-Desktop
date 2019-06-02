@@ -5,17 +5,65 @@
  */
 package visao;
 
+import dominio.FormaPagamento;
+import dominio.ItensVenda;
+import dominio.Pagamento;
+import dominio.Venda;
+import dominio.dados.FormaPagamentoJpaController;
+import dominio.dados.ItensVendaJpaController;
+import dominio.dados.PagamentoJpaController;
+import dominio.dados.VendaJpaController;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author 275043
  */
 public class TelaPagamento extends javax.swing.JFrame {
-
+    
+    Venda venda;
+    Pagamento pagamento;
+    double valorPendente;
+    List<ItensVenda> itens = new ArrayList<>();
+    
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+    FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
+    ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
+    PagamentoJpaController pjc = new PagamentoJpaController(emf);
+    
+    List<FormaPagamento> formas = fpc.findFormaPagamentoEntities();
+    List<Pagamento> pagamentos = new ArrayList<>();
+    DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());
+    
     /**
      * Creates new form TelaPagamento
      */
+    
+    
     public TelaPagamento() {
         initComponents();
+         
+    
+    campoFormaPagamento.setModel(modelFormas);
+    
+    
+    }
+    
+   public TelaPagamento(Venda venda) {
+        initComponents();
+        this.venda = venda;
+        valorPendente = venda.getVlrVenda();
+        
+        campoValorTotal.setText(Double.toString(valorPendente));
+        itens = venda.getItensVendaList();
+        instanciaItens();
+        
     }
 
     /**
@@ -33,8 +81,8 @@ public class TelaPagamento extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         campoValorRecebido = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        valorTotal = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        campoValorTotal = new javax.swing.JLabel();
+        finalizarCompra = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         campoFormaPagamento = new javax.swing.JComboBox<>();
         valorTroco = new javax.swing.JLabel();
@@ -67,21 +115,21 @@ public class TelaPagamento extends javax.swing.JFrame {
         jLabel5.setMinimumSize(new java.awt.Dimension(40, 20));
         jLabel5.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        valorTotal.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        valorTotal.setText("R$ 0.00");
-        valorTotal.setMaximumSize(new java.awt.Dimension(130, 50));
-        valorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
-        valorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
+        campoValorTotal.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        campoValorTotal.setText("R$ 0.00");
+        campoValorTotal.setMaximumSize(new java.awt.Dimension(130, 50));
+        campoValorTotal.setMinimumSize(new java.awt.Dimension(130, 50));
+        campoValorTotal.setPreferredSize(new java.awt.Dimension(130, 50));
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 0));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Finalizar Compra");
-        jButton1.setMaximumSize(new java.awt.Dimension(255, 30));
-        jButton1.setMinimumSize(new java.awt.Dimension(255, 30));
-        jButton1.setPreferredSize(new java.awt.Dimension(255, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        finalizarCompra.setBackground(new java.awt.Color(0, 204, 0));
+        finalizarCompra.setForeground(new java.awt.Color(255, 255, 255));
+        finalizarCompra.setText("Finalizar Compra");
+        finalizarCompra.setMaximumSize(new java.awt.Dimension(255, 30));
+        finalizarCompra.setMinimumSize(new java.awt.Dimension(255, 30));
+        finalizarCompra.setPreferredSize(new java.awt.Dimension(255, 30));
+        finalizarCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                finalizarCompraActionPerformed(evt);
             }
         });
 
@@ -90,7 +138,7 @@ public class TelaPagamento extends javax.swing.JFrame {
         jButton2.setText("Cancelar");
         jButton2.setPreferredSize(new java.awt.Dimension(255, 30));
 
-        campoFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dinheiro", "Cartão Débito", "Cartão Crédito" }));
+        campoFormaPagamento.setModel(modelFormas);
         campoFormaPagamento.setMinimumSize(new java.awt.Dimension(255, 30));
         campoFormaPagamento.setPreferredSize(new java.awt.Dimension(255, 30));
         campoFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +165,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(330, 330, 330)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(finalizarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(valorTroco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -130,7 +178,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                         .addGap(180, 180, 180))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(54, 54, 54)))
@@ -151,7 +199,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(campoFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +213,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                 .addComponent(valorTroco, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(88, 88, 88)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(finalizarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(90, 90, 90))
         );
@@ -177,10 +225,73 @@ public class TelaPagamento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoFormaPagamentoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void finalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizarCompraActionPerformed
+        
+        
+        
+        
+        
+        pagamento = new Pagamento(pjc.getPagamentoCount() +1);
+        pagamento.setIdVenda(venda);
+        pagamento.setIdForma((FormaPagamento) campoFormaPagamento.getSelectedItem());
+        pagamento.setVlrPag(Double.parseDouble(campoValorRecebido.getText()));
+        pagamento.setVlrTrocoPag(0);
+        double valorAPagar = valorPendente;
+        valorPendente -= Double.parseDouble(campoValorRecebido.getText());
+        pagamentos.add(pagamento);
+        
+        if(validaPagamento(valorAPagar)){
+            try {
+                VendaJpaController vjc = new VendaJpaController(emf);
+                vjc.create(venda); 
+                pjc.createWithList(pagamentos);
+                venda.setPagamentoList(pagamentos);
+                
+                              
+                ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
+                
+                
+                
+                
+                
+            } catch (Exception ex) {
+                Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
 
+    }//GEN-LAST:event_finalizarCompraActionPerformed
+    
+    public boolean validaPagamento(double valorAPagar){
+        if(valorPendente <= 0){
+            System.out.println("Valor pago");
+            campoValorTotal.setText("R$ 0");
+            valorPendente =0;
+            defineTroco(Double.parseDouble(campoValorRecebido.getText()), valorAPagar);
+            return true;
+        }
+        campoValorTotal.setText(Double.toString(valorPendente));
+        
+        return false;
+    }
+    
+    public double defineTroco(double valorPago, double valorAPagar){
+
+           double troco = valorPago - valorAPagar;
+           valorTroco.setText(Double.toString(troco));
+           pagamento.setVlrTrocoPag(troco);
+           return troco;
+    }
+    
+    public void instanciaItens(){
+        for(ItensVenda item : itens){
+            item.setIditensvenda(ivc.getItensVendaCount());
+            item.setIdVenda(venda);
+                    
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -220,14 +331,14 @@ public class TelaPagamento extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> campoFormaPagamento;
     private javax.swing.JTextField campoValorRecebido;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel campoValorTotal;
+    private javax.swing.JButton finalizarCompra;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private java.awt.Label label1;
-    private javax.swing.JLabel valorTotal;
     private javax.swing.JLabel valorTroco;
     // End of variables declaration//GEN-END:variables
 }

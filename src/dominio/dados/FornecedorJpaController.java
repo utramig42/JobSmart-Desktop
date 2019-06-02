@@ -44,18 +44,18 @@ public class FornecedorJpaController implements Serializable {
             em.getTransaction().begin();
             List<Estoque> attachedEstoqueList = new ArrayList<Estoque>();
             for (Estoque estoqueListEstoqueToAttach : fornecedor.getEstoqueList()) {
-                estoqueListEstoqueToAttach = em.getReference(estoqueListEstoqueToAttach.getClass(), estoqueListEstoqueToAttach.getEstoquePK());
+                estoqueListEstoqueToAttach = em.getReference(estoqueListEstoqueToAttach.getClass(), estoqueListEstoqueToAttach.getIdEst());
                 attachedEstoqueList.add(estoqueListEstoqueToAttach);
             }
             fornecedor.setEstoqueList(attachedEstoqueList);
             em.persist(fornecedor);
             for (Estoque estoqueListEstoque : fornecedor.getEstoqueList()) {
-                Fornecedor oldFornecedorOfEstoqueListEstoque = estoqueListEstoque.getFornecedor();
-                estoqueListEstoque.setFornecedor(fornecedor);
+                Fornecedor oldIdForOfEstoqueListEstoque = estoqueListEstoque.getIdFor();
+                estoqueListEstoque.setIdFor(fornecedor);
                 estoqueListEstoque = em.merge(estoqueListEstoque);
-                if (oldFornecedorOfEstoqueListEstoque != null) {
-                    oldFornecedorOfEstoqueListEstoque.getEstoqueList().remove(estoqueListEstoque);
-                    oldFornecedorOfEstoqueListEstoque = em.merge(oldFornecedorOfEstoqueListEstoque);
+                if (oldIdForOfEstoqueListEstoque != null) {
+                    oldIdForOfEstoqueListEstoque.getEstoqueList().remove(estoqueListEstoque);
+                    oldIdForOfEstoqueListEstoque = em.merge(oldIdForOfEstoqueListEstoque);
                 }
             }
             em.getTransaction().commit();
@@ -80,7 +80,7 @@ public class FornecedorJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Estoque " + estoqueListOldEstoque + " since its fornecedor field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Estoque " + estoqueListOldEstoque + " since its idFor field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -88,7 +88,7 @@ public class FornecedorJpaController implements Serializable {
             }
             List<Estoque> attachedEstoqueListNew = new ArrayList<Estoque>();
             for (Estoque estoqueListNewEstoqueToAttach : estoqueListNew) {
-                estoqueListNewEstoqueToAttach = em.getReference(estoqueListNewEstoqueToAttach.getClass(), estoqueListNewEstoqueToAttach.getEstoquePK());
+                estoqueListNewEstoqueToAttach = em.getReference(estoqueListNewEstoqueToAttach.getClass(), estoqueListNewEstoqueToAttach.getIdEst());
                 attachedEstoqueListNew.add(estoqueListNewEstoqueToAttach);
             }
             estoqueListNew = attachedEstoqueListNew;
@@ -96,12 +96,12 @@ public class FornecedorJpaController implements Serializable {
             fornecedor = em.merge(fornecedor);
             for (Estoque estoqueListNewEstoque : estoqueListNew) {
                 if (!estoqueListOld.contains(estoqueListNewEstoque)) {
-                    Fornecedor oldFornecedorOfEstoqueListNewEstoque = estoqueListNewEstoque.getFornecedor();
-                    estoqueListNewEstoque.setFornecedor(fornecedor);
+                    Fornecedor oldIdForOfEstoqueListNewEstoque = estoqueListNewEstoque.getIdFor();
+                    estoqueListNewEstoque.setIdFor(fornecedor);
                     estoqueListNewEstoque = em.merge(estoqueListNewEstoque);
-                    if (oldFornecedorOfEstoqueListNewEstoque != null && !oldFornecedorOfEstoqueListNewEstoque.equals(fornecedor)) {
-                        oldFornecedorOfEstoqueListNewEstoque.getEstoqueList().remove(estoqueListNewEstoque);
-                        oldFornecedorOfEstoqueListNewEstoque = em.merge(oldFornecedorOfEstoqueListNewEstoque);
+                    if (oldIdForOfEstoqueListNewEstoque != null && !oldIdForOfEstoqueListNewEstoque.equals(fornecedor)) {
+                        oldIdForOfEstoqueListNewEstoque.getEstoqueList().remove(estoqueListNewEstoque);
+                        oldIdForOfEstoqueListNewEstoque = em.merge(oldIdForOfEstoqueListNewEstoque);
                     }
                 }
             }
@@ -140,7 +140,7 @@ public class FornecedorJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Fornecedor (" + fornecedor + ") cannot be destroyed since the Estoque " + estoqueListOrphanCheckEstoque + " in its estoqueList field has a non-nullable fornecedor field.");
+                illegalOrphanMessages.add("This Fornecedor (" + fornecedor + ") cannot be destroyed since the Estoque " + estoqueListOrphanCheckEstoque + " in its estoqueList field has a non-nullable idFor field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
