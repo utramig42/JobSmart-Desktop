@@ -129,7 +129,8 @@ public class TelaLogin extends javax.swing.JFrame {
        if(senhaDigitada.equals(senha)){
            acesso.setDtUltAcesso(new Date());
            ajc.edit(acesso);
-           new TelaInicial().setVisible(true);
+           new TelaInicial(funcionario).setVisible(true);
+           this.dispose();
        }else{
            JOptionPane.showMessageDialog(this, "Senha incorreta!");
        }

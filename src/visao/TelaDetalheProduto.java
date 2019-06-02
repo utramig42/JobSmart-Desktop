@@ -6,6 +6,7 @@
 package visao;
 
 import dominio.Estoque;
+import dominio.Funcionario;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.ProdutoJpaController;
 import javax.persistence.EntityManagerFactory;
@@ -21,8 +22,15 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     /**
      * Creates new form TelaDetalheProduto
      */
+    Funcionario funcionarioLogado;
+    
     public TelaDetalheProduto() {
         initComponents();
+    }
+    
+    public TelaDetalheProduto(Funcionario funcionario) {
+        initComponents();
+        funcionarioLogado = funcionario;
     }
 
     /**
@@ -286,15 +294,15 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_menuLogoMenuSelected
 
     private void menuVendasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuVendasMenuSelected
-      Util.instanciaVenda(this);
+      Util.instanciaVenda(this, funcionarioLogado);
     }//GEN-LAST:event_menuVendasMenuSelected
 
     private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
-      Util.instanciaCadastroProduto(this);
+      Util.instanciaCadastroProduto(this,funcionarioLogado);
     }//GEN-LAST:event_menuCadastroProdutosActionPerformed
 
     private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
-      Util.instanciaCadastroEstoque(this);
+      Util.instanciaCadastroEstoque(this,funcionarioLogado);
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
     private void campoCategoriaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCategoriaProdutoActionPerformed

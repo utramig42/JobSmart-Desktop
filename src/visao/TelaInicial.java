@@ -5,6 +5,7 @@
  */
 package visao;
 
+import dominio.Funcionario;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -17,7 +18,21 @@ public class TelaInicial extends javax.swing.JFrame {
     /**
      * Creates new form TelaInicial
      */
+    
+    Funcionario funcionarioLogado;
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+    
+    
+    
     public TelaInicial() {
+        initComponents();
+    }
+    
+    public TelaInicial(Funcionario funcionario) {
+        funcionarioLogado = funcionario;
         initComponents();
     }
     
@@ -149,19 +164,19 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbrirVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirVendaActionPerformed
-        new TelaVendas().setVisible(true);
+        new TelaVendas(funcionarioLogado).setVisible(true);
     }//GEN-LAST:event_btnAbrirVendaActionPerformed
 
     private void btnAbrirCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirCadastroProdutoActionPerformed
-        new TelaCadastroProduto().setVisible(true);
+        new TelaCadastroProduto(funcionarioLogado).setVisible(true);
     }//GEN-LAST:event_btnAbrirCadastroProdutoActionPerformed
 
     private void btnAbrirCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirCadastroEstoqueActionPerformed
-       new TelaCadastroEstoque().setVisible(true);
+       new TelaCadastroEstoque(funcionarioLogado).setVisible(true);
     }//GEN-LAST:event_btnAbrirCadastroEstoqueActionPerformed
 
     private void btnAbrirConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirConsultaActionPerformed
-        new TelaDetalheProduto().setVisible(true);
+        new TelaDetalheProduto(funcionarioLogado).setVisible(true);
     }//GEN-LAST:event_btnAbrirConsultaActionPerformed
 
     /**

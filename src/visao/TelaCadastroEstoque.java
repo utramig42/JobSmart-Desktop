@@ -7,6 +7,7 @@ package visao;
 
 import dominio.Estoque;
 import dominio.Fornecedor;
+import dominio.Funcionario;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.FornecedorJpaController;
 import dominio.dados.ProdutoJpaController;
@@ -29,9 +30,19 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
      * Creates new form Tela
      * 
      */
+    Funcionario funcionarioLogado;
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     public TelaCadastroEstoque() {
         initComponents();
+        FornecedorJpaController fjc = new FornecedorJpaController(emf);
+        List<Fornecedor> fornecedores = fjc.findFornecedorEntities();
+        DefaultComboBoxModel modelFornecedor = new DefaultComboBoxModel(fornecedores.toArray());
+        comboFornecedor.setModel(modelFornecedor);
+    }
+    
+    public TelaCadastroEstoque(Funcionario funcionario) {
+        initComponents();
+        funcionarioLogado = funcionario;
         FornecedorJpaController fjc = new FornecedorJpaController(emf);
         List<Fornecedor> fornecedores = fjc.findFornecedorEntities();
         DefaultComboBoxModel modelFornecedor = new DefaultComboBoxModel(fornecedores.toArray());
@@ -294,15 +305,15 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     }//GEN-LAST:event_menuLogoMenuSelected
 
     private void menuVendasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuVendasMenuSelected
-       Util.instanciaVenda(this);
+       Util.instanciaVenda(this,funcionarioLogado);
     }//GEN-LAST:event_menuVendasMenuSelected
 
     private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
-       Util.instanciaCadastroProduto(this);
+       Util.instanciaCadastroProduto(this,funcionarioLogado);
     }//GEN-LAST:event_menuCadastroProdutosActionPerformed
 
     private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
-       Util.instanciaConsultaProduto(this);
+       Util.instanciaConsultaProduto(this,funcionarioLogado);
     }//GEN-LAST:event_menuConsultaMenuSelected
 
     private void btnCadastrarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarEstoqueActionPerformed
@@ -334,7 +345,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     Util.instanciaAtualizaEstoque(this);
+     Util.instanciaAtualizaEstoque(this,funcionarioLogado);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
