@@ -6,6 +6,7 @@
 package visao;
 
 import dominio.Estoque;
+import dominio.Funcionario;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
 import java.util.logging.Level;
@@ -23,7 +24,15 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     /**
      * Creates new form Atualizacaodeestoque
      */
+    
+    Funcionario funcionarioLogado;
+    
     public Atualizacaodeestoque() {
+        initComponents();
+    }
+    
+    public Atualizacaodeestoque(Funcionario funcionario) {
+        funcionarioLogado = funcionario;
         initComponents();
     }
 
@@ -308,15 +317,15 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     }//GEN-LAST:event_menuLogoMenuSelected
 
     private void menuVendasMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuVendasMenuSelected
-        Util.instanciaVenda(this);
+        Util.instanciaVenda(this, funcionarioLogado);
     }//GEN-LAST:event_menuVendasMenuSelected
 
     private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
-        Util.instanciaCadastroProduto(this);
+        Util.instanciaCadastroProduto(this, funcionarioLogado);
     }//GEN-LAST:event_menuCadastroProdutosActionPerformed
 
     private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
-        Util.instanciaCadastroEstoque(this);
+        Util.instanciaCadastroEstoque(this, funcionarioLogado);
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
     /**

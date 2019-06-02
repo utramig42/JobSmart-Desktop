@@ -5,6 +5,7 @@
  */
 package util;
 
+import dominio.Funcionario;
 import javax.swing.JFrame;
 import visao.Atualizacaodeestoque;
 import visao.TelaCadastroEstoque;
@@ -18,28 +19,30 @@ import visao.TelaVendas;
  */
 public class Util {
     
-    public static void instanciaVenda( JFrame obj){
-        new TelaVendas().setVisible(true);
+    
+    public static void instanciaVenda( JFrame obj, Funcionario funcionario){
+        
+        new TelaVendas(funcionario).setVisible(true);
         obj.dispose();
     }
     
-    public static void instanciaCadastroProduto( JFrame obj){
-        new TelaCadastroProduto().setVisible(true);
+    public static void instanciaCadastroProduto( JFrame obj, Funcionario funcionario){
+        new TelaCadastroProduto(funcionario).setVisible(true);
         obj.dispose();
     }
     
-    public static void instanciaCadastroEstoque( JFrame obj){
-        new TelaCadastroEstoque().setVisible(true);
+    public static void instanciaCadastroEstoque( JFrame obj, Funcionario funcionario){
+        new TelaCadastroEstoque(funcionario).setVisible(true);
         obj.dispose();
     }
     
-    public static void instanciaConsultaProduto( JFrame obj){
-        new TelaDetalheProduto().setVisible(true);
+    public static void instanciaConsultaProduto( JFrame obj, Funcionario funcionario){
+        new TelaDetalheProduto(funcionario).setVisible(true);
         obj.dispose();
     }
     
-        public static void instanciaAtualizaEstoque( JFrame obj){
-        new Atualizacaodeestoque().setVisible(true);
+        public static void instanciaAtualizaEstoque( JFrame obj, Funcionario funcionario){
+        new Atualizacaodeestoque(funcionario).setVisible(true);
         obj.dispose();
     }
 }
