@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -245,12 +246,11 @@ public class TelaPagamento extends javax.swing.JFrame {
                 VendaJpaController vjc = new VendaJpaController(emf);
                 vjc.create(venda); 
                 pjc.createWithList(pagamentos);
-                venda.setPagamentoList(pagamentos);
-                
-                              
+                venda.setPagamentoList(pagamentos);             
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
                 
-                
+                JOptionPane.showMessageDialog(this, "Venda Finalizada!");
+                this.dispose();
                 
                 
                 
