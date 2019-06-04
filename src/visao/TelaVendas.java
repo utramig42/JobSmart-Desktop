@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import util.Util;
 
@@ -92,6 +93,9 @@ public class TelaVendas extends javax.swing.JFrame {
                 campoCodigoActionPerformed(evt);
             }
         });
+
+        campoQuantidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        campoQuantidade.setToolTipText("1");
 
         campoCategoria.setEnabled(false);
 
@@ -306,7 +310,8 @@ public class TelaVendas extends javax.swing.JFrame {
     venda.setItensVendaList(itensVenda);
     venda.setVlrVenda(valorVenda(itensVenda));
     
-    new TelaPagamento(venda).setVisible(true);        
+    new TelaPagamento(venda).setVisible(true);  
+    zerarComponentes();
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 
     private void campoCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoActionPerformed
@@ -384,7 +389,16 @@ public class TelaVendas extends javax.swing.JFrame {
         return valorTotal;
     }
     
-    
+    public void zerarComponentes(){
+        itensVenda = new ArrayList<>();
+        venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
+        campoCodigo.setText("");
+        campoQuantidade.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        campoNomeProduto.setText("");
+        campoCategoria.setText("");
+        DefaultTableModel table = (DefaultTableModel)tabela.getModel();
+        table.setNumRows(0);
+    }
     
     /**
      * @param args the command line arguments
