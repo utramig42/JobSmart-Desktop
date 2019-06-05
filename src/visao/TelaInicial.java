@@ -28,12 +28,16 @@ public class TelaInicial extends javax.swing.JFrame {
     
     
     public TelaInicial() {
+        
         initComponents();
+        validaPerfil();
     }
     
     public TelaInicial(Funcionario funcionario) {
         funcionarioLogado = funcionario;
         initComponents();
+        validaPerfil();
+       
     }
     
     Toolkit tk = Toolkit.getDefaultToolkit();
@@ -178,7 +182,14 @@ public class TelaInicial extends javax.swing.JFrame {
     private void btnAbrirConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirConsultaActionPerformed
         new TelaDetalheProduto(funcionarioLogado).setVisible(true);
     }//GEN-LAST:event_btnAbrirConsultaActionPerformed
-
+    
+    public void validaPerfil(){
+        if(funcionarioLogado.getIdCargo().getIdPerfil().getIdPerfil() == 1){
+            btnAbrirCadastroEstoque.setEnabled(false);
+            btnAbrirCadastroProduto.setEnabled(false);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
