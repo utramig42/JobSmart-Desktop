@@ -256,6 +256,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                 
             } catch (Exception ex) {
                 Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Ocorreu um erro no sistema, favor verificar log");
             }
         }
         

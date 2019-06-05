@@ -332,6 +332,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
             estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
             estoque.setQtdProdEst((int) campoQuantidade.getValue());
             estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+            estoque.setVlrVendaEst(estoque.getVlrCustoEst() * 2);
             estoque.setLoteEst(campoLote.getText());
             estoque.setObsEst(campoObservacao.getText());
             estoque.setDtFabEst(campoDataFab.getDate());

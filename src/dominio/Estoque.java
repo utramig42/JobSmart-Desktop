@@ -92,7 +92,8 @@ public class Estoque implements Serializable {
 
     public Estoque() {
     }
-
+    
+    
     public Estoque(Integer idEst) {
         this.idEst = idEst;
     }
@@ -104,6 +105,8 @@ public class Estoque implements Serializable {
         this.dtFabEst = dtFabEst;
         this.dtValEst = dtValEst;
         this.dtCadEst = dtCadEst;
+        setVlrVendaEst();
+        
     }
 
     public Integer getIdEst() {
@@ -128,6 +131,7 @@ public class Estoque implements Serializable {
 
     public void setVlrCustoEst(double vlrCustoEst) {
         this.vlrCustoEst = vlrCustoEst;
+        setVlrVendaEst();
     }
 
     public Double getVlrVendaEst() {
@@ -136,6 +140,13 @@ public class Estoque implements Serializable {
 
     public void setVlrVendaEst(Double vlrVendaEst) {
         this.vlrVendaEst = vlrVendaEst;
+    }
+    public boolean setVlrVendaEst() {
+        if(this.vlrVendaEst == null){
+        this.vlrVendaEst = vlrCustoEst * 2;
+        return true;
+        }
+        return false;
     }
 
     public int getQtdProdEst() {
