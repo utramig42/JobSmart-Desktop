@@ -7,6 +7,7 @@ package util;
 
 import dominio.Funcionario;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import visao.Atualizacaodeestoque;
 import visao.TelaCadastroEstoque;
 import visao.TelaCadastroProduto;
@@ -21,28 +22,47 @@ public class Util {
     
     
     public static void instanciaVenda( JFrame obj, Funcionario funcionario){
-        
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
         new TelaVendas(funcionario).setVisible(true);
         obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
     }
     
     public static void instanciaCadastroProduto( JFrame obj, Funcionario funcionario){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
         new TelaCadastroProduto(funcionario).setVisible(true);
         obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
     }
     
     public static void instanciaCadastroEstoque( JFrame obj, Funcionario funcionario){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
         new TelaCadastroEstoque(funcionario).setVisible(true);
         obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
     }
     
     public static void instanciaConsultaProduto( JFrame obj, Funcionario funcionario){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
         new TelaDetalheProduto(funcionario).setVisible(true);
         obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
     }
     
         public static void instanciaAtualizaEstoque( JFrame obj, Funcionario funcionario){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
         new Atualizacaodeestoque(funcionario).setVisible(true);
         obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
     }
 }
