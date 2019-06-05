@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -322,26 +323,32 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
        /* int i = (int) ejc.getLastIdEstoque();
         System.out.println(i); //PENDENTE*/
-        
-        //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
-        try {
-            //estoque.setEstoquePK(pk); //Pendente definir qual será a EstoquePK de um novo registro de Estoque
+        if(campoCodigo.getText() == "" || (int)campoQuantidade.getValue() == 0 || campoValor.getText() == "" || campoLote.getText() == "" || campoObservacao.getText() == ""){
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+        } else{
             
-            //Instanciando e setando dados de estoque
-            estoque.setIdFor((Fornecedor) comboFornecedor.getSelectedItem());
-            estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
-            estoque.setQtdProdEst((int) campoQuantidade.getValue());
-            estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
-            estoque.setLoteEst(campoLote.getText());
-            estoque.setObsEst(campoObservacao.getText());
-            estoque.setDtFabEst(campoDataFab.getDate());
-            estoque.setDtValEst(campoDataVal.getDate());
-            estoque.setDtCadEst(new Date());
-            //Inserindo no banco
-            ejc.create(estoque);
-        } catch (Exception ex) {
-            Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
+            //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
+            try {
+                //estoque.setEstoquePK(pk); //Pendente definir qual será a EstoquePK de um novo registro de Estoque
+                
+                //Instanciando e setando dados de estoque
+                estoque.setIdFor((Fornecedor) comboFornecedor.getSelectedItem());
+                estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
+                estoque.setQtdProdEst((int) campoQuantidade.getValue());
+                estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+                estoque.setLoteEst(campoLote.getText());
+                estoque.setObsEst(campoObservacao.getText());
+                estoque.setDtFabEst(campoDataFab.getDate());
+                estoque.setDtValEst(campoDataVal.getDate());
+                estoque.setDtCadEst(new Date());
+                //Inserindo no banco
+                ejc.create(estoque);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
         }
+
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

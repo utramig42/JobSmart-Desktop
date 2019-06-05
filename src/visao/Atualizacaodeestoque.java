@@ -301,15 +301,14 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     estoque.setDtValEst(campoDataVenc.getDate());
     estoque.setObsEst(campoObs.getText());
     
-        try {
+            try {
             ejc.edit(estoque);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    
+            
     }//GEN-LAST:event_atualizarActionPerformed
 
     private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
