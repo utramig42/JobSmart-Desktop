@@ -348,7 +348,7 @@ public class TelaVendas extends javax.swing.JFrame {
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
     
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
-        Estoque est;
+        Estoque est = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
         
         est = ejc.findEstoque(codigoEstoque);

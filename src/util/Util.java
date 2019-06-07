@@ -22,7 +22,7 @@ public class Util {
     
     
     public static void instanciaVenda( JFrame obj, Funcionario funcionario){
-        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 ||funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5)){
         new TelaVendas(funcionario).setVisible(true);
         obj.dispose();
         }else {
@@ -31,7 +31,7 @@ public class Util {
     }
     
     public static void instanciaCadastroProduto( JFrame obj, Funcionario funcionario){
-        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 ||funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5)){
         new TelaCadastroProduto(funcionario).setVisible(true);
         obj.dispose();
         }else {
@@ -40,7 +40,7 @@ public class Util {
     }
     
     public static void instanciaCadastroEstoque( JFrame obj, Funcionario funcionario){
-        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 ||funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5)){
         new TelaCadastroEstoque(funcionario).setVisible(true);
         obj.dispose();
         }else {
@@ -49,7 +49,7 @@ public class Util {
     }
     
     public static void instanciaConsultaProduto( JFrame obj, Funcionario funcionario){
-        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 ||funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5)){
         new TelaDetalheProduto(funcionario).setVisible(true);
         obj.dispose();
         }else {
@@ -58,7 +58,7 @@ public class Util {
     }
     
         public static void instanciaAtualizaEstoque( JFrame obj, Funcionario funcionario){
-        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 1)){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 ||funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5)){
         new Atualizacaodeestoque(funcionario).setVisible(true);
         obj.dispose();
         }else {

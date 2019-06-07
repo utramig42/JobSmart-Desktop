@@ -9,6 +9,7 @@ import dominio.Estoque;
 import dominio.Funcionario;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +27,9 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
      */
     
     Funcionario funcionarioLogado;
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+    EstoqueJpaController ejc = new EstoqueJpaController(emf);
+ 
     
     public Atualizacaodeestoque() {
         initComponents();
@@ -84,6 +88,11 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
                 campoCodigoActionPerformed(evt);
             }
         });
+        campoCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoCodigoKeyReleased(evt);
+            }
+        });
 
         jLabel4.setText("Quantidade");
 
@@ -92,6 +101,8 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
                 campoQuantidadeActionPerformed(evt);
             }
         });
+
+        campoDataFab.setMaxSelectableDate(new Date());
 
         jLabel5.setText("Data de Fabricação");
 
@@ -202,10 +213,13 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(atualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(campoDataFab, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(175, 175, 175))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(campoDataFab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(campoDataVenc, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)))
@@ -218,7 +232,7 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
                                     .addComponent(jLabel4)
                                     .addComponent(campoQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(24, 24, 24)))
-                        .addContainerGap(34, Short.MAX_VALUE))))
+                        .addGap(34, 34, 34))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,17 +297,8 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoValorActionPerformed
 
     private void atualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarActionPerformed
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
-    EstoqueJpaController ejc = new EstoqueJpaController(emf);
- 
-    Estoque estoque = new Estoque();
-    int codigoEstoque = Integer.parseInt(campoCodigo.getText());
-       
-    /*List<Estoque> estoques =  ejc.findEstoqueEntities();
-        
-    //EstoquePK pk = estoque.converteIdEstoque(estoques, codigoEstoque);*/
-    estoque = ejc.findEstoque(codigoEstoque);
     
+    Estoque estoque = iniciar();
     estoque.setQtdProdEst(Integer.parseInt(campoQuantidade.getText()));
     estoque.setLoteEst(campoLote.getText());
     estoque.setVlrCustoEst(Double.parseDouble(campoValor.getText()));
@@ -328,6 +333,22 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
         Util.instanciaCadastroEstoque(this, funcionarioLogado);
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
+    private void campoCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCodigoKeyReleased
+        Estoque estoque = iniciar();
+     campoQuantidade.setText(Integer.toString(estoque.getQtdProdEst()));
+     campoLote.setText(estoque.getLoteEst());
+     campoValor.setText(Double.toString(estoque.getVlrCustoEst()));
+     campoDataFab.setDate(estoque.getDtFabEst());
+     campoDataVenc.setDate(estoque.getDtValEst());
+     campoObs.setText(estoque.getObsEst());
+    }//GEN-LAST:event_campoCodigoKeyReleased
+
+    public Estoque iniciar(){
+       Estoque estoque = new Estoque();
+       estoque = ejc.findEstoque(Integer.parseInt(campoCodigo.getText()));
+       return estoque;
+    }
+    
     /**
      * @param args the command line arguments
      */

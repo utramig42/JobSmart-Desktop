@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -122,9 +123,18 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Webp.net-resizeimage.png"))); // NOI18N
 
+        campoDataFab.setMaxSelectableDate(new Date());
+        campoDataFab.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoDataFabFocusLost(evt);
+            }
+        });
+
         jLabel11.setText("Data de Fabricação");
 
         jLabel12.setText("Data de Validade");
+
+        campoDataVal.setMinSelectableDate(new Date());
 
         comboFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -335,7 +345,9 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
             estoque.setVlrVendaEst(estoque.getVlrCustoEst() * 2);
             estoque.setLoteEst(campoLote.getText());
             estoque.setObsEst(campoObservacao.getText());
-            estoque.setDtFabEst(campoDataFab.getDate());
+            if(validaDataFab()){
+                estoque.setDtFabEst(campoDataFab.getDate());
+            }
             estoque.setDtValEst(campoDataVal.getDate());
             estoque.setDtCadEst(new Date());
             //Inserindo no banco
@@ -349,6 +361,26 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
      Util.instanciaAtualizaEstoque(this,funcionarioLogado);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void campoDataFabFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoDataFabFocusLost
+        validaDataFab();
+    }//GEN-LAST:event_campoDataFabFocusLost
+    
+    public boolean validaDataFab(){
+        if(campoDataFab.getDate().after(new Date()) || campoDataFab.getDate().after(campoDataVal.getDate())){
+            JOptionPane.showMessageDialog(this, "Data de fabricação não pode ser maior que hoje ou data de validade");
+            return false;
+        }
+        return true;
+    }
+    
+     public boolean validaDataVal(){
+        if(campoDataVal.getDate().before(new Date()) || campoDataVal.getDate().before(campoDataFab.getDate())){
+            JOptionPane.showMessageDialog(this, "Data de Validade não pode ser menor que hoje ou data de fabricação");
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */
