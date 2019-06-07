@@ -9,6 +9,9 @@ import dominio.Acesso;
 import dominio.Funcionario;
 import dominio.dados.AcessoJpaController;
 import dominio.dados.FuncionarioJpaController;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,6 +37,31 @@ public class TelaLogin extends javax.swing.JFrame {
     Acesso acesso;
     
     public TelaLogin() {
+        
+        KeyEventDispatcher keyEventDispatcher;
+        keyEventDispatcher = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(final KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
+            try {
+                validaPrimeiroLogin();
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+                }
+                // Pass the KeyEvent to the next KeyEventDispatcher in the chain
+                return false;
+            }
+            public boolean dispatchKeyEvents(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+                //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+        
+        
         initComponents();
     }
 
@@ -65,6 +93,11 @@ public class TelaLogin extends javax.swing.JFrame {
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEntrarActionPerformed(evt);
+            }
+        });
+        btnEntrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEntrarKeyPressed(evt);
             }
         });
 
@@ -122,6 +155,10 @@ public class TelaLogin extends javax.swing.JFrame {
        
        
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void btnEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEntrarKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEntrarKeyPressed
     
     public void validaLogin() throws Exception{
         

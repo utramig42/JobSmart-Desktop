@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import util.Util;
@@ -26,7 +27,7 @@ import util.Util;
  * @author 275322
  */
 public class TelaVendas extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form TelaVendas
      */
@@ -34,14 +35,14 @@ public class TelaVendas extends javax.swing.JFrame {
     VendaJpaController vjc = new VendaJpaController(emf);
     FuncionarioJpaController fjc = new FuncionarioJpaController(emf);
     Funcionario funcionario;
-    Venda venda;    
+    Venda venda;
     List<ItensVenda> itensVenda = new ArrayList<>();
-    
+
     public TelaVendas() {
-        
+
         initComponents();
     }
-    
+
     public TelaVendas(Funcionario funcionario) {
         this.funcionario = funcionario;
         venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
@@ -306,12 +307,16 @@ public class TelaVendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarCompraActionPerformed
-   
-    venda.setItensVendaList(itensVenda);
-    venda.setVlrVenda(valorVenda(itensVenda));
-    
-    new TelaPagamento(venda).setVisible(true);  
-    zerarComponentes();
+
+        if (campoCodigo.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencha o campo 'codigo'!");
+        } else {
+            venda.setItensVendaList(itensVenda);
+            venda.setVlrVenda(valorVenda(itensVenda));
+
+            new TelaPagamento(venda).setVisible(true);
+            zerarComponentes();
+        }
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 
     private void campoCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoActionPerformed
@@ -331,19 +336,19 @@ public class TelaVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCadastroMenuSelected
 
     private void menuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroProdutosActionPerformed
-      Util.instanciaCadastroProduto(this, funcionario);
+        Util.instanciaCadastroProduto(this, funcionario);
     }//GEN-LAST:event_menuCadastroProdutosActionPerformed
 
     private void menuCadastroEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEstoqueActionPerformed
-      Util.instanciaCadastroEstoque(this, funcionario);
+        Util.instanciaCadastroEstoque(this, funcionario);
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
     private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
-      Util.instanciaConsultaProduto(this, funcionario);
+        Util.instanciaConsultaProduto(this, funcionario);
     }//GEN-LAST:event_menuConsultaMenuSelected
 
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
-    
+
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         Estoque est = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
@@ -351,55 +356,51 @@ public class TelaVendas extends javax.swing.JFrame {
         //EstoquePK pk = est.converteIdEstoque(estoques, codigoEstoque);*/
         est = ejc.findEstoque(codigoEstoque);
         campoNomeProduto.setText(est.getIdProd().getNmProd());
-        campoCategoria.setText( est.getIdProd().getIdCat().getNmCat());
-       
-        
+        campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
+
         /*ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
                 venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());*/
         ItensVenda item = new ItensVenda();
         item.setIdEst(est);
         //item.set(item.getIdEst().getIdProd());
         //////////////////////////////////////////////////////////////
-        item.setQuantItensVenda((Integer)campoQuantidade.getValue());
+        item.setQuantItensVenda((Integer) campoQuantidade.getValue());
         itensVenda.add(item);
-        
+
         Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
             est.getIdProd().getNmProd(), est.getVlrVendaEst()};
-       
 
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
         ModelCadastro.addRow(obj);
         //////////////////////////////////////////////////////////////////
         //Pendente finalização e adaptação.
-        campoUltimoProduto.setText(Double.toString((Double) ModelCadastro.getValueAt
-        (ModelCadastro.getRowCount()-1, ModelCadastro.getColumnCount()-1)));
+        campoUltimoProduto.setText(Double.toString((Double) ModelCadastro.getValueAt(ModelCadastro.getRowCount() - 1, ModelCadastro.getColumnCount() - 1)));
         /////////////////////////////////////////////////////////////////////////////
-        
-        
-        
+
+
     }//GEN-LAST:event_adicionarProdutoActionPerformed
-    
-    public double valorVenda(List<ItensVenda> itensVenda){//PENDENTE
-        
+
+    public double valorVenda(List<ItensVenda> itensVenda) {//PENDENTE
+
         double valorTotal = 0;
-        
-        for(ItensVenda item : itensVenda ){
-            valorTotal += (item.getQuantItensVenda()* item.getIdEst().getVlrVendaEst() );
+
+        for (ItensVenda item : itensVenda) {
+            valorTotal += (item.getQuantItensVenda() * item.getIdEst().getVlrVendaEst());
         }
         return valorTotal;
     }
-    
-    public void zerarComponentes(){
+
+    public void zerarComponentes() {
         itensVenda = new ArrayList<>();
         venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
         campoCodigo.setText("");
         campoQuantidade.setModel(new SpinnerNumberModel(1, 1, null, 1));
         campoNomeProduto.setText("");
         campoCategoria.setText("");
-        DefaultTableModel table = (DefaultTableModel)tabela.getModel();
+        DefaultTableModel table = (DefaultTableModel) tabela.getModel();
         table.setNumRows(0);
     }
-    
+
     /**
      * @param args the command line arguments
      */
