@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -308,6 +309,7 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     
         try {
             ejc.edit(estoque);
+            JOptionPane.showMessageDialog(this, "Sucesso!");
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
