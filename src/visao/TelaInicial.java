@@ -184,7 +184,9 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAbrirConsultaActionPerformed
     
     public void validaPerfil(){
-        if(funcionarioLogado.getIdCargo().getIdPerfil().getIdPerfil() == 1){
+        if(funcionarioLogado.getIdCargo().getIdPerfil().getIdPerfil() == 4 || 
+                funcionarioLogado.getIdCargo().getIdPerfil().getIdPerfil() == 5 || 
+                funcionarioLogado.getIdCargo().getIdPerfil().getIdPerfil() == 6  ){
             btnAbrirCadastroEstoque.setEnabled(false);
             btnAbrirCadastroProduto.setEnabled(false);
         }
