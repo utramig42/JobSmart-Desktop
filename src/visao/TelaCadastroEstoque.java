@@ -123,6 +123,8 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Webp.net-resizeimage.png"))); // NOI18N
 
+        campoQuantidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
         jLabel11.setText("Data de Fabricação");
 
         jLabel12.setText("Data de Validade");
@@ -323,9 +325,11 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
        /* int i = (int) ejc.getLastIdEstoque();
         System.out.println(i); //PENDENTE*/
-        if(campoCodigo.getText() == "" || (int)campoQuantidade.getValue() == 0 || campoValor.getText() == "" || campoLote.getText() == "" || campoObservacao.getText() == ""){
+       
+        if(campoCodigo.getText().equals("") || (int) campoQuantidade.getValue() == 0 || campoValor.getText().equals("") || campoLote.getText().equals("") || campoObservacao.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Preencha todos os campos");
-        } else{
+        } 
+        else{
             
             //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
             try {

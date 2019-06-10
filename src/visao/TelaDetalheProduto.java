@@ -11,6 +11,7 @@ import dominio.dados.EstoqueJpaController;
 import dominio.dados.ProdutoJpaController;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -274,7 +275,11 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
         //Produto prod = ejc.findEstoqueEntities();
         
-        Estoque teste = new Estoque();
+        if(campoCodigoProduto.getText().equals("")){
+        JOptionPane.showMessageDialog(this, "Preencha o campo 'codigo'");
+        }
+        else{
+         Estoque teste = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
        
         /*List<Estoque> estoques =  ejc.findEstoqueEntities();
@@ -286,7 +291,8 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         campoMarcaProduto.setText(teste.getIdProd().getIdMarca().getNmMarca());
         campoQuantidadeProduto.setText(Integer.toString(teste.getQtdProdEst()));
         valorTotal.setText(Double.toString(teste.getVlrVendaEst()));
-    
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected

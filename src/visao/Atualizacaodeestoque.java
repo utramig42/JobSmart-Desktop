@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -283,7 +284,12 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoValorActionPerformed
 
     private void atualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarActionPerformed
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
+    
+    if(campoCodigo.getText().equals("") || campoQuantidade.getText().equals("") || campoLote.getText().equals("") || campoValor.getText().equals("")){
+    JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+    }  
+    else{
+       EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     EstoqueJpaController ejc = new EstoqueJpaController(emf);
  
     Estoque estoque = new Estoque();
@@ -308,6 +314,7 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
             
     }//GEN-LAST:event_atualizarActionPerformed
 

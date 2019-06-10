@@ -27,44 +27,40 @@ import javax.swing.JOptionPane;
  * @author 275043
  */
 public class TelaPagamento extends javax.swing.JFrame {
-    
+
     Venda venda;
     Pagamento pagamento;
     double valorPendente;
     List<ItensVenda> itens = new ArrayList<>();
-    
+
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
     ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
     PagamentoJpaController pjc = new PagamentoJpaController(emf);
-    
+
     List<FormaPagamento> formas = fpc.findFormaPagamentoEntities();
     List<Pagamento> pagamentos = new ArrayList<>();
     DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());
-    
+
     /**
      * Creates new form TelaPagamento
      */
-    
-    
     public TelaPagamento() {
         initComponents();
-         
-    
-    campoFormaPagamento.setModel(modelFormas);
-    
-    
+
+        campoFormaPagamento.setModel(modelFormas);
+
     }
-    
-   public TelaPagamento(Venda venda) {
+
+    public TelaPagamento(Venda venda) {
         initComponents();
         this.venda = venda;
         valorPendente = venda.getVlrVenda();
-        
+
         campoValorTotal.setText(Double.toString(valorPendente));
         itens = venda.getItensVendaList();
         instanciaItens();
-        
+
     }
 
     /**
@@ -227,12 +223,8 @@ public class TelaPagamento extends javax.swing.JFrame {
     }//GEN-LAST:event_campoFormaPagamentoActionPerformed
 
     private void finalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizarCompraActionPerformed
-        
-        
-        
-        
-        
-        pagamento = new Pagamento(pjc.getPagamentoCount() +1);
+
+        pagamento = new Pagamento(pjc.getPagamentoCount() + 1);
         pagamento.setIdVenda(venda);
         pagamento.setIdForma((FormaPagamento) campoFormaPagamento.getSelectedItem());
         pagamento.setVlrPag(Double.parseDouble(campoValorRecebido.getText()));
@@ -240,58 +232,55 @@ public class TelaPagamento extends javax.swing.JFrame {
         double valorAPagar = valorPendente;
         valorPendente -= Double.parseDouble(campoValorRecebido.getText());
         pagamentos.add(pagamento);
-        
-        if(validaPagamento(valorAPagar)){
+
+        if (validaPagamento(valorAPagar)) {
             try {
                 VendaJpaController vjc = new VendaJpaController(emf);
-                vjc.create(venda); 
+                vjc.create(venda);
                 pjc.createWithList(pagamentos);
-                venda.setPagamentoList(pagamentos);             
+                venda.setPagamentoList(pagamentos);
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
-                
+
                 JOptionPane.showMessageDialog(this, "Venda Finalizada!");
                 this.dispose();
-                
-                
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
 
     }//GEN-LAST:event_finalizarCompraActionPerformed
-    
-    public boolean validaPagamento(double valorAPagar){
-        if(valorPendente <= 0){
+
+    public boolean validaPagamento(double valorAPagar) {
+        if (valorPendente <= 0) {
             System.out.println("Valor pago");
             campoValorTotal.setText("R$ 0");
-            valorPendente =0;
+            valorPendente = 0;
             defineTroco(Double.parseDouble(campoValorRecebido.getText()), valorAPagar);
             return true;
         }
         campoValorTotal.setText(Double.toString(valorPendente));
-        
+
         return false;
     }
-    
-    public double defineTroco(double valorPago, double valorAPagar){
 
-           double troco = valorPago - valorAPagar;
-           valorTroco.setText(Double.toString(troco));
-           pagamento.setVlrTrocoPag(troco);
-           return troco;
+    public double defineTroco(double valorPago, double valorAPagar) {
+
+        double troco = valorPago - valorAPagar;
+        valorTroco.setText(Double.toString(troco));
+        pagamento.setVlrTrocoPag(troco);
+        return troco;
     }
-    
-    public void instanciaItens(){
-        for(ItensVenda item : itens){
+
+    public void instanciaItens() {
+        for (ItensVenda item : itens) {
             item.setIditensvenda(ivc.getItensVendaCount());
             item.setIdVenda(venda);
-                    
+
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */

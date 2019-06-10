@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import util.Util;
 
 /**
@@ -127,6 +128,8 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icons8-contatos-50 (1).png"))); // NOI18N
 
         jLabel9.setText("JOBSMASTER");
+
+        campoQtdMin.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         comboMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -319,7 +322,12 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        //Instancia dos controladores de entidade e operações com banco
 
-        ProdutoJpaController pjc = new ProdutoJpaController(emf);
+       if(campoNome.getText().equals("") || campoObs.getText().equals("")){
+       JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+        }
+       else{
+           JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+               ProdutoJpaController pjc = new ProdutoJpaController(emf);
         //Instancia de produto para receber os valores
         Produto produto = new Produto();
         //Setagem de valores, com base nos campos 
@@ -333,6 +341,8 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         produto.setObsProd(campoObs.getText());
         produto.setAtivoProd(checkAtivo.isSelected()); //Pegando valor boolean do checkbox
         pjc.create(produto); //Inserir objeto Produto no banco
+       }
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
