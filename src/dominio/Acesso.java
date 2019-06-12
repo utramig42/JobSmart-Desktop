@@ -118,7 +118,7 @@ public class Acesso implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Acesso[ idAcesso=" + idAcesso + " ]";
+        return idAcesso + "" ;
     }
     
 }

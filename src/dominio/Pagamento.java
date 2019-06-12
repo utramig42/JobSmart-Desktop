@@ -127,7 +127,7 @@ public class Pagamento implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Pagamento[ idPag=" + idPag + " ]";
+        return  idPag + "R$" + vlrPag;
     }
     
 }

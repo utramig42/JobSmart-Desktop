@@ -129,7 +129,7 @@ public class Cargo implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Cargo[ idCargo=" + idCargo + " ]";
+        return  idCargo + " - " +  nmCargo ;
     }
     
 }

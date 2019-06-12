@@ -105,7 +105,7 @@ public class Marca implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Marca[ idMarca=" + idMarca + " ]";
+        return idMarca + " - " + nmMarca;
     }
     
 }

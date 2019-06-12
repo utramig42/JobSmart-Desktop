@@ -220,7 +220,7 @@ public class Fornecedor implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Fornecedor[ idFor=" + idFor + " ]";
+        return idFor + " - " + nmFor;
     }
     
 }

@@ -105,7 +105,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Categoria[ idCat=" + idCat + " ]";
+        return idCat + " - " + nmCat;
     }
     
 }

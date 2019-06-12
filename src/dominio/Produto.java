@@ -191,7 +191,7 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Produto[ idProd=" + idProd + " ]";
+        return idProd + " - " + nmProd;
     }
     
 }
