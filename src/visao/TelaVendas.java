@@ -12,9 +12,12 @@ import dominio.Venda;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.FuncionarioJpaController;
 import dominio.dados.VendaJpaController;
+import dominio.dados.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
@@ -350,31 +353,36 @@ public class TelaVendas extends javax.swing.JFrame {
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
 
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
-        Estoque est = new Estoque();
+        Estoque est;
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
-        /*List<Estoque> estoques =  ejc.findEstoqueEntities();       
-        //EstoquePK pk = est.converteIdEstoque(estoques, codigoEstoque);*/
+        
         est = ejc.findEstoque(codigoEstoque);
         campoNomeProduto.setText(est.getIdProd().getNmProd());
         campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
-
-        /*ItensVendaPK ipk = new ItensVendaPK(null, est.getEstoquePK().getIdEst(), 
-                venda.getIdVenda(), est.getProduto().getIdProd(), est.getFornecedor().getIdFor());*/
+        if(est.setVlrVendaEst()){
+            try {
+                ejc.edit(est);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         ItensVenda item = new ItensVenda();
         item.setIdEst(est);
-        //item.set(item.getIdEst().getIdProd());
-        //////////////////////////////////////////////////////////////
         item.setQuantItensVenda((Integer) campoQuantidade.getValue());
         itensVenda.add(item);
 
         Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
-            est.getIdProd().getNmProd(), est.getVlrVendaEst()};
-
+            est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
+        
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
         ModelCadastro.addRow(obj);
         //////////////////////////////////////////////////////////////////
         //Pendente finalização e adaptação.
-        campoUltimoProduto.setText(Double.toString((Double) ModelCadastro.getValueAt(ModelCadastro.getRowCount() - 1, ModelCadastro.getColumnCount() - 1)));
+        campoUltimoProduto.setText((((String) ModelCadastro.getValueAt
+            (ModelCadastro.getRowCount()-1, ModelCadastro.getColumnCount()-2))));
         /////////////////////////////////////////////////////////////////////////////
 
 
@@ -397,6 +405,7 @@ public class TelaVendas extends javax.swing.JFrame {
         campoQuantidade.setModel(new SpinnerNumberModel(1, 1, null, 1));
         campoNomeProduto.setText("");
         campoCategoria.setText("");
+        campoUltimoProduto.setText("");
         DefaultTableModel table = (DefaultTableModel) tabela.getModel();
         table.setNumRows(0);
     }

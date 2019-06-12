@@ -19,6 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import util.Util;
 
 /**
@@ -344,6 +345,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                 estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
                 estoque.setQtdProdEst((int) campoQuantidade.getValue());
                 estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+                estoque.setVlrVendaEst();
                 estoque.setLoteEst(campoLote.getText());
                 estoque.setObsEst(campoObservacao.getText());
                 estoque.setDtFabEst(campoDataFab.getDate());
@@ -355,6 +357,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                 Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
             }
             JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+            limparCampos();
         }
 
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
@@ -362,7 +365,18 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      Util.instanciaAtualizaEstoque(this,funcionarioLogado);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    public void limparCampos(){
+        campoCodigo.setText((""));
+        campoLote.setText((""));
+        campoObservacao.setText((""));
+        campoValor.setText((""));
+        campoQuantidade.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        campoDataFab.setDate(new Date());
+        campoDataVal.setDate(new Date());
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
