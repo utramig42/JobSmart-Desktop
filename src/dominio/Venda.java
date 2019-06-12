@@ -156,7 +156,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Venda[ idVenda=" + idVenda + " ]";
+        return idVenda + "R$" + vlrVenda;
     }
     
 }

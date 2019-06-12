@@ -114,7 +114,7 @@ public class ItensVenda implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.ItensVenda[ iditensvenda=" + iditensvenda + " ]";
+        return iditensvenda + "";
     }
     
 }

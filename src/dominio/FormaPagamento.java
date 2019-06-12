@@ -113,7 +113,7 @@ public class FormaPagamento implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.FormaPagamento[ idForma=" + idForma + " ]";
+        return idForma + " - " + descForma;
     }
     
 }

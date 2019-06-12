@@ -255,7 +255,7 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Funcionario[ matFun=" + matFun + " ]";
+        return matFun + " - " + nmFun;
     }
     
 }

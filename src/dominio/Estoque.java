@@ -243,7 +243,7 @@ public class Estoque implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Estoque[ idEst=" + idEst + " ]";
+        return idEst + " - " + idProd.getNmProd();
     }
     
 }

@@ -116,7 +116,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "dominio.Perfil[ idPerfil=" + idPerfil + " ]";
+        return + idPerfil + " - " + nmPerfil;
     }
     
 }
