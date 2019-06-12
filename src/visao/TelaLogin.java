@@ -46,6 +46,7 @@ public class TelaLogin extends javax.swing.JFrame {
                     funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
             try {
                 validaPrimeiroLogin();
+                
             } catch (Exception ex) {
                 Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -125,9 +125,13 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         campoQuantidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
+        campoDataFab.setMaxSelectableDate(new Date());
+
         jLabel11.setText("Data de Fabricação");
 
         jLabel12.setText("Data de Validade");
+
+        campoDataVal.setMinSelectableDate(new Date());
 
         comboFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 

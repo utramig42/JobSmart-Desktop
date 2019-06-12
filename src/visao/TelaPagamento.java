@@ -53,10 +53,10 @@ public class TelaPagamento extends javax.swing.JFrame {
     }
 
     public TelaPagamento(Venda venda) {
-        initComponents();
+        initComponents(); 
         this.venda = venda;
         valorPendente = venda.getVlrVenda();
-
+       
         campoValorTotal.setText(Double.toString(valorPendente));
         itens = venda.getItensVendaList();
         instanciaItens();
@@ -232,6 +232,7 @@ public class TelaPagamento extends javax.swing.JFrame {
         double valorAPagar = valorPendente;
         valorPendente -= Double.parseDouble(campoValorRecebido.getText());
         pagamentos.add(pagamento);
+        venda.setItensVendaList(null);
 
         if (validaPagamento(valorAPagar)) {
             try {
@@ -240,7 +241,8 @@ public class TelaPagamento extends javax.swing.JFrame {
                 pjc.createWithList(pagamentos);
                 venda.setPagamentoList(pagamentos);
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
-
+                //vjc.edit(venda);
+ 
                 JOptionPane.showMessageDialog(this, "Venda Finalizada!");
                 this.dispose();
 

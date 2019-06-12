@@ -299,6 +299,11 @@
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="campoDataFab">
+      <Properties>
+        <Property name="maxSelectableDate" type="java.util.Date" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new Date()" type="code"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
       <Properties>
@@ -311,6 +316,11 @@
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="campoDataVal">
+      <Properties>
+        <Property name="minSelectableDate" type="java.util.Date" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new Date()" type="code"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="comboFornecedor">
       <Properties>

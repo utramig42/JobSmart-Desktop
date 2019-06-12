@@ -313,7 +313,7 @@ public class TelaVendas extends javax.swing.JFrame {
         } else {
             venda.setItensVendaList(itensVenda);
             venda.setVlrVenda(valorVenda(itensVenda));
-
+            itensVenda = new ArrayList<>();
             new TelaPagamento(venda).setVisible(true);
             zerarComponentes();
         }
