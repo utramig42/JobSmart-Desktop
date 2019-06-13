@@ -13,6 +13,9 @@ import dominio.dados.EstoqueJpaController;
 import dominio.dados.FuncionarioJpaController;
 import dominio.dados.VendaJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +45,7 @@ public class TelaVendas extends javax.swing.JFrame {
     List<ItensVenda> itensVenda = new ArrayList<>();
 
     public TelaVendas() {
-
+                
         initComponents();
     }
 
