@@ -35,14 +35,17 @@ public class TelaLogin extends javax.swing.JFrame {
     Funcionario funcionario;
     String senha;
     Acesso acesso;
+    int stop = 0;
     
     public TelaLogin() {
+
         
         KeyEventDispatcher keyEventDispatcher;
         keyEventDispatcher = new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(final KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && stop == 0) {
+                    stop++;
                     funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
             try {
                 validaPrimeiroLogin();
@@ -64,6 +67,9 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
         
         
         initComponents();
+        
+        campoUsuario.setText("10001");
+        campoSenha.setText("utramig42");
     }
 
     /**
