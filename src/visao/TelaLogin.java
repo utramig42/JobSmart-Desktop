@@ -64,12 +64,7 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         };
 KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
-        
-        
         initComponents();
-        
-        campoUsuario.setText("10001");
-        campoSenha.setText("utramig42");
     }
 
     /**
@@ -155,7 +150,11 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
        
        funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
         try {
-            validaPrimeiroLogin();
+            if(funcionario != null){
+                validaPrimeiroLogin();
+            }else{
+                JOptionPane.showMessageDialog(this, "Usuário não encontrado");
+            }
         } catch (Exception ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -191,13 +190,6 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
                 validaLogin();
                 break;
             }
-        }
-        if((senha == null) || (senha.equals("") )){
-            senha = "1234";
-            acesso = new Acesso(null, senha);
-            acesso.setMatFun(funcionario);
-            ajc.create(acesso);
-            validaLogin();
         }
     }
     
