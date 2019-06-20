@@ -122,6 +122,18 @@ public class AcessoJpaController implements Serializable {
     public List<Acesso> findAcessoEntities() {
         return findAcessoEntities(true, -1, -1);
     }
+    
+    public Acesso findAcessoFuncionario(Funcionario fun) {
+        List<Acesso> list = findAcessoEntities(true, -1, -1);
+        Acesso acessoFuncionario = null;
+        for (Acesso acesso : list) {
+            if(fun.equals(acesso.getMatFun())){
+                acessoFuncionario = acesso;
+                break;
+            }
+        }
+        return acessoFuncionario;
+    }
 
     public List<Acesso> findAcessoEntities(int maxResults, int firstResult) {
         return findAcessoEntities(false, maxResults, firstResult);

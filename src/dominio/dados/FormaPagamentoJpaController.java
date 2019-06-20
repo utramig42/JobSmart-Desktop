@@ -163,7 +163,19 @@ public class FormaPagamentoJpaController implements Serializable {
     public List<FormaPagamento> findFormaPagamentoEntities() {
         return findFormaPagamentoEntities(true, -1, -1);
     }
+    
+    public List<FormaPagamento> findValidsFormaPagamentoEntities() {
+        List<FormaPagamento> list = findFormaPagamentoEntities(true, -1, -1);
+        List<FormaPagamento> retorno = new ArrayList();
+        for (FormaPagamento formaPagamento : list) {
+            if(formaPagamento.getAtivoForma()){
+                retorno.add(formaPagamento);
+            }
+        }
+        return retorno;
+    }
 
+    
     public List<FormaPagamento> findFormaPagamentoEntities(int maxResults, int firstResult) {
         return findFormaPagamentoEntities(false, maxResults, firstResult);
     }

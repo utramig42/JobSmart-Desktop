@@ -5,11 +5,15 @@
  */
 package visao;
 
+import dominio.Acesso;
 import dominio.FormaPagamento;
+import dominio.Funcionario;
 import dominio.ItensVenda;
 import dominio.Pagamento;
 import dominio.Venda;
+import dominio.dados.AcessoJpaController;
 import dominio.dados.FormaPagamentoJpaController;
+import dominio.dados.FuncionarioJpaController;
 import dominio.dados.ItensVendaJpaController;
 import dominio.dados.PagamentoJpaController;
 import dominio.dados.VendaJpaController;
@@ -37,30 +41,27 @@ public class TelaPagamento extends javax.swing.JFrame {
     FormaPagamentoJpaController fpc = new FormaPagamentoJpaController(emf);
     ItensVendaJpaController ivc = new ItensVendaJpaController(emf);
     PagamentoJpaController pjc = new PagamentoJpaController(emf);
-
-    List<FormaPagamento> formas = fpc.findFormaPagamentoEntities();
+    List<FormaPagamento> formas = fpc.findValidsFormaPagamentoEntities();
     List<Pagamento> pagamentos = new ArrayList<>();
-    DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());
-
+    DefaultComboBoxModel modelFormas = new DefaultComboBoxModel(formas.toArray());;
+    
+    
+    
     /**
      * Creates new form TelaPagamento
      */
     public TelaPagamento() {
         initComponents();
-
         campoFormaPagamento.setModel(modelFormas);
-
     }
 
     public TelaPagamento(Venda venda) {
         initComponents(); 
         this.venda = venda;
         valorPendente = venda.getVlrVenda();
-       
         campoValorTotal.setText(Double.toString(valorPendente));
         itens = venda.getItensVendaList();
         instanciaItens();
-
     }
 
     /**
@@ -134,6 +135,11 @@ public class TelaPagamento extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancelar");
         jButton2.setPreferredSize(new java.awt.Dimension(255, 30));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         campoFormaPagamento.setModel(modelFormas);
         campoFormaPagamento.setMinimumSize(new java.awt.Dimension(255, 30));
@@ -223,7 +229,6 @@ public class TelaPagamento extends javax.swing.JFrame {
     }//GEN-LAST:event_campoFormaPagamentoActionPerformed
 
     private void finalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizarCompraActionPerformed
-
         pagamento = new Pagamento(pjc.getPagamentoCount() + 1);
         pagamento.setIdVenda(venda);
         pagamento.setIdForma((FormaPagamento) campoFormaPagamento.getSelectedItem());
@@ -254,6 +259,27 @@ public class TelaPagamento extends javax.swing.JFrame {
 
     }//GEN-LAST:event_finalizarCompraActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String user = JOptionPane.showInputDialog("Para cancelar a venda, digite o usuário com permissão");
+            if(user != null){
+                FuncionarioJpaController fjp = new FuncionarioJpaController(emf);
+                Funcionario fun = fjp.findFuncionario(Integer.parseInt(user));
+                if(fun != null){
+                    if(fun.getIdCargo().getIdPerfil().getIdPerfil() != 4){
+                        String password = JOptionPane.showInputDialog("Digite a senha do usuário");
+                        AcessoJpaController ajc = new AcessoJpaController(emf);
+                        Acesso acesso = ajc.findAcessoFuncionario(fun);
+                        if(acesso != null && acesso.getSenhaAcesso().equals(password) ){
+                            JOptionPane.showMessageDialog(this, "VENDA CANCELADA!");
+                            this.dispose();
+                        }
+                    }
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Usuário sem permissão ou incorreto");
+            }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public boolean validaPagamento(double valorAPagar) {
         if (valorPendente <= 0) {
             System.out.println("Valor pago");
@@ -282,7 +308,7 @@ public class TelaPagamento extends javax.swing.JFrame {
 
         }
     }
-
+    
     /**
      * @param args the command line arguments
      */

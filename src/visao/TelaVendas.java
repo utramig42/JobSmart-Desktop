@@ -317,11 +317,15 @@ public class TelaVendas extends javax.swing.JFrame {
         if (campoCodigo.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Preencha o campo 'codigo'!");
         } else {
-            venda.setItensVendaList(itensVenda);
-            venda.setVlrVenda(valorVenda(itensVenda));
-            itensVenda = new ArrayList<>();
-            new TelaPagamento(venda).setVisible(true);
-            zerarComponentes();
+            if(itensVenda.size() < 1){
+                JOptionPane.showMessageDialog(this, "Adicione o produto antes de finalizar!!");
+            }else {
+                venda.setItensVendaList(itensVenda);
+                venda.setVlrVenda(valorVenda(itensVenda));
+                itensVenda = new ArrayList<>();
+                new TelaPagamento(venda).setVisible(true);
+                zerarComponentes();
+            }
         }
     }//GEN-LAST:event_btnFinalizarCompraActionPerformed
 
