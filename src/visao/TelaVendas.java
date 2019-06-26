@@ -13,9 +13,7 @@ import dominio.dados.EstoqueJpaController;
 import dominio.dados.FuncionarioJpaController;
 import dominio.dados.VendaJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,9 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
+import util.ButtonColumn;
 import util.Util;
 
 /**
@@ -43,6 +45,7 @@ public class TelaVendas extends javax.swing.JFrame {
     Funcionario funcionario;
     Venda venda;
     List<ItensVenda> itensVenda = new ArrayList<>();
+    JButton btnRemoverItem;
 
     public TelaVendas() {
                 
@@ -139,12 +142,19 @@ public class TelaVendas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Quant.", "Nome", "Preço"
+                "Cancelar", "Código", "Quant.", "Nome", "Preço"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -360,10 +370,10 @@ public class TelaVendas extends javax.swing.JFrame {
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
 
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
-        Estoque est;
+        Estoque est = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
+            est = ejc.findEstoque(codigoEstoque);
         
-        est = ejc.findEstoque(codigoEstoque);
         campoNomeProduto.setText(est.getIdProd().getNmProd());
         campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
         if(est.setVlrVendaEst()){
@@ -380,21 +390,25 @@ public class TelaVendas extends javax.swing.JFrame {
         item.setIdEst(est);
         item.setQuantItensVenda((Integer) campoQuantidade.getValue());
         itensVenda.add(item);
-
-        Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
+        btnRemoverItem = new JButton();
+        Action act = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        ButtonColumn testeBtn = new ButtonColumn(tabela, act ,0);
+        Object[] obj = {"X",est.getIdEst(), item.getQuantItensVenda(),
             est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
         
         DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
         ModelCadastro.addRow(obj);
-        //////////////////////////////////////////////////////////////////
-        //Pendente finalização e adaptação.
+
         campoUltimoProduto.setText((((String) ModelCadastro.getValueAt
             (ModelCadastro.getRowCount()-1, ModelCadastro.getColumnCount()-2))));
-        /////////////////////////////////////////////////////////////////////////////
-
-
     }//GEN-LAST:event_adicionarProdutoActionPerformed
-
+    
+    
     public double valorVenda(List<ItensVenda> itensVenda) {//PENDENTE
 
         double valorTotal = 0;

@@ -275,7 +275,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                         }
                     }
                 }
-            }else{
+            }else {
                 JOptionPane.showMessageDialog(this, "Usuário sem permissão ou incorreto");
             }
     }//GEN-LAST:event_jButton2ActionPerformed
