@@ -5,23 +5,21 @@
  */
 package dominio.dados;
 
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import dominio.Estoque;
 import dominio.Fornecedor;
-import dominio.dados.exceptions.IllegalOrphanException;
 import dominio.dados.exceptions.NonexistentEntityException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
- * @author caioa
+ * @author 277017
  */
 public class FornecedorJpaController implements Serializable {
 
@@ -35,29 +33,11 @@ public class FornecedorJpaController implements Serializable {
     }
 
     public void create(Fornecedor fornecedor) {
-        if (fornecedor.getEstoqueList() == null) {
-            fornecedor.setEstoqueList(new ArrayList<Estoque>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Estoque> attachedEstoqueList = new ArrayList<Estoque>();
-            for (Estoque estoqueListEstoqueToAttach : fornecedor.getEstoqueList()) {
-                estoqueListEstoqueToAttach = em.getReference(estoqueListEstoqueToAttach.getClass(), estoqueListEstoqueToAttach.getIdEst());
-                attachedEstoqueList.add(estoqueListEstoqueToAttach);
-            }
-            fornecedor.setEstoqueList(attachedEstoqueList);
             em.persist(fornecedor);
-            for (Estoque estoqueListEstoque : fornecedor.getEstoqueList()) {
-                Fornecedor oldIdForOfEstoqueListEstoque = estoqueListEstoque.getIdFor();
-                estoqueListEstoque.setIdFor(fornecedor);
-                estoqueListEstoque = em.merge(estoqueListEstoque);
-                if (oldIdForOfEstoqueListEstoque != null) {
-                    oldIdForOfEstoqueListEstoque.getEstoqueList().remove(estoqueListEstoque);
-                    oldIdForOfEstoqueListEstoque = em.merge(oldIdForOfEstoqueListEstoque);
-                }
-            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -66,45 +46,12 @@ public class FornecedorJpaController implements Serializable {
         }
     }
 
-    public void edit(Fornecedor fornecedor) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Fornecedor fornecedor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Fornecedor persistentFornecedor = em.find(Fornecedor.class, fornecedor.getIdFor());
-            List<Estoque> estoqueListOld = persistentFornecedor.getEstoqueList();
-            List<Estoque> estoqueListNew = fornecedor.getEstoqueList();
-            List<String> illegalOrphanMessages = null;
-            for (Estoque estoqueListOldEstoque : estoqueListOld) {
-                if (!estoqueListNew.contains(estoqueListOldEstoque)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Estoque " + estoqueListOldEstoque + " since its idFor field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            List<Estoque> attachedEstoqueListNew = new ArrayList<Estoque>();
-            for (Estoque estoqueListNewEstoqueToAttach : estoqueListNew) {
-                estoqueListNewEstoqueToAttach = em.getReference(estoqueListNewEstoqueToAttach.getClass(), estoqueListNewEstoqueToAttach.getIdEst());
-                attachedEstoqueListNew.add(estoqueListNewEstoqueToAttach);
-            }
-            estoqueListNew = attachedEstoqueListNew;
-            fornecedor.setEstoqueList(estoqueListNew);
             fornecedor = em.merge(fornecedor);
-            for (Estoque estoqueListNewEstoque : estoqueListNew) {
-                if (!estoqueListOld.contains(estoqueListNewEstoque)) {
-                    Fornecedor oldIdForOfEstoqueListNewEstoque = estoqueListNewEstoque.getIdFor();
-                    estoqueListNewEstoque.setIdFor(fornecedor);
-                    estoqueListNewEstoque = em.merge(estoqueListNewEstoque);
-                    if (oldIdForOfEstoqueListNewEstoque != null && !oldIdForOfEstoqueListNewEstoque.equals(fornecedor)) {
-                        oldIdForOfEstoqueListNewEstoque.getEstoqueList().remove(estoqueListNewEstoque);
-                        oldIdForOfEstoqueListNewEstoque = em.merge(oldIdForOfEstoqueListNewEstoque);
-                    }
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -122,7 +69,7 @@ public class FornecedorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -133,17 +80,6 @@ public class FornecedorJpaController implements Serializable {
                 fornecedor.getIdFor();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The fornecedor with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            List<Estoque> estoqueListOrphanCheck = fornecedor.getEstoqueList();
-            for (Estoque estoqueListOrphanCheckEstoque : estoqueListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Fornecedor (" + fornecedor + ") cannot be destroyed since the Estoque " + estoqueListOrphanCheckEstoque + " in its estoqueList field has a non-nullable idFor field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(fornecedor);
             em.getTransaction().commit();
@@ -161,7 +97,18 @@ public class FornecedorJpaController implements Serializable {
     public List<Fornecedor> findFornecedorEntities(int maxResults, int firstResult) {
         return findFornecedorEntities(false, maxResults, firstResult);
     }
-
+    
+    public List<Fornecedor> findValidFornecedorEntities(){
+        List<Fornecedor> list = findFornecedorEntities(true, -1, -1);
+            List<Fornecedor> retorno = new ArrayList();
+            for (Fornecedor fornecedor : list) {
+                if(fornecedor.getAtivoFor()){
+                    retorno.add(fornecedor);
+                }
+            }
+            return retorno;
+    }
+    
     private List<Fornecedor> findFornecedorEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {

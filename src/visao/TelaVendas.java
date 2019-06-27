@@ -42,10 +42,12 @@ public class TelaVendas extends javax.swing.JFrame {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JobSmart-DesktopPU");
     VendaJpaController vjc = new VendaJpaController(emf);
     FuncionarioJpaController fjc = new FuncionarioJpaController(emf);
+    EstoqueJpaController ejc = new EstoqueJpaController(emf);
     Funcionario funcionario;
     Venda venda;
     List<ItensVenda> itensVenda = new ArrayList<>();
     JButton btnRemoverItem;
+    Estoque est;
 
     public TelaVendas() {
                 
@@ -368,47 +370,115 @@ public class TelaVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_menuConsultaMenuSelected
 
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
-
-        EstoqueJpaController ejc = new EstoqueJpaController(emf);
-        Estoque est = new Estoque();
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
-            est = ejc.findEstoque(codigoEstoque);
-        
-        campoNomeProduto.setText(est.getIdProd().getNmProd());
-        campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
-        if(est.setVlrVendaEst()){
-            try {
-                ejc.edit(est);
-            } catch (NonexistentEntityException ex) {
-                Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+        est = ejc.findEstoque(codigoEstoque);
+        if(!validarQuantidade(est)){
+            JOptionPane.showMessageDialog(this, "Quantidade inserida maior do que a do estoque, que é "+est.getQtdProdEst());
+        }else{
+            campoNomeProduto.setText(est.getIdProd().getNmProd());
+            campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
+            if(est.setVlrVendaEst()){
+                try {
+                    ejc.edit(est);
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            if(!validarCodigoDuplicado(est)){
+                definirEAdicionarItem();
+            }else{
+                if(validarQuantidade(est)){
+                    atualizarQuantidade(est);
+                }
+            }
+            
         }
         
+    }//GEN-LAST:event_adicionarProdutoActionPerformed
+    
+    
+    public boolean validarQuantidade(Estoque est){
+       if(((int) campoQuantidade.getValue()) > est.getQtdProdEst()){
+           return false;
+       } 
+       return true;
+       
+    }
+    
+    public boolean validarCodigoDuplicado(Estoque est){
+        for (ItensVenda item : itensVenda) {
+            if(est.equals(item.getIdEst()))
+                return true;
+        }
+        return false;
+    }
+    
+    public void definirEAdicionarItem(){
         ItensVenda item = new ItensVenda();
         item.setIdEst(est);
         item.setQuantItensVenda((Integer) campoQuantidade.getValue());
         itensVenda.add(item);
-        btnRemoverItem = new JButton();
-        Action act = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        ButtonColumn testeBtn = new ButtonColumn(tabela, act ,0);
-        Object[] obj = {"X",est.getIdEst(), item.getQuantItensVenda(),
-            est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
+        gerarTabela(item);
         
-        DefaultTableModel ModelCadastro = (DefaultTableModel) tabela.getModel();
-        ModelCadastro.addRow(obj);
+    }
+    
+   public void atualizarQuantidade(Estoque est){
+    ItensVenda itemSubs = new ItensVenda();
+    Integer index = null;
+    for (ItensVenda item : itensVenda) {
+             if(est.equals(item.getIdEst())){
+                 System.out.println("Quantidade atual>:"+item.getQuantItensVenda());
+                 itemSubs = item;
+                 itemSubs.setIdEst(est);
+                 int quantidadeReal = itemSubs.getQuantItensVenda()+ (Integer) campoQuantidade.getValue();
+                 if(quantidadeReal > est.getQtdProdEst()){
+                     JOptionPane.showMessageDialog(this, "Quantidade inserida maior do que a do estoque, que é "+est.getQtdProdEst());
+                     break;
+                 }
+                 itemSubs.setQuantItensVenda(quantidadeReal);
+                 index = itensVenda.indexOf(item);
+                 break;
+             }
+    }
+    if(index != null){
+        itensVenda.set(index, itemSubs);
+        gerarTabela(itensVenda.get(index));
+        removerLinha();
+    }
+   }
+    
+    public void gerarTabela(ItensVenda item){
+       btnRemoverItem = new JButton();
+            Action act = new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            ButtonColumn testeBtn = new ButtonColumn(tabela, act ,0);
+            Object[] obj = {"X",est.getIdEst(), item.getQuantItensVenda(),
+                est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
 
-        campoUltimoProduto.setText((((String) ModelCadastro.getValueAt
-            (ModelCadastro.getRowCount()-1, ModelCadastro.getColumnCount()-2))));
-    }//GEN-LAST:event_adicionarProdutoActionPerformed
-    
-    
+            DefaultTableModel modelCadastro = (DefaultTableModel) tabela.getModel();
+            modelCadastro.addRow(obj);
+            campoUltimoProduto.setText((((String) modelCadastro.getValueAt
+                (modelCadastro.getRowCount()-1, modelCadastro.getColumnCount()-2))));
+   }
+   
+    public void removerLinha(){
+         DefaultTableModel modelCadastro = (DefaultTableModel) tabela.getModel();
+         int cont = modelCadastro.getRowCount() -1;
+         int col = modelCadastro.getColumnCount()-1;
+         for(int i = 0; i<cont;i++){
+             for(int j=0; j< col; j++){
+                 if(est.getIdEst().equals(modelCadastro.getValueAt(i, j))){
+                     modelCadastro.removeRow(i);
+                 }
+             }
+         }
+    }
     public double valorVenda(List<ItensVenda> itensVenda) {//PENDENTE
 
         double valorTotal = 0;

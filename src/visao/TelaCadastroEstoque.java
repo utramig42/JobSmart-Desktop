@@ -37,7 +37,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     public TelaCadastroEstoque() {
         initComponents();
         FornecedorJpaController fjc = new FornecedorJpaController(emf);
-        List<Fornecedor> fornecedores = fjc.findFornecedorEntities();
+        List<Fornecedor> fornecedores = fjc.findValidFornecedorEntities();
         DefaultComboBoxModel modelFornecedor = new DefaultComboBoxModel(fornecedores.toArray());
         comboFornecedor.setModel(modelFornecedor);
     }
