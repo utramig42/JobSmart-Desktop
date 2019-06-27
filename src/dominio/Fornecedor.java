@@ -26,24 +26,25 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author caioa
+ * @author 277017
  */
 @Entity
 @Table(name = "fornecedor")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Fornecedor.findAll", query = "SELECT f FROM Fornecedor f"),
-    @NamedQuery(name = "Fornecedor.findByIdFor", query = "SELECT f FROM Fornecedor f WHERE f.idFor = :idFor"),
-    @NamedQuery(name = "Fornecedor.findByNmFor", query = "SELECT f FROM Fornecedor f WHERE f.nmFor = :nmFor"),
-    @NamedQuery(name = "Fornecedor.findByCnpjFor", query = "SELECT f FROM Fornecedor f WHERE f.cnpjFor = :cnpjFor"),
-    @NamedQuery(name = "Fornecedor.findByRazSocFor", query = "SELECT f FROM Fornecedor f WHERE f.razSocFor = :razSocFor"),
-    @NamedQuery(name = "Fornecedor.findByUfFor", query = "SELECT f FROM Fornecedor f WHERE f.ufFor = :ufFor"),
-    @NamedQuery(name = "Fornecedor.findByCidFor", query = "SELECT f FROM Fornecedor f WHERE f.cidFor = :cidFor"),
-    @NamedQuery(name = "Fornecedor.findByEndFor", query = "SELECT f FROM Fornecedor f WHERE f.endFor = :endFor"),
-    @NamedQuery(name = "Fornecedor.findByNmContFor", query = "SELECT f FROM Fornecedor f WHERE f.nmContFor = :nmContFor"),
-    @NamedQuery(name = "Fornecedor.findByTelFixFor", query = "SELECT f FROM Fornecedor f WHERE f.telFixFor = :telFixFor"),
-    @NamedQuery(name = "Fornecedor.findByDtCadFor", query = "SELECT f FROM Fornecedor f WHERE f.dtCadFor = :dtCadFor"),
-    @NamedQuery(name = "Fornecedor.findByTelCelFor", query = "SELECT f FROM Fornecedor f WHERE f.telCelFor = :telCelFor")})
+    @NamedQuery(name = "Fornecedor.findAll", query = "SELECT f FROM Fornecedor f")
+    , @NamedQuery(name = "Fornecedor.findByIdFor", query = "SELECT f FROM Fornecedor f WHERE f.idFor = :idFor")
+    , @NamedQuery(name = "Fornecedor.findByNmFor", query = "SELECT f FROM Fornecedor f WHERE f.nmFor = :nmFor")
+    , @NamedQuery(name = "Fornecedor.findByCnpjFor", query = "SELECT f FROM Fornecedor f WHERE f.cnpjFor = :cnpjFor")
+    , @NamedQuery(name = "Fornecedor.findByRazSocFor", query = "SELECT f FROM Fornecedor f WHERE f.razSocFor = :razSocFor")
+    , @NamedQuery(name = "Fornecedor.findByUfFor", query = "SELECT f FROM Fornecedor f WHERE f.ufFor = :ufFor")
+    , @NamedQuery(name = "Fornecedor.findByCidFor", query = "SELECT f FROM Fornecedor f WHERE f.cidFor = :cidFor")
+    , @NamedQuery(name = "Fornecedor.findByEndFor", query = "SELECT f FROM Fornecedor f WHERE f.endFor = :endFor")
+    , @NamedQuery(name = "Fornecedor.findByNmContFor", query = "SELECT f FROM Fornecedor f WHERE f.nmContFor = :nmContFor")
+    , @NamedQuery(name = "Fornecedor.findByTelFixFor", query = "SELECT f FROM Fornecedor f WHERE f.telFixFor = :telFixFor")
+    , @NamedQuery(name = "Fornecedor.findByDtCadFor", query = "SELECT f FROM Fornecedor f WHERE f.dtCadFor = :dtCadFor")
+    , @NamedQuery(name = "Fornecedor.findByTelCelFor", query = "SELECT f FROM Fornecedor f WHERE f.telCelFor = :telCelFor")
+    , @NamedQuery(name = "Fornecedor.findByAtivoFor", query = "SELECT f FROM Fornecedor f WHERE f.ativoFor = :ativoFor")})
 public class Fornecedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,7 +67,6 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "cid_for")
     private String cidFor;
-    @Basic(optional = false)
     @Column(name = "end_for")
     private String endFor;
     @Column(name = "nm_cont_for")
@@ -80,6 +80,8 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "tel_cel_for")
     private String telCelFor;
+    @Column(name = "ativo_for")
+    private Boolean ativoFor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFor")
     private List<Estoque> estoqueList;
 
@@ -90,13 +92,12 @@ public class Fornecedor implements Serializable {
         this.idFor = idFor;
     }
 
-    public Fornecedor(Integer idFor, String cnpjFor, String razSocFor, String ufFor, String cidFor, String endFor, Date dtCadFor, String telCelFor) {
+    public Fornecedor(Integer idFor, String cnpjFor, String razSocFor, String ufFor, String cidFor, Date dtCadFor, String telCelFor) {
         this.idFor = idFor;
         this.cnpjFor = cnpjFor;
         this.razSocFor = razSocFor;
         this.ufFor = ufFor;
         this.cidFor = cidFor;
-        this.endFor = endFor;
         this.dtCadFor = dtCadFor;
         this.telCelFor = telCelFor;
     }
@@ -189,12 +190,20 @@ public class Fornecedor implements Serializable {
         this.telCelFor = telCelFor;
     }
 
-    @XmlTransient
-    public List<Estoque> getEstoqueList() {
-        return estoqueList;
+    public Boolean getAtivoFor() {
+        return ativoFor;
     }
 
-    public void setEstoqueList(List<Estoque> estoqueList) {
+    public void setAtivoFor(Boolean ativoFor) {
+        this.ativoFor = ativoFor;
+    }
+    
+    @XmlTransient
+    public List<Estoque> getEstoqueList(){
+        return estoqueList;
+    }
+    
+    public void setEstoqueList(List<Estoque> estoqueList){
         this.estoqueList = estoqueList;
     }
 
@@ -220,7 +229,7 @@ public class Fornecedor implements Serializable {
 
     @Override
     public String toString() {
-        return idFor + " - " + nmFor;
+        return + idFor + " "+ nmFor;
     }
     
 }
