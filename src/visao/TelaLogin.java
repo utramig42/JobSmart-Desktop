@@ -38,7 +38,7 @@ public class TelaLogin extends javax.swing.JFrame {
     int stop = 0;
     
     public TelaLogin() {
-
+        
         
         KeyEventDispatcher keyEventDispatcher;
         keyEventDispatcher = new KeyEventDispatcher() {
