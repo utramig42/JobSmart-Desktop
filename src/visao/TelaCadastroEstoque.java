@@ -8,6 +8,7 @@ package visao;
 import dominio.Estoque;
 import dominio.Fornecedor;
 import dominio.Funcionario;
+import dominio.Produto;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.FornecedorJpaController;
 import dominio.dados.ProdutoJpaController;
@@ -46,9 +47,10 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         initComponents();
         funcionarioLogado = funcionario;
         FornecedorJpaController fjc = new FornecedorJpaController(emf);
-        List<Fornecedor> fornecedores = fjc.findFornecedorEntities();
+        List<Fornecedor> fornecedores = fjc.findValidFornecedorEntities();
         DefaultComboBoxModel modelFornecedor = new DefaultComboBoxModel(fornecedores.toArray());
         comboFornecedor.setModel(modelFornecedor);
+        userLogado.setText(Util.nomeUserLogado(funcionario));
     }
 
     /**
@@ -72,7 +74,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         btnCadastrarEstoque = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        userLogado = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         campoQuantidade = new javax.swing.JSpinner();
         campoDataFab = new com.toedter.calendar.JDateChooser();
@@ -120,7 +122,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icons8-contatos-50 (1).png"))); // NOI18N
 
-        jLabel9.setText("JOBSMASTER");
+        userLogado.setText("JOBSMASTER");
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Webp.net-resizeimage.png"))); // NOI18N
 
@@ -210,7 +212,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel9)
+                        .addComponent(userLogado)
                         .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -254,7 +256,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
+                            .addComponent(userLogado)
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7))
@@ -328,36 +330,40 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
         EstoqueJpaController ejc = new EstoqueJpaController(emf);
         Estoque estoque = new Estoque();
         ProdutoJpaController pjc = new ProdutoJpaController(emf);
-       /* int i = (int) ejc.getLastIdEstoque();
-        System.out.println(i); //PENDENTE*/
-       
-        if(campoCodigo.getText().equals("") || (int) campoQuantidade.getValue() == 0 || campoValor.getText().equals("") || campoLote.getText().equals("") || campoObservacao.getText().equals("")){
+        if(campoCodigo.getText().equals("") || (int) campoQuantidade.getValue() == 0 || campoValor.getText().equals("") || campoLote.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Preencha todos os campos");
         } 
         else{
-            
-            //estoque = new Estoque((int) ejc.getLastIdEstoque(),estoque.getFornecedor().getIdFor(),estoque.getProduto().getIdProd());
             try {
-                //estoque.setEstoquePK(pk); //Pendente definir qual será a EstoquePK de um novo registro de Estoque
-                
                 //Instanciando e setando dados de estoque
                 estoque.setIdFor((Fornecedor) comboFornecedor.getSelectedItem());
-                estoque.setIdProd(pjc.findProduto(Integer.parseInt(campoCodigo.getText())));
-                estoque.setQtdProdEst((int) campoQuantidade.getValue());
-                estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
-                estoque.setVlrVendaEst();
-                estoque.setLoteEst(campoLote.getText());
-                estoque.setObsEst(campoObservacao.getText());
-                estoque.setDtFabEst(campoDataFab.getDate());
-                estoque.setDtValEst(campoDataVal.getDate());
-                estoque.setDtCadEst(new Date());
-                //Inserindo no banco
-                ejc.create(estoque);
+                Produto prod = pjc.findProduto(Integer.parseInt(campoCodigo.getText()));
+                if(prod == null){
+                    JOptionPane.showMessageDialog(this, "Código não encontrado");
+                    
+                }else{
+                    estoque.setIdProd(prod);
+                    estoque.setQtdProdEst((int) campoQuantidade.getValue());
+                    estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+                    estoque.setVlrVendaEst();
+                    estoque.setLoteEst(campoLote.getText());
+                    estoque.setObsEst(campoObservacao.getText());
+                    estoque.setDtFabEst(campoDataFab.getDate());
+                    estoque.setDtValEst(campoDataVal.getDate());
+                    estoque.setDtCadEst(new Date());
+                    //Inserindo no banco
+                    if(estoque.getQtdProdEst() < estoque.getIdProd().getQtdMinProd()){
+                        JOptionPane.showMessageDialog(this, "Não é possível cadastrar menos que a quantidade mínima do produto, que é "+estoque.getIdProd().getQtdMinProd());
+                    }else{
+                    ejc.create(estoque);
+                    JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+                    limparCampos();
+                    }
+                    }
             } catch (Exception ex) {
                 Logger.getLogger(TelaCadastroEstoque.class.getName()).log(Level.SEVERE, null, ex);
             }
-            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
-            limparCampos();
+            
         }
 
     }//GEN-LAST:event_btnCadastrarEstoqueActionPerformed
@@ -435,7 +441,6 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu menuCadastro;
@@ -444,5 +449,6 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private javax.swing.JMenu menuConsulta;
     private javax.swing.JMenu menuLogo;
     private javax.swing.JMenu menuVendas;
+    private javax.swing.JLabel userLogado;
     // End of variables declaration//GEN-END:variables
 }

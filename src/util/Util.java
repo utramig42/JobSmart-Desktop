@@ -75,4 +75,9 @@ public class Util {
             JOptionPane.showMessageDialog(obj, "Você não tem acesso");
         }
     }
+        
+        
+    public static String nomeUserLogado(Funcionario funcionario){
+        return "Olá "+funcionario.getNmFun()+"!";
+    }
 }

@@ -58,6 +58,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         campoCategoriaProduto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         campoQuantidadeProduto = new javax.swing.JTextField();
+        btnListar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogo = new javax.swing.JMenu();
         menuVendas = new javax.swing.JMenu();
@@ -138,6 +139,17 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
             }
         });
 
+        btnListar.setBackground(new java.awt.Color(255, 255, 0));
+        btnListar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnListar.setText("LISTAR TODOS");
+        btnListar.setAlignmentY(1.2F);
+        btnListar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
         menuLogo.setText("Home");
         menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
@@ -192,13 +204,9 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(414, Short.MAX_VALUE)
-                        .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -208,8 +216,13 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                             .addComponent(campoMarcaProduto)
                             .addComponent(campoNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(campoCodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 123, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel6)
                         .addComponent(jLabel5)
@@ -250,7 +263,9 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(114, 114, 114))
+                .addGap(50, 50, 50)
+                .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -319,6 +334,10 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoQuantidadeProdutoActionPerformed
 
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        new TelaListagemEstoque().setVisible(true);
+    }//GEN-LAST:event_btnListarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -357,6 +376,7 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnListar;
     private javax.swing.JTextField campoCategoriaProduto;
     private javax.swing.JTextField campoCodigoProduto;
     private javax.swing.JTextField campoMarcaProduto;

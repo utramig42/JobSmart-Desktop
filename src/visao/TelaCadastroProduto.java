@@ -57,6 +57,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         DefaultComboBoxModel modelCategoria = new DefaultComboBoxModel(categorias.toArray());
         comboCategoria.setModel(modelCategoria);
+        userLogado.setText(Util.nomeUserLogado(funcionario));
     }
 
     /**
@@ -85,6 +86,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         comboMarca = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        userLogado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogo = new javax.swing.JMenu();
         menuVendas = new javax.swing.JMenu();
@@ -136,6 +138,8 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jLabel11.setText("Marca");
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Webp.net-resizeimage.png"))); // NOI18N
+
+        userLogado.setText("JOBSMASTER");
 
         menuLogo.setText("Home");
         menuLogo.addMenuListener(new javax.swing.event.MenuListener() {
@@ -209,40 +213,41 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addGap(10, 10, 10))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(5, 5, 5)
-                                            .addComponent(jLabel3)
-                                            .addGap(257, 257, 257)
-                                            .addComponent(jLabel11))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(60, 60, 60)
-                                            .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(userLogado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(5, 5, 5)
+                                        .addComponent(jLabel3)
+                                        .addGap(257, 257, 257)
+                                        .addComponent(jLabel11))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(60, 60, 60)
+                                        .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(campoQtdMin)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(153, 153, 153))))
+                            .addComponent(campoNome))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(checkAtivo)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(campoQtdMin)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addGap(153, 153, 153))))
-                                .addComponent(campoNome))
-                            .addGap(26, 26, 26))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(checkAtivo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE))))
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)))
                 .addComponent(jLabel8)
                 .addContainerGap())
         );
@@ -261,7 +266,9 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(jLabel9))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel9)
+                                                    .addComponent(userLogado)))
                                             .addComponent(jLabel12))
                                         .addGap(0, 0, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -322,12 +329,12 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        //Instancia dos controladores de entidade e operações com banco
 
-       if(campoNome.getText().equals("") || campoObs.getText().equals("")){
+       if(campoNome.getText().equals("")){
        JOptionPane.showMessageDialog(this, "Preencha todos os campos");
         }
        else{
-           JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
-               ProdutoJpaController pjc = new ProdutoJpaController(emf);
+           
+        ProdutoJpaController pjc = new ProdutoJpaController(emf);
         //Instancia de produto para receber os valores
         Produto produto = new Produto();
         //Setagem de valores, com base nos campos 
@@ -340,7 +347,21 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         produto.setQtdMinProd((int) campoQtdMin.getValue());
         produto.setObsProd(campoObs.getText());
         produto.setAtivoProd(checkAtivo.isSelected()); //Pegando valor boolean do checkbox
-        pjc.create(produto); //Inserir objeto Produto no banco
+        if(produto.getIdMarca().getIdMarca() == 9999){
+            if(campoObs.getText().equals("") || campoObs.getText() == null){
+                JOptionPane.showMessageDialog(this, "O campo de observação deve ser preenchido com a marca");
+                
+            }else{
+                pjc.create(produto); //Inserir objeto Produto no banco
+                JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+                
+            }
+            
+        }else{
+            pjc.create(produto); //Inserir objeto Produto no banco
+            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+        }
+        
        }
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -412,5 +433,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private javax.swing.JMenu menuConsulta;
     private javax.swing.JMenu menuLogo;
     private javax.swing.JMenu menuVendas;
+    private javax.swing.JLabel userLogado;
     // End of variables declaration//GEN-END:variables
 }
