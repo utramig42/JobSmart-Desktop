@@ -12,11 +12,13 @@ import dominio.ItensVenda;
 import dominio.Pagamento;
 import dominio.Venda;
 import dominio.dados.AcessoJpaController;
+import dominio.dados.EstoqueJpaController;
 import dominio.dados.FormaPagamentoJpaController;
 import dominio.dados.FuncionarioJpaController;
 import dominio.dados.ItensVendaJpaController;
 import dominio.dados.PagamentoJpaController;
 import dominio.dados.VendaJpaController;
+import dominio.dados.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -246,8 +248,7 @@ public class TelaPagamento extends javax.swing.JFrame {
                 pjc.createWithList(pagamentos);
                 venda.setPagamentoList(pagamentos);
                 ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
-                //vjc.edit(venda);
- 
+                edicaoItens();
                 JOptionPane.showMessageDialog(this, "Venda Finalizada!");
                 this.dispose();
 
@@ -279,7 +280,17 @@ public class TelaPagamento extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Usuário sem permissão ou incorreto");
             }
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    
+    public void edicaoItens() throws NonexistentEntityException, Exception{
+        EstoqueJpaController ejc = new EstoqueJpaController(emf);
+        for (ItensVenda item : itens) {
+            int novaQuantidade = item.getIdEst().getQtdProdEst() - item.getQuantItensVenda();
+            item.getIdEst().setQtdProdEst(novaQuantidade);
+            ejc.edit(item.getIdEst());
+        }
+    }
+    
     public boolean validaPagamento(double valorAPagar) {
         if (valorPendente <= 0) {
             System.out.println("Valor pago");

@@ -57,7 +57,6 @@ public class TelaVendas extends javax.swing.JFrame {
     public TelaVendas(Funcionario funcionario) {
         this.funcionario = funcionario;
         venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
-        System.out.println(venda.getMatFun());
         initComponents();
     }
 
@@ -334,7 +333,6 @@ public class TelaVendas extends javax.swing.JFrame {
             }else {
                 venda.setItensVendaList(itensVenda);
                 venda.setVlrVenda(valorVenda(itensVenda));
-                itensVenda = new ArrayList<>();
                 new TelaPagamento(venda).setVisible(true);
                 zerarComponentes();
             }
@@ -372,6 +370,9 @@ public class TelaVendas extends javax.swing.JFrame {
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
         est = ejc.findEstoque(codigoEstoque);
+        if(est == null){
+            JOptionPane.showMessageDialog(this, "Código não encontrado");
+        }else{
         if(!validarQuantidade(est)){
             JOptionPane.showMessageDialog(this, "Quantidade inserida maior do que a do estoque, que é "+est.getQtdProdEst());
         }else{
@@ -394,6 +395,8 @@ public class TelaVendas extends javax.swing.JFrame {
                 }
             }
             
+        }
+        
         }
         
     }//GEN-LAST:event_adicionarProdutoActionPerformed
@@ -492,6 +495,7 @@ public class TelaVendas extends javax.swing.JFrame {
     public void zerarComponentes() {
         itensVenda = new ArrayList<>();
         venda = new Venda((vjc.getVendaCount() + 1), new Date(), funcionario);
+        est = new Estoque();
         campoCodigo.setText("");
         campoQuantidade.setModel(new SpinnerNumberModel(1, 1, null, 1));
         campoNomeProduto.setText("");
