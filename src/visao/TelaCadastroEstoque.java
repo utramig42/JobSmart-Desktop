@@ -140,7 +140,7 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
 
         jLabel3.setText("Lote");
 
-        jButton1.setText("Atualizar Cadastro exitente");
+        jButton1.setText("Atualizar Cadastro existente");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -337,14 +337,22 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
             try {
                 //Instanciando e setando dados de estoque
                 estoque.setIdFor((Fornecedor) comboFornecedor.getSelectedItem());
-                Produto prod = pjc.findProduto(Integer.parseInt(campoCodigo.getText()));
+                Integer codigoEstoque = null;
+                Double valorCusto = null;
+            try{
+                codigoEstoque = Integer.parseInt(campoCodigo.getText());
+                valorCusto = Double.parseDouble(campoValor.getText());
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Digite um código/valor válido");
+            }
+                Produto prod = pjc.findProduto(codigoEstoque);
                 if(prod == null){
                     JOptionPane.showMessageDialog(this, "Código não encontrado");
                     
                 }else{
                     estoque.setIdProd(prod);
                     estoque.setQtdProdEst((int) campoQuantidade.getValue());
-                    estoque.setVlrCustoEst( Double.parseDouble(campoValor.getText()));
+                    estoque.setVlrCustoEst(valorCusto);
                     estoque.setVlrVendaEst();
                     estoque.setLoteEst(campoLote.getText());
                     estoque.setObsEst(campoObservacao.getText());
@@ -371,6 +379,8 @@ public class TelaCadastroEstoque extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      Util.instanciaAtualizaEstoque(this,funcionarioLogado);
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    
     
     public void limparCampos(){
         campoCodigo.setText((""));

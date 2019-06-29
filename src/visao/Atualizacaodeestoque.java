@@ -9,6 +9,7 @@ import dominio.Estoque;
 import dominio.Funcionario;
 import dominio.dados.EstoqueJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +77,7 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
         menuConsulta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1024, 768));
         setResizable(false);
         setSize(new java.awt.Dimension(1024, 768));
 
@@ -313,15 +315,17 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
         
     //EstoquePK pk = estoque.converteIdEstoque(estoques, codigoEstoque);*/
     estoque = ejc.findEstoque(codigoEstoque);
+    if(estoque == null){
+        JOptionPane.showMessageDialog(this, "Código não encontrado");
+    }else{
+        estoque.setQtdProdEst(Integer.parseInt(campoQuantidade.getText()));
+        estoque.setLoteEst(campoLote.getText());
+        estoque.setVlrCustoEst(Double.parseDouble(campoValor.getText()));
+        estoque.setDtFabEst(campoDataFab.getDate());
+        estoque.setDtValEst(campoDataVenc.getDate());
+        estoque.setObsEst(campoObs.getText());
     
-    estoque.setQtdProdEst(Integer.parseInt(campoQuantidade.getText()));
-    estoque.setLoteEst(campoLote.getText());
-    estoque.setVlrCustoEst(Double.parseDouble(campoValor.getText()));
-    estoque.setDtFabEst(campoDataFab.getDate());
-    estoque.setDtValEst(campoDataVenc.getDate());
-    estoque.setObsEst(campoObs.getText());
-    
-            try {
+        try {
             ejc.edit(estoque);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
@@ -329,12 +333,16 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-            
+    }
     }//GEN-LAST:event_atualizarActionPerformed
     public Estoque iniciar(){
        Estoque estoque = new Estoque();
-       estoque = ejc.findEstoque(Integer.parseInt(campoCodigo.getText()));
+       try{
+            estoque = ejc.findEstoque(Integer.parseInt(campoCodigo.getText()));
+       }catch(NumberFormatException ex){
+           estoque = null;
+           JOptionPane.showMessageDialog(this,"Digite um código válido");
+       }
        return estoque;
     }
     private void menuLogoMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoMenuSelected
@@ -354,12 +362,16 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
     private void campoCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCodigoKeyReleased
-       Estoque estoque = iniciar();
-     campoQuantidade.setText(Integer.toString(estoque.getQtdProdEst()));
-     campoLote.setText(estoque.getLoteEst());
-     campoValor.setText(Double.toString(estoque.getVlrCustoEst()));
-     campoDataFab.setDate(estoque.getDtFabEst());
-     campoDataVenc.setDate(estoque.getDtValEst());
+      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            Estoque estoque = iniciar();
+            campoQuantidade.setText(Integer.toString(estoque.getQtdProdEst()));
+            campoLote.setText(estoque.getLoteEst());
+            campoValor.setText(Double.toString(estoque.getVlrCustoEst()));
+            campoDataFab.setDate(estoque.getDtFabEst());
+            campoDataVenc.setDate(estoque.getDtValEst());
+            campoObs.setText((estoque.getObsEst() != null) ? estoque.getObsEst() : "");
+        }
+     
     }//GEN-LAST:event_campoCodigoKeyReleased
 
     /**
