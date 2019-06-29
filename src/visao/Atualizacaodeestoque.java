@@ -327,6 +327,7 @@ public class Atualizacaodeestoque extends javax.swing.JFrame {
     
         try {
             ejc.edit(estoque);
+            JOptionPane.showMessageDialog(this, "Registro atualizado");
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(Atualizacaodeestoque.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

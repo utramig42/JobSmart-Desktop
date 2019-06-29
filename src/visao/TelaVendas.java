@@ -154,14 +154,14 @@ public class TelaVendas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Cancelar", "Código", "Quant.", "Nome", "Preço"
+                "Código", "Quant.", "Nome", "Preço"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -504,15 +504,7 @@ public class TelaVendas extends javax.swing.JFrame {
    }
     
     public void gerarTabela(ItensVenda item){
-       btnRemoverItem = new JButton();
-            Action act = new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            };
-            ButtonColumn testeBtn = new ButtonColumn(tabela, act ,0);
-            Object[] obj = {"X",est.getIdEst(), item.getQuantItensVenda(),
+            Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
                 est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
 
             DefaultTableModel modelCadastro = (DefaultTableModel) tabela.getModel();
