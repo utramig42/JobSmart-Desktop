@@ -406,37 +406,51 @@ public class TelaVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_adicionarProdutoKeyReleased
     
     public void adicionarProduto(){
-        int codigoEstoque = Integer.parseInt(campoCodigo.getText());
-        est = ejc.findEstoque(codigoEstoque);
-        if(est == null){
-            JOptionPane.showMessageDialog(this, "Código não encontrado");
-        }else{
-        if(!validarQuantidade(est)){
-            JOptionPane.showMessageDialog(this, "Quantidade inserida maior do que a do estoque, que é "+est.getQtdProdEst());
-        }else{
-            campoNomeProduto.setText(est.getIdProd().getNmProd());
-            campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
-            if(est.setVlrVendaEst()){
-                try {
-                    ejc.edit(est);
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        if(validarCampos()){
+            Integer codigoEstoque = null;
+            try{
+                codigoEstoque = Integer.parseInt(campoCodigo.getText());
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Digite um código válido");
             }
-            if(!validarCodigoDuplicado(est)){
-                definirEAdicionarItem();
+            est = ejc.findEstoque(codigoEstoque);
+            if(est == null){
+                JOptionPane.showMessageDialog(this, "Código não encontrado");
             }else{
-                if(validarQuantidade(est)){
-                    atualizarQuantidade(est);
+            if(!validarQuantidade(est)){
+                JOptionPane.showMessageDialog(this, "Quantidade inserida maior do que a do estoque, que é "+est.getQtdProdEst());
+            }else{
+                campoNomeProduto.setText(est.getIdProd().getNmProd());
+                campoCategoria.setText(est.getIdProd().getIdCat().getNmCat());
+                if(est.setVlrVendaEst()){
+                    try {
+                        ejc.edit(est);
+                    } catch (NonexistentEntityException ex) {
+                        Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaVendas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                if(!validarCodigoDuplicado(est)){
+                    definirEAdicionarItem();
+                }else{
+                    if(validarQuantidade(est)){
+                        atualizarQuantidade(est);
+                    }
+                }
+
             }
-            
+
+            }
         }
-        
+    }
+    
+    public boolean validarCampos(){
+        if(campoCodigo.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Digite o código do produto");
+            return false;
         }
-        
+        return true;
     }
     
     public boolean validarQuantidade(Estoque est){
