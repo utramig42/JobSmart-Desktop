@@ -103,8 +103,6 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
             }
         });
 
-        campoSenha.setText("jPasswordField1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,8 +145,14 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
        
-       
-       funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
+       if(validarCampos()){
+           try{
+               funcionario = fjc.findFuncionario(Integer.parseInt(campoUsuario.getText()));
+           }catch(NumberFormatException ex){
+               JOptionPane.showMessageDialog(this, "Digite uma matrícula válida");
+               Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+           }
+            
         try {
             if(funcionario != null){
                 validaPrimeiroLogin();
@@ -157,14 +161,23 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
             }
         } catch (Exception ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro! Tente novamente ou comunique o administrador");
         }
-       
-       
+       }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEntrarKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEntrarKeyPressed
+    
+    
+    public boolean validarCampos(){
+        if(campoUsuario.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Digite um usuário");
+            return false;
+        }
+        return true;
+    }
     
     public void validaLogin() throws Exception{
         
@@ -183,10 +196,8 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
         List<Acesso> acessos = ajc.findAcessoEntities();
         for(Acesso acesso : acessos){
             if(funcionario.equals(acesso.getMatFun())){
-                System.out.println("Achei um acesso desse cara");
                 senha = acesso.getSenhaAcesso();
                 this.acesso = acesso;
-                
                 validaLogin();
                 break;
             }
