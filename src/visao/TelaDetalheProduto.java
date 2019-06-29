@@ -295,11 +295,12 @@ public class TelaDetalheProduto extends javax.swing.JFrame {
         }
         else{
          Estoque teste = new Estoque();
-        int codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
-       
-        /*List<Estoque> estoques =  ejc.findEstoqueEntities();
-        
-        //EstoquePK pk = teste.converteIdEstoque(estoques, codigoEstoque);*/
+         Integer codigoEstoque = null;
+        try{
+                codigoEstoque = Integer.parseInt(campoCodigoProduto.getText());
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Digite um código válido");
+            }
         teste = ejc.findEstoque(codigoEstoque);
         campoNomeProduto.setText(teste.getIdProd().getNmProd());
         campoCategoriaProduto.setText(teste.getIdProd().getIdCat().getNmCat());
