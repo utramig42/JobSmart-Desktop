@@ -14,6 +14,7 @@ import dominio.dados.FuncionarioJpaController;
 import dominio.dados.VendaJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,9 +105,19 @@ public class TelaVendas extends javax.swing.JFrame {
                 campoCodigoActionPerformed(evt);
             }
         });
+        campoCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoCodigoKeyReleased(evt);
+            }
+        });
 
         campoQuantidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         campoQuantidade.setToolTipText("1");
+        campoQuantidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoQuantidadeKeyReleased(evt);
+            }
+        });
 
         campoCategoria.setEnabled(false);
 
@@ -174,6 +185,11 @@ public class TelaVendas extends javax.swing.JFrame {
         adicionarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adicionarProdutoActionPerformed(evt);
+            }
+        });
+        adicionarProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                adicionarProdutoKeyReleased(evt);
             }
         });
 
@@ -368,6 +384,28 @@ public class TelaVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_menuConsultaMenuSelected
 
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed
+        adicionarProduto();
+    }//GEN-LAST:event_adicionarProdutoActionPerformed
+
+    private void campoCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCodigoKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            adicionarProduto();
+        }
+    }//GEN-LAST:event_campoCodigoKeyReleased
+
+    private void campoQuantidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoQuantidadeKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            adicionarProduto();
+        }
+    }//GEN-LAST:event_campoQuantidadeKeyReleased
+
+    private void adicionarProdutoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adicionarProdutoKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            adicionarProduto();
+        }
+    }//GEN-LAST:event_adicionarProdutoKeyReleased
+    
+    public void adicionarProduto(){
         int codigoEstoque = Integer.parseInt(campoCodigo.getText());
         est = ejc.findEstoque(codigoEstoque);
         if(est == null){
@@ -399,8 +437,7 @@ public class TelaVendas extends javax.swing.JFrame {
         
         }
         
-    }//GEN-LAST:event_adicionarProdutoActionPerformed
-    
+    }
     
     public boolean validarQuantidade(Estoque est){
        if(((int) campoQuantidade.getValue()) > est.getQtdProdEst()){

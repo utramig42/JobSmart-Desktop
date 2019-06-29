@@ -198,6 +198,7 @@
     <Component class="javax.swing.JTextField" name="campoCodigo">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoCodigoActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoCodigoKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="campoQuantidade">
@@ -207,6 +208,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="1"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoQuantidadeKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="campoCategoria">
       <Properties>
@@ -334,6 +338,7 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adicionarProdutoActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="adicionarProdutoKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
