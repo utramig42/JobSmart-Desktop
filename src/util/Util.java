@@ -58,13 +58,24 @@ public class Util {
         if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 || 
                 funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5 || 
                 funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 6 )){
-        new TelaDetalheProduto(funcionario).setVisible(true);
-        obj.dispose();
+                new TelaDetalheProduto(funcionario).setVisible(true);
+                    obj.dispose();
         }else {
             JOptionPane.showMessageDialog(obj, "Você não tem acesso");
         }
     }
-    
+  
+    public static void instanciaConsultaProduto( JFrame obj, Funcionario funcionario, boolean venda){
+        if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 || 
+                funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5 || 
+                funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 6 )){
+                new TelaDetalheProduto(funcionario).setVisible(true);
+                if(!venda)
+                    obj.dispose();
+        }else {
+            JOptionPane.showMessageDialog(obj, "Você não tem acesso");
+        }
+    }
         public static void instanciaAtualizaEstoque( JFrame obj, Funcionario funcionario){
         if(!(funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 4 || 
                 funcionario.getIdCargo().getIdPerfil().getIdPerfil() == 5 || 

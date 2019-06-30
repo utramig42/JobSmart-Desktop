@@ -380,7 +380,7 @@ public class TelaVendas extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCadastroEstoqueActionPerformed
 
     private void menuConsultaMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuConsultaMenuSelected
-        Util.instanciaConsultaProduto(this, funcionario);
+        Util.instanciaConsultaProduto(this, funcionario, true);
     }//GEN-LAST:event_menuConsultaMenuSelected
 
     private void adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarProdutoActionPerformed

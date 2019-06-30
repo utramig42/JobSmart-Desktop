@@ -12,6 +12,7 @@ import dominio.dados.FuncionarioJpaController;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -155,7 +156,13 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
             
         try {
             if(funcionario != null){
-                validaPrimeiroLogin();
+                Date teste = new Date();
+                if(funcionario.getDtRecFun() != null && funcionario.getDtRecFun().after(teste)){
+                    System.out.println(funcionario.getDtRecFun());
+                    JOptionPane.showMessageDialog(this, "Data de rescisão maior que a atual. Entre em contato com o RH");
+                }else{
+                    validaPrimeiroLogin();
+                }
             }else{
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado");
             }
@@ -196,12 +203,22 @@ KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyE
         List<Acesso> acessos = ajc.findAcessoEntities();
         for(Acesso acesso : acessos){
             if(funcionario.equals(acesso.getMatFun())){
-                senha = acesso.getSenhaAcesso();
+                if(validarPermissao(acesso)){
+                    senha = acesso.getSenhaAcesso();
                 this.acesso = acesso;
                 validaLogin();
                 break;
+                }
             }
         }
+    }
+    
+    public boolean validarPermissao(Acesso acesso){
+        if(acesso.getMatFun().getIdCargo().getIdPerfil().getIdPerfil() != 1 && acesso.getMatFun().getIdCargo().getIdPerfil().getIdPerfil()  != 2 && acesso.getMatFun().getIdCargo().getIdPerfil().getIdPerfil()  != 4){
+            JOptionPane.showMessageDialog(this, "Você não possui acesso à esta funcionalidade!");
+            return false;
+        }
+        return true;
     }
     
     /**
