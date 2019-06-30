@@ -27,6 +27,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.text.Keymap;
 
 /**
  *
@@ -235,31 +236,35 @@ public class TelaPagamento extends javax.swing.JFrame {
         Double valorRecebido = null;
         try{
             valorRecebido = Double.parseDouble(campoValorRecebido.getText());
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, "Digite um valor válido para pagamento (para centavos, utilize . ao invés de ,");
-        }
-        pagamento.setVlrPag(valorRecebido);
-        pagamento.setVlrTrocoPag(0);
-        double valorAPagar = valorPendente;
-        valorPendente -= Double.parseDouble(campoValorRecebido.getText());
-        pagamentos.add(pagamento);
-        venda.setItensVendaList(null);
-
-        if (validaPagamento(valorAPagar)) {
-            try {
-                VendaJpaController vjc = new VendaJpaController(emf);
-                vjc.create(venda);
-                pjc.createWithList(pagamentos);
-                venda.setPagamentoList(pagamentos);
-                ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
-                edicaoItens();
-                JOptionPane.showMessageDialog(this, "Venda Finalizada!");
-                this.dispose();
-
-            } catch (Exception ex) {
-                Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
+            if(valorRecebido < 0){
+                throw new NumberFormatException();
             }
+            pagamento.setVlrPag(valorRecebido);
+            pagamento.setVlrTrocoPag(0);
+            double valorAPagar = valorPendente;
+            valorPendente -= Double.parseDouble(campoValorRecebido.getText());
+            pagamentos.add(pagamento);
+            venda.setItensVendaList(null);
+
+            if (validaPagamento(valorAPagar)) {
+                try {
+                    VendaJpaController vjc = new VendaJpaController(emf);
+                    vjc.create(venda);
+                    pjc.createWithList(pagamentos);
+                    venda.setPagamentoList(pagamentos);
+                    ivc.createWithList(itens); //Itens e pagamento estão estourando NullPointer
+                    edicaoItens();
+                    JOptionPane.showMessageDialog(this, "Venda Finalizada!");
+                    this.dispose();
+
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaPagamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Digite um valor válido para pagamento (para centavos, utilize . ao invés de ,)");
         }
+        
 
 
     }//GEN-LAST:event_finalizarCompraActionPerformed

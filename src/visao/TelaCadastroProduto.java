@@ -77,7 +77,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         campoObs = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        checkAtivo = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -116,8 +115,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jScrollPane1.setViewportView(campoObs);
 
         jLabel6.setText("Observações");
-
-        checkAtivo.setText("Ativo/Inativo");
 
         jButton1.setBackground(new java.awt.Color(153, 255, 102));
         jButton1.setText("Cadastrar");
@@ -241,11 +238,8 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel6)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(checkAtivo)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)))
                 .addComponent(jLabel8)
@@ -293,9 +287,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkAtivo)
-                    .addComponent(jButton1))
+                .addComponent(jButton1)
                 .addContainerGap(283, Short.MAX_VALUE))
         );
 
@@ -346,7 +338,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         produto.setIdCat(categoria); //Porém com categoria
         produto.setQtdMinProd((int) campoQtdMin.getValue());
         produto.setObsProd(campoObs.getText());
-        produto.setAtivoProd(checkAtivo.isSelected()); //Pegando valor boolean do checkbox
         if(produto.getIdMarca().getIdMarca() == 9999){
             if(campoObs.getText().equals("") || campoObs.getText() == null){
                 JOptionPane.showMessageDialog(this, "O campo de observação deve ser preenchido com a marca");
@@ -412,7 +403,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextArea campoObs;
     private javax.swing.JSpinner campoQtdMin;
-    private javax.swing.JCheckBox checkAtivo;
     private javax.swing.JComboBox<String> comboCategoria;
     private javax.swing.JComboBox<String> comboMarca;
     private javax.swing.JButton jButton1;
