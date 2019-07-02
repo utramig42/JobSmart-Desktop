@@ -16,10 +16,10 @@
     <class>dominio.Perfil</class>
     <class>dominio.Acesso</class>
     <properties> <!--10.14.93.20 IP  123456--> <!--Se necessário, troque o IP abaixo por localhost e a senha para sua senha do banco. Necessário ter o banco configurado-->
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jobsmart?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://10.14.93.20:3306/jobsmart?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.password" value="123456"/>
     </properties>
   </persistence-unit>
 </persistence>

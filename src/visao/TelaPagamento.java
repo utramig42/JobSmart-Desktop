@@ -19,6 +19,7 @@ import dominio.dados.ItensVendaJpaController;
 import dominio.dados.PagamentoJpaController;
 import dominio.dados.VendaJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,7 +28,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.text.Keymap;
 
 /**
  *
@@ -301,6 +301,7 @@ public class TelaPagamento extends javax.swing.JFrame {
     }
     
     public boolean validaPagamento(double valorAPagar) {
+        DecimalFormat df = new DecimalFormat("#,###.00");
         if (valorPendente <= 0) {
             System.out.println("Valor pago");
             campoValorTotal.setText("R$ 0");
@@ -308,15 +309,15 @@ public class TelaPagamento extends javax.swing.JFrame {
             defineTroco(Double.parseDouble(campoValorRecebido.getText()), valorAPagar);
             return true;
         }
-        campoValorTotal.setText(Double.toString(valorPendente));
+        campoValorTotal.setText(df.format(valorPendente));
 
         return false;
     }
 
     public double defineTroco(double valorPago, double valorAPagar) {
-
+        DecimalFormat df = new DecimalFormat("#,###.00");
         double troco = valorPago - valorAPagar;
-        valorTroco.setText(Double.toString(troco));
+        valorTroco.setText(df.format(troco));
         pagamento.setVlrTrocoPag(troco);
         return troco;
     }

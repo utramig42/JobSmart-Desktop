@@ -40,8 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Produto.findByNmProd", query = "SELECT p FROM Produto p WHERE p.nmProd = :nmProd"),
     @NamedQuery(name = "Produto.findByQtdMinProd", query = "SELECT p FROM Produto p WHERE p.qtdMinProd = :qtdMinProd"),
     @NamedQuery(name = "Produto.findByDtCadProd", query = "SELECT p FROM Produto p WHERE p.dtCadProd = :dtCadProd"),
-    @NamedQuery(name = "Produto.findByAtivoProd", query = "SELECT p FROM Produto p WHERE p.ativoProd = :ativoProd"),
-    @NamedQuery(name = "Produto.findByQtdProd", query = "SELECT p FROM Produto p WHERE p.qtdProd = :qtdProd")})
+    @NamedQuery(name = "Produto.findByAtivoProd", query = "SELECT p FROM Produto p WHERE p.ativoProd = :ativoProd")
+    })
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,8 +64,6 @@ public class Produto implements Serializable {
     private String obsProd;
     @Column(name = "ativo_prod")
     private Boolean ativoProd;
-    @Column(name = "qtd_prod")
-    private Integer qtdProd;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProd")
     private List<Estoque> estoqueList;
     @JoinColumn(name = "id_cat", referencedColumnName = "id_cat")
@@ -134,14 +132,6 @@ public class Produto implements Serializable {
 
     public void setAtivoProd(Boolean ativoProd) {
         this.ativoProd = ativoProd;
-    }
-
-    public Integer getQtdProd() {
-        return qtdProd;
-    }
-
-    public void setQtdProd(Integer qtdProd) {
-        this.qtdProd = qtdProd;
     }
 
     @XmlTransient
