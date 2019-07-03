@@ -60,9 +60,10 @@ public class TelaPagamento extends javax.swing.JFrame {
 
     public TelaPagamento(Venda venda) {
         initComponents(); 
+        DecimalFormat df = new DecimalFormat("#,###.00");
         this.venda = venda;
         valorPendente = venda.getVlrVenda();
-        campoValorTotal.setText(Double.toString(valorPendente));
+        campoValorTotal.setText(df.format(valorPendente));
         itens = venda.getItensVendaList();
         instanciaItens();
     }

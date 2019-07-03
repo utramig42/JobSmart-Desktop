@@ -15,6 +15,7 @@ import dominio.dados.VendaJpaController;
 import dominio.dados.exceptions.NonexistentEntityException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -504,8 +505,9 @@ public class TelaVendas extends javax.swing.JFrame {
    }
     
     public void gerarTabela(ItensVenda item){
+        DecimalFormat df = new DecimalFormat("#,###.00");
             Object[] obj = {est.getIdEst(), item.getQuantItensVenda(),
-                est.getIdProd().getNmProd(), (est.getVlrVendaEst() * item.getQuantItensVenda())};
+                est.getIdProd().getNmProd(), df.format(est.getVlrVendaEst() * item.getQuantItensVenda())};
 
             DefaultTableModel modelCadastro = (DefaultTableModel) tabela.getModel();
             modelCadastro.addRow(obj);
