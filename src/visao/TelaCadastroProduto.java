@@ -17,6 +17,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 import util.Util;
 
 /**
@@ -351,15 +352,20 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         }else{
             pjc.create(produto); //Inserir objeto Produto no banco
             JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso");
+            limparCampos();
         }
         
        }
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    public void limparCampos(){
+        campoNome.setText("");
+        campoObs.setText("");
+        campoQtdMin.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        comboCategoria.setSelectedIndex(0);
+        comboMarca.setSelectedIndex(0);
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
